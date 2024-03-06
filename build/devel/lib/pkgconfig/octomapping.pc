@@ -1,0 +1,8 @@
+prefix=/home/amov/catkin_ws/src/octomapping/build/devel
+
+Name: octomapping
+Description: Description of octomapping
+Version: 0.0.1
+Cflags: -I/home/amov/catkin_ws/src/octomapping/include
+Libs: -L${prefix}/lib -lGlobal_Planning
+Requires: 
