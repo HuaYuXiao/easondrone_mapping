@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>octomapping</name>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
     <description>The Prometheus P450 octomapping package</description>
 
     <maintainer email="hyx020222@gmail.com">Eason Hua</maintainer>

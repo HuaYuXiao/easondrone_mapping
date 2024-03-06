@@ -72,13 +72,6 @@ private:
     bool odom_ready;
     bool drone_ready;
     bool sensor_ready;
-    bool goal_ready; 
-    bool is_safety;
-    bool is_new_path;
-    bool path_ok;
-    int start_point_index;
-    int Num_total_wp;
-    int cur_id;
 
     // 规划初始状态及终端状态
     Eigen::Vector3d start_pos, start_vel, start_acc, goal_pos, goal_vel;

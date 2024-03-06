@@ -34,18 +34,13 @@ void Global_Planner::init(ros::NodeHandle& nh)
     // 定时器 规划器算法执行周期
     mainloop_timer = nh.createTimer(ros::Duration(1.5), &Global_Planner::mainloop_cb, this);        
     // 路径追踪循环，快速移动场景应当适当提高执行频率
-    // time_per_path
     track_path_timer = nh.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
-
 
     // 规划器状态参数初始化
     exec_state = EXEC_STATE::WAIT_GOAL;
     odom_ready = false;
     drone_ready = false;
-    goal_ready = false;
     sensor_ready = false;
-    is_safety = true;
-    is_new_path = false;
 
     // 初始化发布的指令
     Command_Now.header.stamp = ros::Time::now();
@@ -231,13 +226,6 @@ float Global_Planner::get_time_in_sec(const ros::Time& begin_time)
     return (currTimeSec + currTimenSec);
 }
 
-
-void Global_Planner::safety_cb(const ros::TimerEvent& e)
-{
-    Eigen::Vector3d cur_pos(_DroneState.position[0], _DroneState.position[1], _DroneState.position[2]);
-    
-    is_safety = Astar_ptr->check_safety(cur_pos, safe_distance);
-}
 
 int Global_Planner::get_start_point_id(void)
 {

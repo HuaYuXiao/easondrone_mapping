@@ -6,8 +6,8 @@ namespace Global_Planning
 void Occupy_map::init(ros::NodeHandle& nh)
 {
     // 地图原点
-    nh.param("map/origin_x", origin_(0), -5.0);
-    nh.param("map/origin_y", origin_(1), -5.0);
+    nh.param("map/origin_x", origin_(0), 0.0);
+    nh.param("map/origin_y", origin_(1), 0.0);
     nh.param("map/origin_z", origin_(2), 0.0);
     // 地图实际尺寸，单位：米
     nh.param("map/map_size_x", map_size_3d_(0), 10.0);
@@ -18,12 +18,9 @@ void Occupy_map::init(ros::NodeHandle& nh)
 
 
     // 发布 地图rviz显示
-    global_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/prometheus/planning/global_pcl",  10); 
-    // 发布膨胀后的点云
-    inflate_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/prometheus/planning/global_inflate_pcl", 1);
+    global_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/prometheus/planning/global_pcl",  10);
  
     // 发布二维占据图？
-    // 发布膨胀后的二维占据图？
 
     this->inv_resolution_ = 1.0 / resolution_;
     for (int i = 0; i < 3; ++i)
@@ -155,65 +152,6 @@ void Occupy_map::setOccupancy(Eigen::Vector3d pos, int occ)
     occupancy_buffer_[id(0) * grid_size_(1) * grid_size_(2) + id(1) * grid_size_(2) + id(2)] = occ;
 }
 
-bool Occupy_map::isInMap(Eigen::Vector3d pos) 
-{
-    // min_range就是原点，max_range就是原点+地图尺寸
-    // 比如设置0,0,0为原点，[0,0,0]点会被判断为不在地图里
-    //　同时　对于２Ｄ情况，超出飞行高度的数据也会认为不在地图内部
-    if (pos(0) < min_range_(0) + 1e-4 || pos(1) < min_range_(1) + 1e-4 || pos(2) < min_range_(2) + 1e-4) 
-    {
-        return false;
-    }
-
-    if (pos(0) > max_range_(0) - 1e-4 || pos(1) > max_range_(1) - 1e-4 || pos(2) > max_range_(2) - 1e-4) 
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool Occupy_map::check_safety(Eigen::Vector3d& pos, double check_distance)
-{
-    if(!isInMap(pos))
-    {
-        // 当前位置点不在地图内
-        pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, "[check_safety]: the odom point is not in map\n");
-        return 0;
-    }
-    Eigen::Vector3i id;
-    posToIndex(pos, id);
-    Eigen::Vector3i id_occ;
-    Eigen::Vector3d pos_occ;
-
-    int check_dist_xy = int(check_distance/resolution_);
-    int check_dist_z=0;
-    int cnt=0;
-    for(int ix=-check_dist_xy; ix<=check_dist_xy; ix++){
-        for(int iy=-check_dist_xy; iy<=check_dist_xy; iy++){
-            for(int iz=-check_dist_z; iz<=check_dist_z; iz++){
-                id_occ(0) = id(0)+ix;
-                id_occ(1) = id(1)+iy;
-                id_occ(2) = id(2)+iz;
-                indexToPos(id_occ, pos_occ);
-                if(!isInMap(pos_occ)){
-                    // printf("[check_safety]: current odom is near the boundary of the map\n");
-                    // pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, "[check_safety]: current odom is near the boundary of the map\n");
-                    return 0;
-                }
-                if(getOccupancy(id_occ)){
-                    // printf("[check_safety]: current state is dagerous, the pos [%d, %d, %d], is occupied\n", ix, iy, iz);
-                    cnt++;             
-                }
-            }
-        }
-    }
-    if(cnt>5){
-        return 0;
-    }
-    return 1;
-
-}
 
 void Occupy_map::posToIndex(Eigen::Vector3d pos, Eigen::Vector3i &id) 
 {
