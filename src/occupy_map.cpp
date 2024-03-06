@@ -10,9 +10,9 @@ void Occupy_map::init(ros::NodeHandle& nh)
     nh.param("map/origin_y", origin_(1), 0.0);
     nh.param("map/origin_z", origin_(2), 0.0);
     // 地图实际尺寸，单位：米
-    nh.param("map/map_size_x", map_size_3d_(0), 10.0);
-    nh.param("map/map_size_y", map_size_3d_(1), 10.0);
-    nh.param("map/map_size_z", map_size_3d_(2), 5.0);
+    nh.param("map/map_size_x", map_size_3d_(0), 6.0);
+    nh.param("map/map_size_y", map_size_3d_(1), 6.0);
+    nh.param("map/map_size_z", map_size_3d_(2), 3.0);
     // 地图分辨率，单位：米
     nh.param("map/resolution", resolution_,  0.05);
 
@@ -73,9 +73,6 @@ void Occupy_map::inflate_point_cloud(void)
     // 发布未膨胀点云
     global_pcl_pub.publish(*global_env_);
 
-    //记录开始时间
-    ros::Time time_start = ros::Time::now();
-
     // 转化为PCL的格式进行处理
     pcl::PointCloud<pcl::PointXYZ> latest_global_cloud_;
     pcl::fromROSMsg(*global_env_, latest_global_cloud_);
@@ -83,15 +80,7 @@ void Occupy_map::inflate_point_cloud(void)
     if ((int)latest_global_cloud_.points.size() == 0)  
     {return;}
 
-    pcl::PointCloud<pcl::PointXYZ> cloud_inflate_vis_;
-    cloud_inflate_vis_.clear();
-
-    // 膨胀格子数 = 膨胀距离/分辨率
-    // ceil返回大于或者等于指定表达式的最小整数
-    const int ifn = ceil(inflate_ * inv_resolution_);
-
-    pcl::PointXYZ pt_inf;
-    Eigen::Vector3d p3d, p3d_inf;
+    Eigen::Vector3d p3d;
 
     // 遍历全局点云中的所有点
     for (size_t i = 0; i < latest_global_cloud_.points.size(); ++i) 
@@ -107,25 +96,6 @@ void Occupy_map::inflate_point_cloud(void)
             continue;
         }
     }
-
-    cloud_inflate_vis_.header.frame_id = "world";
-
-    // 转化为ros msg发布
-    sensor_msgs::PointCloud2 map_inflate_vis;
-    pcl::toROSMsg(cloud_inflate_vis_, map_inflate_vis);
-
-    inflate_pcl_pub.publish(map_inflate_vis);
-
-    static int exec_num=0;
-    exec_num++;
-
-    // 此处改为根据循环时间计算的数值
-    if(exec_num == 20)
-    {
-        // 膨胀地图效率与地图大小有关（有点久，Astar更新频率是多久呢？ 怎么才能提高膨胀效率呢？）
-        printf("inflate global point take %f [s].\n",   (ros::Time::now()-time_start).toSec());
-        exec_num=0;
-    }  
 
 }
 

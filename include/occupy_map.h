@@ -41,7 +41,6 @@ class Occupy_map
         // 地图分辨率
         double resolution_, inv_resolution_;
         // 膨胀参数
-        double inflate_;
         bool debug_mode;
         // 地图原点,地图尺寸
         Eigen::Vector3d origin_, map_size_3d_, min_range_, max_range_;
@@ -54,7 +53,7 @@ class Occupy_map
         void show_gpcl_marker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color);
 
         // 发布点云用于rviz显示
-        ros::Publisher global_pcl_pub, inflate_pcl_pub;
+        ros::Publisher global_pcl_pub;
 
         //初始化
         void init(ros::NodeHandle& nh);
@@ -64,8 +63,6 @@ class Occupy_map
         void map_update_lpcl(const sensor_msgs::PointCloud2ConstPtr & local_point, const nav_msgs::Odometry & odom);
         // 地图更新函数 - 输入：二维激光雷达
         void map_update_laser(const sensor_msgs::LaserScanConstPtr & local_point, const nav_msgs::Odometry & odom);
-        // 地图膨胀
-        void inflate_point_cloud(void);
         // 判断当前点是否在地图内
         bool isInMap(Eigen::Vector3d pos);
         // 设置占据
@@ -78,8 +75,6 @@ class Occupy_map
         int getOccupancy(Eigen::Vector3d pos);
         // 根据索引返回占据状态
         int getOccupancy(Eigen::Vector3i id);
-        // 检查安全
-        bool check_safety(Eigen::Vector3d& pos, double check_distance/*, Eigen::Vector3d& map_point*/);
         // 定义该类的指针
         typedef std::shared_ptr<Occupy_map> Ptr;
 };

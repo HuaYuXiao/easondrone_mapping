@@ -50,7 +50,6 @@ private:
     // 根据不同的输入（激光雷达输入、相机输入等）生成occupymap
 
     // 订阅无人机状态、目标点、传感器数据（生成地图）
-    ros::Subscriber goal_sub;
     ros::Subscriber drone_state_sub;
     // 支持2维激光雷达、3维激光雷达、D435i等实体传感器
     // 支持直接输入全局已知点云
@@ -86,9 +85,7 @@ private:
     enum EXEC_STATE
     {
         WAIT_GOAL,
-        PLANNING,
         TRACKING,
-        LANDING,
     };
     EXEC_STATE exec_state;
 

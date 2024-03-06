@@ -203,16 +203,6 @@ void Global_Planner::mainloop_cb(const ros::TimerEvent& e)
 
             break;
         }
-        case LANDING:
-        {
-            Command_Now.header.stamp = ros::Time::now();
-            Command_Now.Mode         = prometheus_msgs::ControlCommand::Land;
-            Command_Now.Command_ID   = Command_Now.Command_ID + 1;
-            Command_Now.source = NODE_NAME;
-
-            command_pub.publish(Command_Now);
-            break;
-        }
     }
 }
 
