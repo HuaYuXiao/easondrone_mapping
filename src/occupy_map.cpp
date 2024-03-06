@@ -15,8 +15,7 @@ void Occupy_map::init(ros::NodeHandle& nh)
     nh.param("map/map_size_z", map_size_3d_(2), 5.0);
     // 地图分辨率，单位：米
     nh.param("map/resolution", resolution_,  0.05);
-    // 地图膨胀距离，单位：米
-    nh.param("map/inflate", inflate_,  0.3);
+
 
     // 发布 地图rviz显示
     global_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/prometheus/planning/global_pcl",  10); 
@@ -84,8 +83,6 @@ void Occupy_map::inflate_point_cloud(void)
     pcl::PointCloud<pcl::PointXYZ> latest_global_cloud_;
     pcl::fromROSMsg(*global_env_, latest_global_cloud_);
 
-    //printf("time 1 take %f [s].\n",   (ros::Time::now()-time_start).toSec());
-
     if ((int)latest_global_cloud_.points.size() == 0)  
     {return;}
 
@@ -112,28 +109,6 @@ void Occupy_map::inflate_point_cloud(void)
         {
             continue;
         }
-
-        // 根据膨胀距离，膨胀该点
-        for (int x = -ifn; x <= ifn; ++x)
-            for (int y = -ifn; y <= ifn; ++y)
-                for (int z = -ifn; z <= ifn; ++z) 
-                {
-                    // 为什么Z轴膨胀一半呢？ z 轴其实可以不膨胀
-                    p3d_inf(0) = pt_inf.x = p3d(0) + x * resolution_;
-                    p3d_inf(1) = pt_inf.y = p3d(1) + y * resolution_;
-                    p3d_inf(2) = pt_inf.z = p3d(2) + 0.5 * z * resolution_;
-
-                    // 若膨胀的点不在地图内（膨胀时只考虑地图范围内的点）
-                    if(!isInMap(p3d_inf))
-                    {
-                        continue;
-                    }
-
-                    cloud_inflate_vis_.push_back(pt_inf);
-
-                    // 设置膨胀后的点被占据
-                    this->setOccupancy(p3d_inf, 1);
-                }
     }
 
     cloud_inflate_vis_.header.frame_id = "world";
