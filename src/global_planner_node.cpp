@@ -4,14 +4,13 @@
 
 using namespace Global_Planning;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
   ros::init(argc, argv, "global_planner");
 
-  ros::NodeHandle nh("~");
+  ros::NodeHandle nodehandle("~");
 
   Global_Planner global_planner;
-  global_planner.init(nh);
+  global_planner.init(nodehandle);
 
   ros::spin();
 

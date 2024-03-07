@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>octomapping</name>
-    <version>0.0.3</version>
-    <description>The Prometheus P450 octomapping package</description>
+    <version>0.0.4</version>
+    <description>A ROS package targeted for building 3D octomap on Premetheus P450 (Nano)</description>
 
     <maintainer email="hyx020222@gmail.com">Eason Hua</maintainer>
 

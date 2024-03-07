@@ -30,19 +30,15 @@ using namespace std;
 
 #define MIN_DIS 0.1
 
-namespace Global_Planning
-{
+namespace Global_Planning{
 
 extern ros::Publisher message_pub;
 
-class Global_Planner
-{
+class Global_Planner{
 private:
-
-    ros::NodeHandle global_planner_nh;
+    ros::NodeHandle nodehandle;
 
     // 参数
-    int algorithm_mode;
     int map_input;
     bool sim_mode;
     bool map_groundtruth;
@@ -62,9 +58,8 @@ private:
     ros::Publisher command_pub;
     ros::Timer mainloop_timer, track_path_timer, safety_timer;
 
-    prometheus_msgs::DroneState _DroneState;
     nav_msgs::Odometry Drone_odom;
-
+    prometheus_msgs::DroneState _DroneState;
     prometheus_msgs::ControlCommand Command_Now;   
 
     // 规划器状态
@@ -108,7 +103,7 @@ private:
     
 public:
     Global_Planner(void):
-        global_planner_nh("~")
+        nodehandle("~")
     {}~Global_Planner(){}
 
     void init(ros::NodeHandle& nh);

@@ -1,40 +1,38 @@
 #include "global_planner.h"
 
-namespace Global_Planning
-{
+namespace Global_Planning{
 
 // 初始化函数
-void Global_Planner::init(ros::NodeHandle& nh)
-{
+void Global_Planner::init(ros::NodeHandle& nodehandle){
     // 选择地图更新方式：　0代表全局点云，１代表局部点云，２代表激光雷达scan数据
-    nh.param("global_planner/map_input", map_input, 0); 
+    nodehandle.param("global_planner/map_input", map_input, 0); 
     // 是否为仿真模式
-    nh.param("global_planner/sim_mode", sim_mode, false); 
+    nodehandle.param("global_planner/sim_mode", sim_mode, false); 
 
-    nh.param("global_planner/map_groundtruth", map_groundtruth, false); 
+    nodehandle.param("global_planner/map_groundtruth", map_groundtruth, false); 
 
 
     // 订阅 无人机状态
-    drone_state_sub = nh.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &Global_Planner::drone_state_cb, this);
+    drone_state_sub = nodehandle.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &Global_Planner::drone_state_cb, this);
 
     // 根据map_input选择地图更新方式
     if(map_input == 0)
     {
-        Gpointcloud_sub = nh.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/global_pcl", 1, &Global_Planner::Gpointcloud_cb, this);
+        Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/global_pcl", 1, &Global_Planner::Gpointcloud_cb, this);
     }else if(map_input == 1)
     {
-        Lpointcloud_sub = nh.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/local_pcl", 1, &Global_Planner::Lpointcloud_cb, this);
+        Lpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/local_pcl", 1, &Global_Planner::Lpointcloud_cb, this);
     }else if(map_input == 2)
     {
-        laserscan_sub = nh.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &Global_Planner::laser_cb, this);
+        laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &Global_Planner::laser_cb, this);
     }
 
      // 发布提示消息
-    message_pub = nh.advertise<prometheus_msgs::Message>("/prometheus/message/global_planner", 10);
+    message_pub = nodehandle.advertise<prometheus_msgs::Message>("/prometheus/message/global_planner", 10);
     // 定时器 规划器算法执行周期
-    mainloop_timer = nh.createTimer(ros::Duration(1.5), &Global_Planner::mainloop_cb, this);        
+    mainloop_timer = nodehandle.createTimer(ros::Duration(1.5), &Global_Planner::mainloop_cb, this);        
     // 路径追踪循环，快速移动场景应当适当提高执行频率
-    track_path_timer = nh.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
+    track_path_timer = nodehandle.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
 
     // 规划器状态参数初始化
     exec_state = EXEC_STATE::WAIT_GOAL;
@@ -208,8 +206,7 @@ void Global_Planner::mainloop_cb(const ros::TimerEvent& e)
 
 
 // 【获取当前时间函数】 单位：秒
-float Global_Planner::get_time_in_sec(const ros::Time& begin_time)
-{
+float Global_Planner::get_time_in_sec(const ros::Time& begin_time){
     ros::Time time_now = ros::Time::now();
     float currTimeSec = time_now.sec - begin_time.sec;
     float currTimenSec = time_now.nsec / 1e9 - begin_time.nsec / 1e9;
@@ -217,8 +214,7 @@ float Global_Planner::get_time_in_sec(const ros::Time& begin_time)
 }
 
 
-int Global_Planner::get_start_point_id(void)
-{
+int Global_Planner::get_start_point_id(void){
     // 选择与当前无人机所在位置最近的点,并从该点开始追踪
     int id = 0;
     float distance_to_wp_min = abs(path_cmd.poses[0].pose.position.x - _DroneState.position[0])
