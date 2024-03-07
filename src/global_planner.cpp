@@ -30,6 +30,12 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
     // 路径追踪循环，快速移动场景应当适当提高执行频率
     track_path_timer = nodehandle.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
 
+
+    // 初始化占据地图
+    Occupy_map_ptr.reset(new Occupy_map);
+    Occupy_map_ptr->init(nodehandle);
+
+
     // 规划器状态参数初始化
     exec_state = EXEC_STATE::WAIT_GOAL;
     odom_ready = false;
@@ -89,21 +95,23 @@ void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
 
     sensor_ready = true;
 
+    // 如果为true，那就是使用虚拟的点云数据，所以就不用循环
     if(!map_groundtruth){
         // 对Astar中的地图进行更新
-        Astar_ptr->Occupy_map_ptr->map_update_gpcl(msg);
+        Occupy_map_ptr->map_update_gpcl(msg);
         // 并对地图进行膨胀
-        Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
+        Occupy_map_ptr->inflate_point_cloud();
     }else{
+        // 默认情况下为false，此时的点云要么是仿真下的点云插件生成的点云或者是实机中传感器通过octomap生成的点云，这种就需要循环10次进行膨胀层
         static int update_num=0;
         update_num++;
 
         // 此处改为根据循环时间计算的数值
         if(update_num == 10){
-            // 对Astar中的地图进行更新
-            Astar_ptr->Occupy_map_ptr->map_update_gpcl(msg);
+            // 对地图进行更新
+            Occupy_map_ptr->map_update_gpcl(msg);
             // 并对地图进行膨胀
-            Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
+            Occupy_map_ptr->inflate_point_cloud();
             update_num = 0;
         }
     }

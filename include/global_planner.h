@@ -40,22 +40,25 @@ private:
 
     // 参数
     bool map_input;
+    // map_groundtruth指的是真值的全局点云地图
     bool map_groundtruth;
 
     // 根据不同的输入（激光雷达输入、相机输入等）生成occupymap
 
     // 订阅无人机状态、目标点、传感器数据（生成地图）
     ros::Subscriber drone_state_sub;
-    // 支持2维激光雷达、3维激光雷达、D435i等实体传感器
     // 支持直接输入全局已知点云
     ros::Subscriber Gpointcloud_sub;
-    ros::Subscriber Lpointcloud_sub;
+    // 支持2维激光雷达实体传感器
     ros::Subscriber laserscan_sub;
     // ？
 
     // 发布控制指令
     ros::Publisher command_pub;
     ros::Timer mainloop_timer, track_path_timer, safety_timer;
+
+    // 占据图类
+    Occupy_map::Ptr Occupy_map_ptr;
 
     nav_msgs::Odometry Drone_odom;
     prometheus_msgs::DroneState _DroneState;
