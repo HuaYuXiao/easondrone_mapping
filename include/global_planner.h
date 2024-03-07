@@ -62,15 +62,11 @@ private:
 
     nav_msgs::Odometry Drone_odom;
     prometheus_msgs::DroneState _DroneState;
-    prometheus_msgs::ControlCommand Command_Now;   
 
     // 规划器状态
     bool odom_ready;
     bool drone_ready;
     bool sensor_ready;
-
-    // 规划初始状态及终端状态
-    Eigen::Vector3d start_pos, start_vel, start_acc, goal_pos, goal_vel;
 
     ros::Time tra_start_time;
     float tra_running_time;
@@ -86,12 +82,9 @@ private:
     EXEC_STATE exec_state;
 
     // 回调函数
-    void goal_cb(const geometry_msgs::PoseStampedConstPtr& msg);
     void drone_state_cb(const prometheus_msgs::DroneStateConstPtr &msg);
     void Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
-    void Lpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
     void laser_cb(const sensor_msgs::LaserScanConstPtr &msg);
-
     void safety_cb(const ros::TimerEvent& e);
     void mainloop_cb(const ros::TimerEvent& e);
     void track_path_cb(const ros::TimerEvent& e);
@@ -107,7 +100,7 @@ public:
         nodehandle("~")
     {}~Global_Planner(){}
 
-    void init(ros::NodeHandle& nh);
+    void init(ros::NodeHandle& nodehandle);
 };
 
 }

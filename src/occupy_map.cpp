@@ -1,5 +1,6 @@
 #include <occupy_map.h>
 
+
 namespace Global_Planning{
 // 初始化函数
 void Occupy_map::init(ros::NodeHandle& nodehandle){

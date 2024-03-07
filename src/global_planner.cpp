@@ -41,23 +41,11 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
     odom_ready = false;
     drone_ready = false;
     sensor_ready = false;
-
-    // 初始化发布的指令
-    Command_Now.header.stamp = ros::Time::now();
-    Command_Now.Mode  = prometheus_msgs::ControlCommand::Idle;
-    Command_Now.Command_ID = 0;
-    Command_Now.source = NODE_NAME;
-    desired_yaw = 0.0;
 }
 
 
 void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
     _DroneState = *msg;
-
-    start_pos << msg->position[0], msg->position[1], msg->position[2];
-    start_vel << msg->velocity[0], msg->velocity[1], msg->velocity[2];
-
-    start_acc << 0.0, 0.0, 0.0;
 
     odom_ready = true;
 
@@ -67,17 +55,20 @@ void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& m
         drone_ready = false;
     }
 
-    Drone_odom.header = _DroneState.header;
-    Drone_odom.child_frame_id = "base_link";
+    // odem is needed only when using laser scan
+    if(!map_input) {
+        Drone_odom.header = _DroneState.header;
+        Drone_odom.child_frame_id = "base_link";
 
-    Drone_odom.pose.pose.position.x = _DroneState.position[0];
-    Drone_odom.pose.pose.position.y = _DroneState.position[1];
-    Drone_odom.pose.pose.position.z = _DroneState.position[2];
+        Drone_odom.pose.pose.position.x = _DroneState.position[0];
+        Drone_odom.pose.pose.position.y = _DroneState.position[1];
+        Drone_odom.pose.pose.position.z = _DroneState.position[2];
 
-    Drone_odom.pose.pose.orientation = _DroneState.attitude_q;
-    Drone_odom.twist.twist.linear.x = _DroneState.velocity[0];
-    Drone_odom.twist.twist.linear.y = _DroneState.velocity[1];
-    Drone_odom.twist.twist.linear.z = _DroneState.velocity[2];
+        Drone_odom.pose.pose.orientation = _DroneState.attitude_q;
+        Drone_odom.twist.twist.linear.x = _DroneState.velocity[0];
+        Drone_odom.twist.twist.linear.y = _DroneState.velocity[1];
+        Drone_odom.twist.twist.linear.z = _DroneState.velocity[2];
+    }
 }
 
 
