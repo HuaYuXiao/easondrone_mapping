@@ -54,7 +54,6 @@ private:
     // ？
 
     // 发布控制指令
-    ros::Publisher command_pub;
     ros::Timer mainloop_timer, track_path_timer, safety_timer;
 
     // 占据图类
@@ -74,19 +73,12 @@ private:
     // 打印的提示消息
     string message;
 
-    // 五种状态机
-    enum EXEC_STATE{
-        WAIT_GOAL,
-        TRACKING,
-    };
-    EXEC_STATE exec_state;
-
     // 回调函数
     void drone_state_cb(const prometheus_msgs::DroneStateConstPtr &msg);
     void Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
     void laser_cb(const sensor_msgs::LaserScanConstPtr &msg);
     void safety_cb(const ros::TimerEvent& e);
-    void mainloop_cb(const ros::TimerEvent& e);
+    void checkReady_cb(const ros::TimerEvent& e);
     void track_path_cb(const ros::TimerEvent& e);
    
 

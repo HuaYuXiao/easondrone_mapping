@@ -26,7 +26,7 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
 
 
     // 定时器 规划器算法执行周期
-    mainloop_timer = nodehandle.createTimer(ros::Duration(1.5), &Global_Planner::mainloop_cb, this);        
+    mainloop_timer = nodehandle.createTimer(ros::Duration(1), &Global_Planner::checkReady_cb, this);
     // 路径追踪循环，快速移动场景应当适当提高执行频率
     track_path_timer = nodehandle.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
 
@@ -64,6 +64,7 @@ void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& m
         Drone_odom.pose.pose.position.y = _DroneState.position[1];
         Drone_odom.pose.pose.position.z = _DroneState.position[2];
 
+        // TODO 这里需要做四元数转换吗？
         Drone_odom.pose.pose.orientation = _DroneState.attitude_q;
         Drone_odom.twist.twist.linear.x = _DroneState.velocity[0];
         Drone_odom.twist.twist.linear.y = _DroneState.velocity[1];
@@ -131,46 +132,21 @@ void Global_Planner::track_path_cb(const ros::TimerEvent& e){
 
 
 // 主循环 
-void Global_Planner::mainloop_cb(const ros::TimerEvent& e){
-    static int exec_num=0;
-    exec_num++;
-
+void Global_Planner::checkReady_cb(const ros::TimerEvent& e){
+    message = "";
     // 检查当前状态，不满足规划条件则直接退出主循环
-    // 此处打印消息与后面的冲突了，逻辑上存在问题
+    // TODO 此处打印消息与后面的冲突了，逻辑上存在问题
     if(!odom_ready || !drone_ready || !sensor_ready){
-        // 此处改为根据循环时间计算的数值
-        if(exec_num == 10){
-            if(!odom_ready){
-                message = "Need odom info.";
-            }else if(!drone_ready){
-                message = "Drone is not ready.";
-            }else if(!sensor_ready){
-                message = "Need sensor info.";
-            }
-
-            pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, message);
-            exec_num=0;
-        }  
-
-        return;
-    }else{
-        // 对检查的状态进行重置
-        odom_ready = false;
-        drone_ready = false;
-        sensor_ready = false;
-    }
-    
-    switch (exec_state){
-        case TRACKING:{
-            // 本循环是1Hz,此处不是很精准
-            if(exec_num >= replan_time){
-                exec_state = EXEC_STATE::PLANNING;
-                exec_num = 0;
-            }
-
-            break;
+        if(!odom_ready){
+            message += "Need odom info! ";
+        }else if(!drone_ready){
+            message += "Drone is not ready! ";
+        }else if(!sensor_ready){
+            message += "Need sensor info! ";
         }
+        pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, message);
     }
+    return;
 }
 
 
