@@ -66,9 +66,6 @@ private:
     bool odom_ready;
     bool drone_ready;
     bool sensor_ready;
-
-    ros::Time tra_start_time;
-    float tra_running_time;
     
     // 打印的提示消息
     string message;
@@ -77,13 +74,8 @@ private:
     void drone_state_cb(const prometheus_msgs::DroneStateConstPtr &msg);
     void Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
     void laser_cb(const sensor_msgs::LaserScanConstPtr &msg);
-    void safety_cb(const ros::TimerEvent& e);
     void checkReady_cb(const ros::TimerEvent& e);
-    void track_path_cb(const ros::TimerEvent& e);
-   
 
-    // 【获取当前时间函数】 单位：秒
-    float get_time_in_sec(const ros::Time& begin_time);
 
     int get_start_point_id(void);
     

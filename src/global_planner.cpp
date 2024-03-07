@@ -27,8 +27,6 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
 
     // 定时器 规划器算法执行周期
     mainloop_timer = nodehandle.createTimer(ros::Duration(1), &Global_Planner::checkReady_cb, this);
-    // 路径追踪循环，快速移动场景应当适当提高执行频率
-    track_path_timer = nodehandle.createTimer(ros::Duration(time_per_path), &Global_Planner::track_path_cb, this);        
 
 
     // 初始化占据地图
@@ -37,7 +35,6 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
 
 
     // 规划器状态参数初始化
-    exec_state = EXEC_STATE::WAIT_GOAL;
     odom_ready = false;
     drone_ready = false;
     sensor_ready = false;
@@ -114,20 +111,6 @@ void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
 
     // 对地图进行更新（laser+odom）
     Occupy_map_ptr->map_update_laser(msg, Drone_odom);
-}
-
-
-void Global_Planner::track_path_cb(const ros::TimerEvent& e){
-    if(!path_ok){
-        return;
-    }
-
-    is_new_path = false;
- 
-    // 计算距离开始追踪轨迹时间
-    tra_running_time = get_time_in_sec(tra_start_time);
-
-    int i = cur_id;
 }
 
 
