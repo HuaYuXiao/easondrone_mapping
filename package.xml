@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>octomapping</name>
-    <version>0.0.4</version>
+    <version>0.1.2</version>
     <description>A ROS package targeted for building 3D octomap on Premetheus P450 (Nano)</description>
 
     <maintainer email="hyx020222@gmail.com">Eason Hua</maintainer>

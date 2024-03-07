@@ -39,7 +39,7 @@ private:
     ros::NodeHandle nodehandle;
 
     // 参数
-    int map_input;
+    bool map_input;
     bool sim_mode;
     bool map_groundtruth;
 

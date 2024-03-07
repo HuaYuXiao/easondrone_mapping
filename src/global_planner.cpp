@@ -1,14 +1,14 @@
 #include "global_planner.h"
 
+
 namespace Global_Planning{
 
 // 初始化函数
 void Global_Planner::init(ros::NodeHandle& nodehandle){
-    // 选择地图更新方式：　0代表全局点云，１代表局部点云，２代表激光雷达scan数据
-    nodehandle.param("global_planner/map_input", map_input, 0); 
+    // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
+    nodehandle.param("global_planner/map_input", map_input, true);
     // 是否为仿真模式
-    nodehandle.param("global_planner/sim_mode", sim_mode, false); 
-
+    nodehandle.param("global_planner/sim_mode", sim_mode, false);
     nodehandle.param("global_planner/map_groundtruth", map_groundtruth, false); 
 
 
@@ -16,19 +16,17 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
     drone_state_sub = nodehandle.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &Global_Planner::drone_state_cb, this);
 
     // 根据map_input选择地图更新方式
-    if(map_input == 0)
-    {
+    if(map_input){
         Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/global_pcl", 1, &Global_Planner::Gpointcloud_cb, this);
-    }else if(map_input == 1)
-    {
-        Lpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/local_pcl", 1, &Global_Planner::Lpointcloud_cb, this);
-    }else if(map_input == 2)
-    {
+    }else{
         laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &Global_Planner::laser_cb, this);
     }
 
+
      // 发布提示消息
     message_pub = nodehandle.advertise<prometheus_msgs::Message>("/prometheus/message/global_planner", 10);
+
+
     // 定时器 规划器算法执行周期
     mainloop_timer = nodehandle.createTimer(ros::Duration(1.5), &Global_Planner::mainloop_cb, this);        
     // 路径追踪循环，快速移动场景应当适当提高执行频率
@@ -81,40 +79,36 @@ void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& m
     Drone_odom.twist.twist.linear.z = _DroneState.velocity[2];
 }
 
+
+
 // 根据全局点云更新地图
 // 情况：已知全局点云的场景、由SLAM实时获取的全局点云
-void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
-{
+void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
     /* need odom_ for center radius sensing */
-    if (!odom_ready) 
-    {
+    if (!odom_ready){
         return;
     }
-    
+
     sensor_ready = true;
 
-    if(!map_groundtruth)
-    {
+    if(!map_groundtruth){
         // 对Astar中的地图进行更新
         Astar_ptr->Occupy_map_ptr->map_update_gpcl(msg);
         // 并对地图进行膨胀
-        Astar_ptr->Occupy_map_ptr->inflate_point_cloud(); 
-    }else
-    {
+        Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
+    }else{
         static int update_num=0;
         update_num++;
 
         // 此处改为根据循环时间计算的数值
-        if(update_num == 10)
-        {
+        if(update_num == 10){
             // 对Astar中的地图进行更新
             Astar_ptr->Occupy_map_ptr->map_update_gpcl(msg);
             // 并对地图进行膨胀
-            Astar_ptr->Occupy_map_ptr->inflate_point_cloud(); 
+            Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
             update_num = 0;
-        } 
+        }
     }
-    
 }
 
 
@@ -123,18 +117,19 @@ void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
 void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg)
 {
     /* need odom_ for center radius sensing */
-    if (!odom_ready) 
+    if (!odom_ready)
     {
         return;
     }
-    
+
     sensor_ready = true;
 
     // 对Astar中的地图进行更新（laser+odom）
     Astar_ptr->Occupy_map_ptr->map_update_laser(msg, Drone_odom);
     // 并对地图进行膨胀
-    Astar_ptr->Occupy_map_ptr->inflate_point_cloud(); 
+    Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
 }
+
 
 void Global_Planner::track_path_cb(const ros::TimerEvent& e)
 {
@@ -150,7 +145,8 @@ void Global_Planner::track_path_cb(const ros::TimerEvent& e)
 
     int i = cur_id;
 }
- 
+
+
 // 主循环 
 void Global_Planner::mainloop_cb(const ros::TimerEvent& e)
 {
