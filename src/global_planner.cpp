@@ -51,8 +51,7 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
 }
 
 
-void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg)
-{
+void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
     _DroneState = *msg;
 
     start_pos << msg->position[0], msg->position[1], msg->position[2];
@@ -62,11 +61,9 @@ void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& m
 
     odom_ready = true;
 
-    if (_DroneState.connected == true && _DroneState.armed == true )
-    {
+    if (_DroneState.connected == true && _DroneState.armed == true ){
         drone_ready = true;
-    }else
-    {
+    }else{
         drone_ready = false;
     }
 
@@ -84,7 +81,6 @@ void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& m
 }
 
 
-
 // 根据全局点云更新地图
 // 情况：已知全局点云的场景、由SLAM实时获取的全局点云
 void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
@@ -97,10 +93,8 @@ void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
 
     // 如果为true，那就是使用虚拟的点云数据，所以就不用循环
     if(!map_groundtruth){
-        // 对Astar中的地图进行更新
+        // 对地图进行更新
         Occupy_map_ptr->map_update_gpcl(msg);
-        // 并对地图进行膨胀
-        Occupy_map_ptr->inflate_point_cloud();
     }else{
         // 默认情况下为false，此时的点云要么是仿真下的点云插件生成的点云或者是实机中传感器通过octomap生成的点云，这种就需要循环10次进行膨胀层
         static int update_num=0;
@@ -110,8 +104,6 @@ void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
         if(update_num == 10){
             // 对地图进行更新
             Occupy_map_ptr->map_update_gpcl(msg);
-            // 并对地图进行膨胀
-            Occupy_map_ptr->inflate_point_cloud();
             update_num = 0;
         }
     }
@@ -120,27 +112,21 @@ void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg)
 
 // 根据2维雷达数据更新地图
 // 情况：2维激光雷达
-void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg)
-{
+void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
     /* need odom_ for center radius sensing */
-    if (!odom_ready)
-    {
+    if (!odom_ready){
         return;
     }
 
     sensor_ready = true;
 
-    // 对Astar中的地图进行更新（laser+odom）
-    Astar_ptr->Occupy_map_ptr->map_update_laser(msg, Drone_odom);
-    // 并对地图进行膨胀
-    Astar_ptr->Occupy_map_ptr->inflate_point_cloud();
+    // 对地图进行更新（laser+odom）
+    Occupy_map_ptr->map_update_laser(msg, Drone_odom);
 }
 
 
-void Global_Planner::track_path_cb(const ros::TimerEvent& e)
-{
-    if(!path_ok)
-    {
+void Global_Planner::track_path_cb(const ros::TimerEvent& e){
+    if(!path_ok){
         return;
     }
 
@@ -154,26 +140,20 @@ void Global_Planner::track_path_cb(const ros::TimerEvent& e)
 
 
 // 主循环 
-void Global_Planner::mainloop_cb(const ros::TimerEvent& e)
-{
+void Global_Planner::mainloop_cb(const ros::TimerEvent& e){
     static int exec_num=0;
     exec_num++;
 
     // 检查当前状态，不满足规划条件则直接退出主循环
     // 此处打印消息与后面的冲突了，逻辑上存在问题
-    if(!odom_ready || !drone_ready || !sensor_ready)
-    {
+    if(!odom_ready || !drone_ready || !sensor_ready){
         // 此处改为根据循环时间计算的数值
-        if(exec_num == 10)
-        {
-            if(!odom_ready)
-            {
-                message = "Need Odom.";
-            }else if(!drone_ready)
-            {
+        if(exec_num == 10){
+            if(!odom_ready){
+                message = "Need odom info.";
+            }else if(!drone_ready){
                 message = "Drone is not ready.";
-            }else if(!sensor_ready)
-            {
+            }else if(!sensor_ready){
                 message = "Need sensor info.";
             }
 
@@ -182,21 +162,17 @@ void Global_Planner::mainloop_cb(const ros::TimerEvent& e)
         }  
 
         return;
-    }else
-    {
+    }else{
         // 对检查的状态进行重置
         odom_ready = false;
         drone_ready = false;
         sensor_ready = false;
     }
     
-    switch (exec_state)
-    {
-        case TRACKING:
-        {
+    switch (exec_state){
+        case TRACKING:{
             // 本循环是1Hz,此处不是很精准
-            if(exec_num >= replan_time)
-            {
+            if(exec_num >= replan_time){
                 exec_state = EXEC_STATE::PLANNING;
                 exec_num = 0;
             }
@@ -225,22 +201,19 @@ int Global_Planner::get_start_point_id(void){
     
     float distance_to_wp;
 
-    for (int j=1; j<Num_total_wp;j++)
-    {
+    for (int j=1; j<Num_total_wp;j++){
         distance_to_wp = abs(path_cmd.poses[j].pose.position.x - _DroneState.position[0])
                                 + abs(path_cmd.poses[j].pose.position.y - _DroneState.position[1])
                                 + abs(path_cmd.poses[j].pose.position.z - _DroneState.position[2]);
         
-        if(distance_to_wp < distance_to_wp_min)
-        {
+        if(distance_to_wp < distance_to_wp_min){
             distance_to_wp_min = distance_to_wp;
             id = j;
         }
     }
 
     //　为防止出现回头的情况，此处对航点进行前馈处理
-    if(id + 2 < Num_total_wp)
-    {
+    if(id + 2 < Num_total_wp){
         id = id + 2;
     }
 

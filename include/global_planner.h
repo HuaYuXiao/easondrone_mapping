@@ -79,8 +79,7 @@ private:
     string message;
 
     // 五种状态机
-    enum EXEC_STATE
-    {
+    enum EXEC_STATE{
         WAIT_GOAL,
         TRACKING,
     };

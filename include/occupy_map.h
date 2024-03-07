@@ -24,13 +24,11 @@
 
 #define NODE_NAME "Global_Planner [map]"
 
-namespace Global_Planning
-{
+namespace Global_Planning{
 
 extern ros::Publisher message_pub;
 
-class Occupy_map
-{
+class Occupy_map{
     public:
         Occupy_map(){}
 
@@ -56,11 +54,9 @@ class Occupy_map
         ros::Publisher global_pcl_pub;
 
         //初始化
-        void init(ros::NodeHandle& nh);
+        void init(ros::NodeHandle& nodehandle);
         // 地图更新函数 - 输入：全局点云
         void map_update_gpcl(const sensor_msgs::PointCloud2ConstPtr & global_point);
-        // 地图更新函数 - 输入：局部点云
-        void map_update_lpcl(const sensor_msgs::PointCloud2ConstPtr & local_point, const nav_msgs::Odometry & odom);
         // 地图更新函数 - 输入：二维激光雷达
         void map_update_laser(const sensor_msgs::LaserScanConstPtr & local_point, const nav_msgs::Odometry & odom);
         // 判断当前点是否在地图内
@@ -80,7 +76,5 @@ class Occupy_map
 };
 
 }
-
-
 
 #endif
