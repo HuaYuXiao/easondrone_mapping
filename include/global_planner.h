@@ -1,37 +1,14 @@
-#ifndef GLOBAL_PLANNER
-#define GLOBAL_PLANNER
+#ifndef OCTOMAPPING
+#define OCTOMAPPING
 
-#include <ros/ros.h>
-
-#include <Eigen/Eigen>
-#include <iostream>
-#include <algorithm>
-#include <iostream>
-
-#include <geometry_msgs/PoseStamped.h>
-#include <std_msgs/Bool.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <sensor_msgs/LaserScan.h>
-#include <nav_msgs/Odometry.h>
-#include <nav_msgs/Path.h>
-
-#include "prometheus_msgs/PositionReference.h"
-#include "prometheus_msgs/Message.h"
-#include "prometheus_msgs/DroneState.h"
-#include "prometheus_msgs/ControlCommand.h"
 
 #include "occupy_map.h"
-#include "tools.h"
-#include "message_utils.h"
+
 
 using namespace std;
 
-#define NODE_NAME "Global_Planner [main]"
-
-#define MIN_DIS 0.1
 
 namespace Global_Planning{
-
 extern ros::Publisher message_pub;
 
 class Global_Planner{
@@ -47,6 +24,7 @@ private:
 
     // 订阅无人机状态、目标点、传感器数据（生成地图）
     ros::Subscriber drone_state_sub;
+
     // 支持直接输入全局已知点云
     ros::Subscriber Gpointcloud_sub;
     // 支持2维激光雷达实体传感器
@@ -72,12 +50,12 @@ private:
 
     // 回调函数
     void drone_state_cb(const prometheus_msgs::DroneStateConstPtr &msg);
+
     void Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
     void laser_cb(const sensor_msgs::LaserScanConstPtr &msg);
+
     void checkReady_cb(const ros::TimerEvent& e);
 
-
-    int get_start_point_id(void);
     
 public:
     Global_Planner(void):
@@ -86,7 +64,6 @@ public:
 
     void init(ros::NodeHandle& nodehandle);
 };
-
 }
 
 #endif

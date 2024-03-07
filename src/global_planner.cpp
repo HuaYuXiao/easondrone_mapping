@@ -2,7 +2,6 @@
 
 
 namespace Global_Planning{
-
 // 初始化函数
 void Global_Planner::init(ros::NodeHandle& nodehandle){
     // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
@@ -130,43 +129,4 @@ void Global_Planner::checkReady_cb(const ros::TimerEvent& e){
         pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, message);
     }
     return;
-}
-
-
-// 【获取当前时间函数】 单位：秒
-float Global_Planner::get_time_in_sec(const ros::Time& begin_time){
-    ros::Time time_now = ros::Time::now();
-    float currTimeSec = time_now.sec - begin_time.sec;
-    float currTimenSec = time_now.nsec / 1e9 - begin_time.nsec / 1e9;
-    return (currTimeSec + currTimenSec);
-}
-
-
-int Global_Planner::get_start_point_id(void){
-    // 选择与当前无人机所在位置最近的点,并从该点开始追踪
-    int id = 0;
-    float distance_to_wp_min = abs(path_cmd.poses[0].pose.position.x - _DroneState.position[0])
-                                + abs(path_cmd.poses[0].pose.position.y - _DroneState.position[1])
-                                + abs(path_cmd.poses[0].pose.position.z - _DroneState.position[2]);
-    
-    float distance_to_wp;
-
-    for (int j=1; j<Num_total_wp;j++){
-        distance_to_wp = abs(path_cmd.poses[j].pose.position.x - _DroneState.position[0])
-                                + abs(path_cmd.poses[j].pose.position.y - _DroneState.position[1])
-                                + abs(path_cmd.poses[j].pose.position.z - _DroneState.position[2]);
-        
-        if(distance_to_wp < distance_to_wp_min){
-            distance_to_wp_min = distance_to_wp;
-            id = j;
-        }
-    }
-
-    //　为防止出现回头的情况，此处对航点进行前馈处理
-    if(id + 2 < Num_total_wp){
-        id = id + 2;
-    }
-
-    return id;
-}
 }
