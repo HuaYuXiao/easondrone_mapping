@@ -7,8 +7,6 @@ namespace Global_Planning{
 void Global_Planner::init(ros::NodeHandle& nodehandle){
     // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
     nodehandle.param("global_planner/map_input", map_input, true);
-    // 是否为仿真模式
-    nodehandle.param("global_planner/sim_mode", sim_mode, false);
     nodehandle.param("global_planner/map_groundtruth", map_groundtruth, false); 
 
 
