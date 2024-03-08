@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
+find_package(octomap REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
        roscpp
        rospy
@@ -26,15 +27,19 @@ catkin_package(
 	#  DEPENDS system_lib
 )
 
+
 include_directories(
        SYSTEM
        include
        ${catkin_INCLUDE_DIRS}
        ${Eigen3_INCLUDE_DIRS}
        ${PCL_INCLUDE_DIRS}
+		${OCTOMAP_INCLUDE_DIRS}
 	   ${PROJECT_SOURCE_DIR}/include
 	   ~/Prometheus/Modules/common/include
      )
+
+
 link_directories(${PCL_LIBRARY_DIRS})
 
 
@@ -45,7 +50,9 @@ add_executable(octomapping
 	src/tools.cpp
 	)
 
+
 target_link_libraries(octomapping
        ${catkin_LIBRARIES}
 	   ${PCL_LIBRARIES}
+		${OCTOMAP_LIBRARIES}
 	)
