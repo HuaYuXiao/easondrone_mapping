@@ -14,6 +14,14 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
 
+## OctoMap
+
+![image](https://github.com/HuaYuXiao/octomapping/assets/117464811/b7b1213b-6ece-4e81-9ae2-f4e863a87571)
+
+参考：
+- https://octomap.github.io/octomap/doc
+- https://wiki.ros.org/octomap
+
 ## Cartographer
 
 > Cartographer is a system that provides real-time simultaneous localization and mapping (SLAM) in 2D and 3D across multiple platforms and sensor configurations.
