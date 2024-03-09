@@ -18,6 +18,11 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 ![image](https://github.com/HuaYuXiao/octomapping/assets/117464811/b7b1213b-6ece-4e81-9ae2-f4e863a87571)
 
+```bash
+rosrun octomap_server octomap_saver -f map.bt
+```
+
+
 参考：
 - https://octomap.github.io/octomap/doc
 - https://wiki.ros.org/octomap
