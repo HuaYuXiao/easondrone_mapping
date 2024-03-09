@@ -18,14 +18,21 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 ![image](https://github.com/HuaYuXiao/octomapping/assets/117464811/b7b1213b-6ece-4e81-9ae2-f4e863a87571)
 
+> You are trying to invoke octomap_saver as an argument to the octomap_server node. However, octomap_saver is a node of its own, so you only have to start it from a separate terminal while octomap_server is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
+
 ```bash
 rosrun octomap_server octomap_saver -f map.bt
 ```
 
+**TODO**：目前只发布了点云数据，没有转换成栅格地图，所以保存地图时当然没有数据咯！
 
 参考：
 - https://octomap.github.io/octomap/doc
-- https://wiki.ros.org/octomap
+- ⭐️ https://wiki.ros.org/octomap
+- ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
+- ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
+- https://wiki.ros.org/map_server#map_saver
+
 
 ## Cartographer
 
