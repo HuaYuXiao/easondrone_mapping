@@ -22,6 +22,24 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 如何使用？
 
+### 下载
+
+```bash
+cd ~/catkin_ws
+```
+
+```bash
+git clone https://github.com/HuaYuXiao/octomapping.git
+```
+
+### 编译
+
+```bash
+catkin_make --pkg=octomapping
+```
+
+### 启动
+
 ```bash
 roslaunch octomapping octomapping_ground.launch
 ```
