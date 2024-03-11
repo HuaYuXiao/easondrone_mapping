@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>octomapping</name>
-    <version>0.4.0</version>
+    <version>0.4.2</version>
     <description>A ROS package targeted for building 3D octomap on Premetheus P450 (Nano)</description>
     <author email="hyx020222@gmail.com">Eason Hua</author>
+    <author email="eason473867143@gmail.com">Eason Yi</author>
     <maintainer email="hyx020222@gmail.com">Eason Hua</maintainer>
     <license>MIT</license>
     <url type="website">https://github.com/HuaYuXiao/octomapping</url>
