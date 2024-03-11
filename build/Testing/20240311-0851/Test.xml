@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20240311-0851-Experimental"
+	Name="amov"
+	Generator="ctest-3.10.2"
+	CompilerName="/usr/bin/aarch64-linux-gnu-g++"
+	CompilerVersion="7.5.0"
+	OSName="Linux"
+	Hostname="amov"
+	OSRelease="4.9.140-tegra"
+	OSVersion="#2 SMP PREEMPT Tue Jul 26 09:28:01 CST 2022"
+	OSPlatform="aarch64"
+	Is64Bits="1"
+	VendorString=""
+	VendorID="Unknown Manufacturer"
+	FamilyID="8"
+	ModelID="0"
+	ProcessorCacheSize="0"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="1"
+	TotalVirtualMemory="1978"
+	TotalPhysicalMemory="3956"
+	LogicalProcessorsPerPhysical="4"
+	ProcessorClockFrequency="0"
+	>
+	<Testing>
+		<StartDateTime>Mar 11 17:22 CST</StartDateTime>
+		<StartTestTime>1710148940</StartTestTime>
+		<TestList/>
+		<EndDateTime>Mar 11 17:22 CST</EndDateTime>
+		<EndTestTime>1710148940</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

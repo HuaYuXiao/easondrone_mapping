@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/amov/catkin_ws/src/octomapping/cmake-build-debug/devel/setup.sh
