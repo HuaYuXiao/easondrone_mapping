@@ -6,60 +6,60 @@
 
 
 namespace Global_Planning{
-extern ros::Publisher message_pub;
+    extern ros::Publisher message_pub;
 
-class Occupy_map{
-    public:
-        Occupy_map(){}
+    class Occupy_map{
+        public:
+            Occupy_map(){}
 
-        // 定义该类的指针
-        typedef std::shared_ptr<Occupy_map> Ptr;
+            // 定义该类的指针
+            typedef std::shared_ptr<Occupy_map> Ptr;
 
-        // 地图原点,地图尺寸
-        Eigen::Vector3d origin_, map_size_3d_, min_range_, max_range_;
+            // 地图原点,地图尺寸
+            Eigen::Vector3d origin_, map_size_3d_, min_range_, max_range_;
 
-        // 地图分辨率
-        double resolution;
+            // 地图分辨率
+            double resolution;
 
-        // 占据图尺寸 = 地图尺寸 / 分辨率
-        Eigen::Vector3i grid_size_;
+            // 占据图尺寸 = 地图尺寸 / 分辨率
+            Eigen::Vector3i grid_size_;
 
-        // 地图是否占据容器， 从编程角度来讲，这就是地图变为单一序列化后的索引
-        std::vector<int> occupancy_buffer_;  // 0 is free, 1 is occupied
+            // 地图是否占据容器， 从编程角度来讲，这就是地图变为单一序列化后的索引
+            std::vector<int> occupancy_buffer_;  // 0 is free, 1 is occupied
 
-        // 发布点云用于rviz显示
-        ros::Publisher global_pcl_pub;
+            // 发布点云用于rviz显示
+            ros::Publisher global_pcl_pub;
 
-        // 全局点云指针
-        sensor_msgs::PointCloud2ConstPtr global_env_ptr;
+            // 全局点云指针
+            sensor_msgs::PointCloud2ConstPtr global_env_ptr;
 
 
-        //初始化
-        void init(ros::NodeHandle& nodehandle);
+            //初始化
+            void init(ros::NodeHandle& nodehandle);
 
-        // 地图更新函数 - 输入：全局点云
-        void map_update_gpcl(const sensor_msgs::PointCloud2ConstPtr &global_point);
+            // 地图更新函数 - 输入：全局点云
+            void map_update_gpcl(const sensor_msgs::PointCloud2ConstPtr &global_point);
 
-        // 地图更新函数 - 输入：二维激光雷达
-        void map_update_laser(const sensor_msgs::LaserScanConstPtr &local_point, const nav_msgs::Odometry &odom);
+            // 地图更新函数 - 输入：二维激光雷达
+            void map_update_laser(const sensor_msgs::LaserScanConstPtr &local_point, const nav_msgs::Odometry &odom);
 
-        // 判断当前点是否在地图内
-        bool isInMap(Eigen::Vector3d pos);
+            // 判断当前点是否在地图内
+            bool isInMap(Eigen::Vector3d pos);
 
-        // 设置占据
-        void setOccupancy(Eigen::Vector3d pos, int occ);
+            // 设置占据
+            void setOccupancy(Eigen::Vector3d pos, int occ);
 
-        // 由位置计算索引
-        void posToIndex(Eigen::Vector3d pos, Eigen::Vector3i &id);
+            // 由位置计算索引
+            void posToIndex(Eigen::Vector3d pos, Eigen::Vector3i &id);
 
-        // 由索引计算位置
-        void indexToPos(Eigen::Vector3i id, Eigen::Vector3d &pos);
+            // 由索引计算位置
+            void indexToPos(Eigen::Vector3i id, Eigen::Vector3d &pos);
 
-        // 根据位置返回占据状态
-        int getOccupancy(Eigen::Vector3d pos);
+            // 根据位置返回占据状态
+            int getOccupancy(Eigen::Vector3d pos);
 
-        // 根据索引返回占据状态
-        int getOccupancy(Eigen::Vector3i id);
-};
+            // 根据索引返回占据状态
+            int getOccupancy(Eigen::Vector3i id);
+    };
 }
 #endif
