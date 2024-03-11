@@ -14,7 +14,7 @@ void Global_Planner::init(ros::NodeHandle& nodehandle){
 
     // 根据map_input选择地图更新方式
     if(map_input){
-        Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/prometheus/global_planning/global_pcl", 1, &Global_Planner::Gpointcloud_cb, this);
+        Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2", 1, &Global_Planner::Gpointcloud_cb, this);
     }else{
         laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &Global_Planner::laser_cb, this);
     }

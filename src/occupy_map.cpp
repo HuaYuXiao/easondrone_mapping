@@ -32,7 +32,7 @@ void Occupy_map::init(ros::NodeHandle& nodehandle){
     // 发布地图rviz显示
     // 发布二维占据图？
     // TODO 似乎只发送给了rviz，而不是全局消息？消息类型是否正确？
-    global_pcl_pub = nodehandle.advertise<sensor_msgs::PointCloud2>("/prometheus/planning/global_pcl",  10);
+    global_pcl_pub = nodehandle.advertise<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2",  10);
 }
 
 
