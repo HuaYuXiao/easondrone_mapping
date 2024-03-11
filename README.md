@@ -38,6 +38,12 @@ git clone https://github.com/HuaYuXiao/octomapping.git
 catkin_make install --pkg=octomapping
 ```
 
+```bash
+gedit ~/.bashrc
+```
+
+在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`
+
 ### 启动
 
 ```bash
