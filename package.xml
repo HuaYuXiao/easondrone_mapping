@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
     <name>octomapping</name>
-    <version>0.4.3</version>
-    <description>A ROS package targeted for building 3D octomap using 2D lidar on Premetheus P450 (Nano)</description>
+    <version>1.0.1</version>
+    <description>A ROS package targeted for building 3D octomap (.bt format) using 2D lidar on Premetheus P450 (Nano)</description>
     <author email="hyx020222@gmail.com">Eason Hua</author>
     <author email="eason473867143@gmail.com">Eason Yi</author>
     <maintainer email="hyx020222@gmail.com">Eason Hua</maintainer>
