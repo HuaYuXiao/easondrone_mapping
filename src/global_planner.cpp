@@ -113,10 +113,9 @@ void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
 }
 
 
-// 主循环 
+// 主循环 检查当前状态，不满足规划条件则直接退出主循环
 void Global_Planner::checkReady_cb(const ros::TimerEvent& e){
     message = "";
-    // 检查当前状态，不满足规划条件则直接退出主循环
     // TODO 此处打印消息与后面的冲突了，逻辑上存在问题
     if(!odom_ready || !drone_ready || !sensor_ready){
         if(!odom_ready){
