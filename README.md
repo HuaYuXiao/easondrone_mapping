@@ -20,6 +20,34 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 > You are trying to invoke octomap_saver as an argument to the octomap_server node. However, octomap_saver is a node of its own, so you only have to start it from a separate terminal while octomap_server is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
+如何使用？
+
+### 下载
+
+```bash
+cd ~/catkin_ws
+```
+
+```bash
+git clone https://github.com/HuaYuXiao/octomapping.git
+```
+
+### 编译
+
+```bash
+catkin_make --pkg=octomapping
+```
+
+### 启动
+
+```bash
+roslaunch octomapping octomapping_ground.launch
+```
+
+```bash
+roslaunch octomapping octomapping_onboard.launch
+```
+
 ```bash
 rosrun octomap_server octomap_saver -f map.bt
 ```
