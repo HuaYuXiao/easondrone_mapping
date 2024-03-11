@@ -1,0 +1,58 @@
+amov@amov:~$ roslaunch octomapping octomapping_ground.launch
+... logging to /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/roslaunch-amov-13944.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+
+started roslaunch server http://amov:42255/
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: melodic
+ * /rosversion: 1.14.13
+ * /terminal_control/Disarm_height: 0.18
+ * /terminal_control/Land_mode: 1
+ * /terminal_control/Land_speed: 0.2
+ * /terminal_control/Takeoff_height: 0.4
+ * /terminal_control/geo_fence/x_max: 6.3
+ * /terminal_control/geo_fence/x_min: -0.3
+ * /terminal_control/geo_fence/y_max: 6.3
+ * /terminal_control/geo_fence/y_min: -0.3
+ * /terminal_control/geo_fence/z_max: 3.3
+ * /terminal_control/geo_fence/z_min: -0.3
+
+NODES
+  /
+    ground_station (prometheus_station/ground_station)
+    ground_station_msg (prometheus_station/ground_station_msg)
+    pub_goal (prometheus_mission/pub_goal)
+    rviz (rviz/rviz)
+    terminal_control (prometheus_control/terminal_control)
+
+ROS_MASTER_URI=http://localhost:11311
+
+process[ground_station-1]: started with pid [13963]
+process[ground_station_msg-2]: started with pid [13964]
+process[pub_goal-3]: started with pid [13965]
+process[terminal_control-4]: started with pid [13966]
+process[rviz-5]: started with pid [13967]
+[ground_station_msg-2] process has finished cleanly
+log file: /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/ground_station_msg-2*.log
+[ground_station-1] process has finished cleanly
+log file: /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/ground_station-1*.log
+[pub_goal-3] process has finished cleanly
+log file: /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/pub_goal-3*.log
+[terminal_control-4] process has finished cleanly
+log file: /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/terminal_control-4*.log
+QObject::connect: Cannot queue arguments of type 'QVector<int>'
+(Make sure 'QVector<int>' is registered using qRegisterMetaType().)
+QObject::connect: Cannot queue arguments of type 'QVector<int>'
+(Make sure 'QVector<int>' is registered using qRegisterMetaType().)
+[rviz-5] process has finished cleanly
+log file: /home/amov/.ros/log/38f205b4-dfa5-11ee-9953-48b02d67bcf5/rviz-5*.log
+all processes on machine have died, roslaunch will exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+done
