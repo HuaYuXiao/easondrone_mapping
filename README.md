@@ -16,8 +16,6 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 ## OctoMap
 
-![image](https://github.com/HuaYuXiao/octomapping/assets/117464811/b7b1213b-6ece-4e81-9ae2-f4e863a87571)
-
 > You are trying to invoke octomap_saver as an argument to the octomap_server node. However, octomap_saver is a node of its own, so you only have to start it from a separate terminal while octomap_server is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
 如何使用？
@@ -42,7 +40,7 @@ catkin_make install --pkg=octomapping
 gedit ~/.bashrc
 ```
 
-在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`
+在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`。
 
 ### 启动
 
@@ -54,11 +52,13 @@ roslaunch octomapping octomapping_ground.launch
 roslaunch octomapping octomapping_onboard.launch
 ```
 
+控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下。
+
 ```bash
 rosrun octomap_server octomap_saver -f map.bt
 ```
 
-**TODO**：目前只发布了点云数据，没有转换成栅格地图，所以保存地图时当然没有数据咯！
+![image](https://github.com/HuaYuXiao/octomapping/blob/master/Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
 
 参考：
 - https://octomap.github.io/octomap/doc
@@ -136,4 +136,8 @@ roslaunch realsense2_camera rs_rtabmap.launch
 - [Intel RealSense 3D Camera for Robotics & SLAM (with code)](https://www.robotsforroboticists.com/realsense-usage-robotics-slam/)
 - [SLAM模块(Prometheus/Modules/slam)](https://docs.amovlab.com/prometheuswiki/#/src/P450%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D?id=slam%e6%a8%a1%e5%9d%97prometheusmodulesslam-)
 
+## 谢辞
 
+- 感谢陈亮名副教授提供的技术指导😊！
+- 感谢哈工深MASLAB提供的场地支持😊！
+- 感谢刘嘉雯、崔宝艺、李奥淇、方尧等师兄师姐的支持😊！
