@@ -1,6 +1,6 @@
 # octomapping
 
-A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit for other kinds of UAV.
+A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2Foctomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -15,8 +15,6 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 
 ## OctoMap
-
-> You are trying to invoke octomap_saver as an argument to the octomap_server node. However, octomap_saver is a node of its own, so you only have to start it from a separate terminal while octomap_server is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
 如何使用此包？
 
@@ -42,11 +40,16 @@ gedit ~/.bashrc
 
 在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`。
 
-### 启动
+### 建立地图
 
 ```bash
 roslaunch octomapping octomapping.launch
 ```
+
+### 保存地图
+
+> You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
+
 
 控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下。
 
@@ -61,7 +64,7 @@ rosrun octomap_server octomap_saver -f map.bt
 - ⭐️ https://wiki.ros.org/octomap
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
-- https://wiki.ros.org/map_server#map_saver
+
 
 
 ## Cartographer
