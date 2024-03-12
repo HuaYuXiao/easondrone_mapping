@@ -59,6 +59,12 @@ rosrun octomap_server octomap_saver -f map.bt
 
 ![image](https://github.com/HuaYuXiao/octomapping/blob/master/Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
 
+### 加载地图
+
+```bash
+rosrun octomap_server octomap_server_node map.bt
+```
+
 参考：
 - https://octomap.github.io/octomap/doc
 - ⭐️ https://wiki.ros.org/octomap
