@@ -59,11 +59,6 @@ rosrun octomap_server octomap_saver -f map.bt
 
 ![image](https://github.com/HuaYuXiao/octomapping/blob/master/Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
 
-### 加载地图
-
-```bash
-rosrun octomap_server octomap_server_node map.bt
-```
 
 参考：
 - https://octomap.github.io/octomap/doc
@@ -71,6 +66,14 @@ rosrun octomap_server octomap_server_node map.bt
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
+### 加载地图
+
+```bash
+rosrun octomap_server octomap_server_node map.bt
+```
+
+参考：
+- [Read OctoMap file with Robotics System Toolbox](https://www.mathworks.com/matlabcentral/answers/415139-read-octomap-file-with-robotics-system-toolbox)
 
 
 ## Cartographer
@@ -102,7 +105,6 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 ![Screenshot from 2024-03-04 06-39-57](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/fb10c834-d753-452b-b0a5-3b5b0b7bae20)
 
 参考：
-
 - ⭐[手把手教你编译cartographer](https://www.bilibili.com/video/BV19P4y1X7Hj)
 - [Cartographer ROS Integration](https://google-cartographer-ros.readthedocs.io/en/latest/)
 - [cartographer-project/cartographer_ros](https://github.com/cartographer-project/cartographer_ros)
@@ -113,10 +115,10 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 
 
 参考：
-
 - ⭐[【无人机自主导航5 SLAM】Intel Realsense T265C双目相机实现ORB-SLAM3](https://dgzc.ganahe.top/ganahe/2021/wrjzzdhsjirtsmxj.html)
 - ⭐[ubuntu18.04 从0开始运行ORB_SLAM2](https://www.bilibili.com/video/BV1hQ4y127xJ)
 - Carlos Campos, Richard Elvira, Juan J. Gómez Rodríguez, José M. M. Montiel and Juan D. Tardós, ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM, IEEE Transactions on Robotics 37(6):1874-1890, Dec. 2021.
+
 
 
 ## rtabmap
@@ -136,13 +138,13 @@ roslaunch realsense2_camera rs_rtabmap.launch
 **2024年2月28日更新**：`rtabmap`涉及到RGB-D，该机器不具备直接获取深度数据的能力，因此该方案废弃。
 
 参考：
-
 - [Introduction to Intel® RealSense™ Visual SLAM and the T265 Tracking Camera](https://dev.intelrealsense.com/docs/intel-realsensetm-visual-slam-and-the-t265-tracking-camera)
 - [Intel RealSense 3D Camera for Robotics & SLAM (with code)](https://www.robotsforroboticists.com/realsense-usage-robotics-slam/)
 - [SLAM模块(Prometheus/Modules/slam)](https://docs.amovlab.com/prometheuswiki/#/src/P450%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D?id=slam%e6%a8%a1%e5%9d%97prometheusmodulesslam-)
 
-## 谢辞
 
+
+## 谢辞
 - 感谢陈亮名副教授提供的技术指导😊！
 - 感谢哈工深MASLAB提供的场地支持😊！
 - 感谢刘嘉雯、崔宝艺、李奥淇、方尧等师兄师姐的支持😊！
