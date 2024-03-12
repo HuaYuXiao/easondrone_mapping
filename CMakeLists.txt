@@ -23,7 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
 	INCLUDE_DIRS include
-	LIBRARIES Global_Planning
+	LIBRARIES octomapping
 	#  DEPENDS system_lib
 )
 
@@ -44,8 +44,8 @@ link_directories(${PCL_LIBRARY_DIRS})
 
 
 add_executable(octomapping
-	src/global_planner_node.cpp
-	src/global_planner.cpp
+	src/octomapping_node.cpp
+        src/octomapping.cpp
 	src/occupy_map.cpp
 	src/tools.cpp
 	)

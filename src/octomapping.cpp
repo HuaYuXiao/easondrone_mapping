@@ -1,4 +1,4 @@
-#include "global_planner.h"
+#include "octomapping.h"
 
 
 namespace octomapping{
