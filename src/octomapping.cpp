@@ -24,32 +24,14 @@ namespace octomapping{
         message_pub = nodehandle.advertise<prometheus_msgs::Message>("/prometheus/message/global_planner", 10);
 
 
-        // 定时器 规划器算法执行周期
-        mainloop_timer = nodehandle.createTimer(ros::Duration(1), &OctoMapping::checkReady_cb, this);
-
-
         // 初始化占据地图
         Occupy_map_ptr.reset(new Occupy_map);
         Occupy_map_ptr->init(nodehandle);
-
-
-        // 规划器状态参数初始化
-        odom_ready = false;
-        drone_ready = false;
-        sensor_ready = false;
     }
 
 
     void OctoMapping::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
         _DroneState = *msg;
-
-        odom_ready = true;
-
-        if (_DroneState.connected == true && _DroneState.armed == true ){
-            drone_ready = true;
-        }else{
-            drone_ready = false;
-        }
 
         // odem is needed only when using laser scan
         if(!map_input) {
@@ -69,16 +51,8 @@ namespace octomapping{
     }
 
 
-    // 根据全局点云更新地图
-    // 情况：已知全局点云的场景、由SLAM实时获取的全局点云
+    // 根据全局点云更新地图：已知全局点云的场景、由SLAM实时获取的全局点云
     void OctoMapping::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
-        /* need odom_ for center radius sensing */
-        if (!odom_ready){
-            return;
-        }
-
-        sensor_ready = true;
-
         // 如果为true，那就是使用虚拟的点云数据，所以就不用循环
         if(!map_groundtruth){
             // 对地图进行更新
@@ -88,7 +62,7 @@ namespace octomapping{
             static int update_num=0;
             update_num++;
 
-            // 此处改为根据循环时间计算的数值
+            // TODO 此处改为根据循环时间计算的数值
             if(update_num == 10){
                 // 对地图进行更新
                 Occupy_map_ptr->map_update_gpcl(msg);
@@ -98,8 +72,7 @@ namespace octomapping{
     }
 
 
-    // 根据2维雷达数据更新地图
-    // 情况：2维激光雷达
+    // 根据2维雷达数据更新地图：2维激光雷达
     void OctoMapping::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
         /* need odom_ for center radius sensing */
         if (!odom_ready){
@@ -110,24 +83,5 @@ namespace octomapping{
 
         // 对地图进行更新（laser+odom）
         Occupy_map_ptr->map_update_laser(msg, Drone_odom);
-    }
-
-
-    // 主循环 
-    void OctoMapping::checkReady_cb(const ros::TimerEvent& e){
-        message = "";
-        // 检查当前状态，不满足规划条件则直接退出主循环
-        // TODO 此处打印消息与后面的冲突了，逻辑上存在问题
-        if(!odom_ready || !drone_ready || !sensor_ready){
-            if(!odom_ready){
-                message += "Need odom info! ";
-            }else if(!drone_ready){
-                message += "Drone is not ready! ";
-            }else if(!sensor_ready){
-                message += "Need sensor info! ";
-            }
-            pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, message);
-        }
-        return;
     }
 }
