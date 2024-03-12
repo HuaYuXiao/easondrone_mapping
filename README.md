@@ -18,7 +18,7 @@ A ROS package targeted for building 3D octomap on Premetheus P450 (Nano), suit f
 
 > You are trying to invoke octomap_saver as an argument to the octomap_server node. However, octomap_saver is a node of its own, so you only have to start it from a separate terminal while octomap_server is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
-如何使用？
+如何使用此包？
 
 ### 下载源码
 
@@ -45,11 +45,7 @@ gedit ~/.bashrc
 ### 启动
 
 ```bash
-roslaunch octomapping octomapping_ground.launch
-```
-
-```bash
-roslaunch octomapping octomapping_onboard.launch
+roslaunch octomapping octomapping.launch
 ```
 
 控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下。
