@@ -58,10 +58,6 @@
 	<node pkg="prometheus_station" type="ground_station_msg" name="ground_station_msg" output="screen" launch-prefix="gnome-terminal --tab --">	
 	</node>
 
-	<!-- run the pub_goal.cpp -->
-	<node pkg="prometheus_mission" type="pub_goal" name="pub_goal" output="screen" launch-prefix="gnome-terminal --">	
-	</node>
-
 	<!-- run the terminal_control.cpp -->
 	<node pkg="prometheus_control" type="terminal_control" name="terminal_control" output="screen" launch-prefix="gnome-terminal --">	
 		<rosparam command="load" file="$(find octomapping)/config/px4_sender.yaml" />
