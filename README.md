@@ -16,8 +16,6 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also 
 
 ## OctoMap
 
-如何使用此包？
-
 ### 下载源码
 
 ```bash
@@ -81,6 +79,7 @@ octovis map.bt
 参考：
 - [Read OctoMap file with Robotics System Toolbox](https://www.mathworks.com/matlabcentral/answers/415139-read-octomap-file-with-robotics-system-toolbox)
 - [在ROS中将点云（PointCloud2）生成Octomap，rviz可视化显示](https://blog.csdn.net/qq_41816368/article/details/133929136)
+- ⭐️ [octomap in rviz and occupancy grids in 3D maps](https://robotics.stackexchange.com/questions/41362/octomap-in-rviz-and-occupancy-grids-in-3d-maps)
 
 ## Cartographer
 
