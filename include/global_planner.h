@@ -8,7 +8,7 @@
 using namespace std;
 
 
-namespace Global_Planning{
+namespace octomapping{
     extern ros::Publisher message_pub;
 
     class Global_Planner{

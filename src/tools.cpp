@@ -1,6 +1,6 @@
 #include "tools.h"
 
-namespace Global_Planning
-{
+
+namespace octomapping{
     ros::Publisher message_pub;
 }

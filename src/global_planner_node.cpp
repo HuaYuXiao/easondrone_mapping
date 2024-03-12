@@ -1,7 +1,7 @@
 #include "global_planner.h"
 
 
-using namespace Global_Planning;
+using namespace octomapping;
 
 
 int main(int argc, char** argv){

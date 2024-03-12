@@ -46,8 +46,7 @@
 #define NODE_NAME "octomapping"
 
 
-namespace Global_Planning
-{
+namespace octomapping{
     extern ros::Publisher message_pub;
 }
 #endif

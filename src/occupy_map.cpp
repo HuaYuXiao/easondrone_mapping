@@ -1,7 +1,7 @@
 #include <occupy_map.h>
 
 
-namespace Global_Planning{
+namespace octomapping{
     // 初始化函数
     void Occupy_map::init(ros::NodeHandle& nodehandle){
         // 地图原点

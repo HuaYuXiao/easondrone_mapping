@@ -1,7 +1,7 @@
 #include "global_planner.h"
 
 
-namespace Global_Planning{
+namespace octomapping{
     // 初始化函数
     void Global_Planner::init(ros::NodeHandle& nodehandle){
         // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
