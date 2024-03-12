@@ -29,9 +29,7 @@ namespace octomapping{
         occupancy_buffer_.resize(grid_size_(0) * grid_size_(1) * grid_size_(2));
         fill(occupancy_buffer_.begin(), occupancy_buffer_.end(), 0.0);
 
-        // 发布地图rviz显示
-        // 发布二维占据图？
-        // TODO 似乎只发送给了rviz，而不是全局消息？消息类型是否正确？
+        // 发布点云地图
         global_pcl_pub = nodehandle.advertise<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2",  10);
     }
 
@@ -51,84 +49,5 @@ namespace octomapping{
 
         // 发布未膨胀点云
         global_pcl_pub.publish(*global_env_ptr);
-    }
-
-
-    bool Occupy_map::isInMap(Eigen::Vector3d pos){
-        // min_range就是原点，max_range就是原点+地图尺寸
-        // 比如设置0,0,0为原点，[0,0,0]点会被判断为不在地图里
-        // TODO 开环建图可以不管这个问题吧？
-
-        if (pos(0) < min_range_(0) + 1e-4 ||
-            pos(1) < min_range_(1) + 1e-4 ||
-            pos(2) < min_range_(2) + 1e-4 ||
-            pos(0) > max_range_(0) - 1e-4 ||
-            pos(1) > max_range_(1) - 1e-4 ||
-            pos(2) > max_range_(2) - 1e-4){
-            return false;
-        }
-
-        return true;
-    }
-
-
-    void Occupy_map::setOccupancy(Eigen::Vector3d pos, int occ){
-        if (occ != 1 && occ != 0){
-            pub_message(message_pub, prometheus_msgs::Message::WARN, NODE_NAME, "occ value error!\n");
-            return;
-        }
-
-        if (!isInMap(pos)){
-            return;
-        }
-
-        Eigen::Vector3i id;
-        posToIndex(pos, id);
-
-        // 设置为占据/不占据 索引是如何索引的？ [三维地图 变 二维数组]
-        // 假设10*10*10米，分辨率1米，buffer大小为 1000 （即每一个占格都对应一个buffer索引）
-        // [0.1,0.1,0.1] 对应索引为[0,0,0]， buffer索引为 0
-        // [9.9,9.9,9.9] 对应索引为[9,9,9]， buffer索引为 900+90+9 = 999
-        occupancy_buffer_[id(0) * grid_size_(1) * grid_size_(2) + id(1) * grid_size_(2) + id(2)] = occ;
-    }
-
-
-    void Occupy_map::posToIndex(Eigen::Vector3d pos, Eigen::Vector3i &id){
-        for (int i = 0; i < 3; ++i){
-            id(i) = floor((pos(i) - origin_(i)) / resolution);
-        }
-    }
-
-
-    void Occupy_map::indexToPos(Eigen::Vector3i id, Eigen::Vector3d &pos){
-        for (int i = 0; i < 3; ++i){
-            pos(i) = (id(i) + 0.5) * resolution + origin_(i);
-        }
-    }
-
-
-    int Occupy_map::getOccupancy(Eigen::Vector3d pos){
-        if (!isInMap(pos)){
-            return -1;
-        }
-
-        Eigen::Vector3i id;
-        posToIndex(pos, id);
-
-        return occupancy_buffer_[id(0) * grid_size_(1) * grid_size_(2) + id(1) * grid_size_(2) + id(2)];
-    }
-
-
-    int Occupy_map::getOccupancy(Eigen::Vector3i id){
-        if (id(0) < 0 ||
-            id(0) >= grid_size_(0) ||
-            id(1) < 0 ||
-            id(1) >= grid_size_(1) ||
-            id(2) < 0 ||
-            id(2) >= grid_size_(2)){
-            return -1;
-        }
-
-        return occupancy_buffer_[id(0) * grid_size_(1) * grid_size_(2) + id(1) * grid_size_(2) + id(2)];
     }
 }

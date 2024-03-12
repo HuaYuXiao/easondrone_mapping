@@ -42,24 +42,6 @@ namespace octomapping{
 
             // 地图更新函数 - 输入：二维激光雷达
             void map_update_laser(const sensor_msgs::LaserScanConstPtr &local_point, const nav_msgs::Odometry &odom);
-
-            // 判断当前点是否在地图内
-            bool isInMap(Eigen::Vector3d pos);
-
-            // 设置占据
-            void setOccupancy(Eigen::Vector3d pos, int occ);
-
-            // 由位置计算索引
-            void posToIndex(Eigen::Vector3d pos, Eigen::Vector3i &id);
-
-            // 由索引计算位置
-            void indexToPos(Eigen::Vector3i id, Eigen::Vector3d &pos);
-
-            // 根据位置返回占据状态
-            int getOccupancy(Eigen::Vector3d pos);
-
-            // 根据索引返回占据状态
-            int getOccupancy(Eigen::Vector3i id);
     };
 }
 #endif
