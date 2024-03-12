@@ -11,7 +11,7 @@ using namespace std;
 namespace octomapping{
     extern ros::Publisher message_pub;
 
-    class Global_Planner{
+    class OctoMapping{
     private:
         ros::NodeHandle nodehandle;
 
@@ -58,9 +58,9 @@ namespace octomapping{
 
 
     public:
-        Global_Planner(void):
+        OctoMapping(void):
             nodehandle("~")
-        {}~Global_Planner(){}
+        {}~OctoMapping(){}
 
         void init(ros::NodeHandle& nodehandle);
     };

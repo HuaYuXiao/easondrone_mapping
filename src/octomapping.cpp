@@ -3,20 +3,20 @@
 
 namespace octomapping{
     // 初始化函数
-    void Global_Planner::init(ros::NodeHandle& nodehandle){
+    void OctoMapping::init(ros::NodeHandle& nodehandle){
         // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
         nodehandle.param("global_planner/map_input", map_input, true);
         nodehandle.param("global_planner/map_groundtruth", map_groundtruth, false); 
 
 
         // 订阅 无人机状态
-        drone_state_sub = nodehandle.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &Global_Planner::drone_state_cb, this);
+        drone_state_sub = nodehandle.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &OctoMapping::drone_state_cb, this);
 
         // 根据map_input选择地图更新方式
         if(map_input){
-            Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2", 1, &Global_Planner::Gpointcloud_cb, this);
+            Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2", 1, &OctoMapping::Gpointcloud_cb, this);
         }else{
-            laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &Global_Planner::laser_cb, this);
+            laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &OctoMapping::laser_cb, this);
         }
 
 
@@ -25,7 +25,7 @@ namespace octomapping{
 
 
         // 定时器 规划器算法执行周期
-        mainloop_timer = nodehandle.createTimer(ros::Duration(1), &Global_Planner::checkReady_cb, this);
+        mainloop_timer = nodehandle.createTimer(ros::Duration(1), &OctoMapping::checkReady_cb, this);
 
 
         // 初始化占据地图
@@ -40,7 +40,7 @@ namespace octomapping{
     }
 
 
-    void Global_Planner::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
+    void OctoMapping::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
         _DroneState = *msg;
 
         odom_ready = true;
@@ -71,7 +71,7 @@ namespace octomapping{
 
     // 根据全局点云更新地图
     // 情况：已知全局点云的场景、由SLAM实时获取的全局点云
-    void Global_Planner::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
+    void OctoMapping::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
         /* need odom_ for center radius sensing */
         if (!odom_ready){
             return;
@@ -100,7 +100,7 @@ namespace octomapping{
 
     // 根据2维雷达数据更新地图
     // 情况：2维激光雷达
-    void Global_Planner::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
+    void OctoMapping::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
         /* need odom_ for center radius sensing */
         if (!odom_ready){
             return;
@@ -114,7 +114,7 @@ namespace octomapping{
 
 
     // 主循环 
-    void Global_Planner::checkReady_cb(const ros::TimerEvent& e){
+    void OctoMapping::checkReady_cb(const ros::TimerEvent& e){
         message = "";
         // 检查当前状态，不满足规划条件则直接退出主循环
         // TODO 此处打印消息与后面的冲突了，逻辑上存在问题

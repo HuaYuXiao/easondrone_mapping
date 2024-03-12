@@ -9,8 +9,8 @@ int main(int argc, char** argv){
 
   ros::NodeHandle nodehandle("~");
 
-  Global_Planner global_planner;
-  global_planner.init(nodehandle);
+  OctoMapping MyOctoMapping;
+  MyOctoMapping.init(nodehandle);
 
   ros::spin();
 
