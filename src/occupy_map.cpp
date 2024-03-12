@@ -8,26 +8,12 @@ namespace octomapping{
         nodehandle.param("map/origin_x", origin_(0), 0.0);
         nodehandle.param("map/origin_y", origin_(1), 0.0);
         nodehandle.param("map/origin_z", origin_(2), 0.0);
-
         // 地图实际尺寸，单位：米
-        nodehandle.param("map/map_size_x", map_size_3d_(0), 6.0);
-        nodehandle.param("map/map_size_y", map_size_3d_(1), 6.0);
-        nodehandle.param("map/map_size_z", map_size_3d_(2), 3.0);
-
-        min_range_ = origin_;
-        max_range_ = origin_ + map_size_3d_;
-
+        nodehandle.param("map/map_size_x", map_size_3d_(0), 8.0);
+        nodehandle.param("map/map_size_y", map_size_3d_(1), 8.0);
+        nodehandle.param("map/map_size_z", map_size_3d_(2), 4.0);
         // 地图分辨率，单位：米
         nodehandle.param("map/resolution", resolution,  0.05);
-
-        for (int i = 0; i < 3; ++i){
-            // 占据图尺寸 = 地图尺寸 / 分辨率
-            grid_size_(i) = ceil(map_size_3d_(i) / resolution);
-        }
-
-        // 占据容器的大小 = 占据图尺寸 x*y*z
-        occupancy_buffer_.resize(grid_size_(0) * grid_size_(1) * grid_size_(2));
-        fill(occupancy_buffer_.begin(), occupancy_buffer_.end(), 0.0);
 
         // 发布点云地图
         global_pcl_pub = nodehandle.advertise<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2",  10);

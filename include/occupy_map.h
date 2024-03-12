@@ -15,17 +15,11 @@ namespace octomapping{
             // 定义该类的指针
             typedef std::shared_ptr<Occupy_map> Ptr;
 
-            // 地图原点,地图尺寸
-            Eigen::Vector3d origin_, map_size_3d_, min_range_, max_range_;
 
+            // 地图原点,地图尺寸
+            Eigen::Vector3d origin_, map_size_3d_;
             // 地图分辨率
             double resolution;
-
-            // 占据图尺寸 = 地图尺寸 / 分辨率
-            Eigen::Vector3i grid_size_;
-
-            // 地图是否占据容器， 从编程角度来讲，这就是地图变为单一序列化后的索引
-            std::vector<int> occupancy_buffer_;  // 0 is free, 1 is occupied
 
             // 发布点云用于rviz显示
             ros::Publisher global_pcl_pub;
