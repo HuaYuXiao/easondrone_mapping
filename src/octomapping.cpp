@@ -75,11 +75,6 @@ namespace octomapping{
     // 根据2维雷达数据更新地图：2维激光雷达
     void OctoMapping::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){
         /* need odom_ for center radius sensing */
-        if (!odom_ready){
-            return;
-        }
-
-        sensor_ready = true;
 
         // 对地图进行更新（laser+odom）
         Occupy_map_ptr->map_update_laser(msg, Drone_odom);
