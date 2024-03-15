@@ -1,4 +1,4 @@
-# octomapping
+# UAV_octomapping
 
 A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
 
