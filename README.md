@@ -1,4 +1,4 @@
-# UAV_octomapping
+# ![logo200x60](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/88415d13-8c7c-4d5c-a3e7-04f02d7b746d) UAV_octomapping
 
 A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
 
