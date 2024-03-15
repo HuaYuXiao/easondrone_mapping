@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(octomapping)
+project(uav_octomapping)
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++11")
@@ -23,7 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
 	INCLUDE_DIRS include
-	LIBRARIES octomapping
+	LIBRARIES uav_octomapping
 	#  DEPENDS system_lib
 )
 
@@ -43,7 +43,7 @@ include_directories(
 link_directories(${PCL_LIBRARY_DIRS})
 
 
-add_executable(octomapping
+add_executable(uav_octomapping
 	src/octomapping_node.cpp
         src/octomapping.cpp
 	src/occupy_map.cpp
@@ -51,7 +51,7 @@ add_executable(octomapping
 	)
 
 
-target_link_libraries(octomapping
+target_link_libraries(uav_octomapping
        ${catkin_LIBRARIES}
 	   ${PCL_LIBRARIES}
 		${OCTOMAP_LIBRARIES}
