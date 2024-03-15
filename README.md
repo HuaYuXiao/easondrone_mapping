@@ -2,7 +2,7 @@
 
 A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
 
-![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2Foctomapping.json%3Fcolor%3Dpink)
+![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
 ![Static Badge](https://img.shields.io/badge/C%2B%2B-11-00599C?logo=cplusplus)
@@ -23,13 +23,13 @@ cd ~/catkin_ws
 ```
 
 ```bash
-git clone https://github.com/HuaYuXiao/octomapping.git
+git clone https://github.com/HuaYuXiao/UAV_octomapping.git
 ```
 
 ### 2. 编译安装
 
 ```bash
-catkin_make install --pkg=octomapping
+catkin_make install --pkg=UAV_octomapping
 ```
 
 ```bash
@@ -41,7 +41,7 @@ gedit ~/.bashrc
 ### 3. 建立地图
 
 ```bash
-roslaunch octomapping octomapping.launch
+roslaunch UAV_octomapping octomapping.launch
 ```
 
 ### 4. 保存地图
