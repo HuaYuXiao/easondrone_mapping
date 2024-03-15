@@ -16,7 +16,7 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also 
 
 ## OctoMap
 
-### 下载源码
+### 1. 下载源码
 
 ```bash
 cd ~/catkin_ws
@@ -26,7 +26,7 @@ cd ~/catkin_ws
 git clone https://github.com/HuaYuXiao/octomapping.git
 ```
 
-### 编译安装
+### 2. 编译安装
 
 ```bash
 catkin_make install --pkg=octomapping
@@ -38,13 +38,13 @@ gedit ~/.bashrc
 
 在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`。
 
-### 建立地图
+### 3. 建立地图
 
 ```bash
 roslaunch octomapping octomapping.launch
 ```
 
-### 保存地图
+### 4. 保存地图
 
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
@@ -64,17 +64,43 @@ rosrun octomap_server octomap_saver -f map.bt
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
-### 加载地图
+### 5. 加载地图
+
+#### rviz
+
+一种方法是在`rviz`中查看，
+
+```bash
+roscore
+```
+
+新开一个标签，
+
+```bash
+rosrun rviz rviz
+```
+
+新开一个标签，
 
 ```bash
 rosrun octomap_server octomap_server_node map.bt
 ```
 
-也可以借助octovis工具查看。
+添加`OccupancyGrid`，话题选择`/octomap_binary`。
+
+![Alt Text](Log/2024-03-15/Snipaste_2024-03-15_14-38-27.png)
+
+#### octovis
+
+也可以借助`octovis`工具查看。
 
 ```bash
 octovis map.bt
 ```
+
+**NOTICE**：
+- 注意要将`map.bt`放到指定文件夹下，否则无法读取。
+- 地图文件较大，加载需要一些时间，请耐心等待。
 
 参考：
 - [Read OctoMap file with Robotics System Toolbox](https://www.mathworks.com/matlabcentral/answers/415139-read-octomap-file-with-robotics-system-toolbox)
