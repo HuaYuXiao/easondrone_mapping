@@ -1,4 +1,4 @@
-# ![logo200x60](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/88415d13-8c7c-4d5c-a3e7-04f02d7b746d) UAV_octomapping
+# ![image](Img/logo_rt_200.png) uav_octomapping
 
 A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
 
@@ -55,7 +55,7 @@ roslaunch UAV_octomapping octomapping.launch
 rosrun octomap_server octomap_saver -f map.bt
 ```
 
-![image](https://github.com/HuaYuXiao/octomapping/blob/master/Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
+![image](Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
 
 
 参考：
@@ -64,9 +64,9 @@ rosrun octomap_server octomap_saver -f map.bt
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
-### 5. 加载地图
+### 5. 查看地图
 
-#### rviz
+#### 方法1：rviz
 
 一种方法是在`rviz`中查看，
 
@@ -88,9 +88,13 @@ rosrun octomap_server octomap_server_node map.bt
 
 添加`OccupancyGrid`，话题选择`/octomap_binary`。
 
-![Alt Text](Log/2024-03-15/Snipaste_2024-03-15_14-38-27.png)
+![image](Log/2024-03-15/Snipaste_2024-03-15_14-38-27.png)
 
-#### octovis
+参考：
+- [在ROS中将点云（PointCloud2）生成Octomap，rviz可视化显示](https://blog.csdn.net/qq_41816368/article/details/133929136)
+- ⭐️ [octomap in rviz and occupancy grids in 3D maps](https://robotics.stackexchange.com/questions/41362/octomap-in-rviz-and-occupancy-grids-in-3d-maps)
+
+#### 方法2：octovis
 
 也可以借助`octovis`工具查看。
 
@@ -102,10 +106,26 @@ octovis map.bt
 - 注意要将`map.bt`放到指定文件夹下，否则无法读取。
 - 地图文件较大，加载需要一些时间，请耐心等待。
 
+### 6. 加载地图
+
+最主要的就是首行的`args="map.bt"`，其他细节可以看我的另一个仓库里写的：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
+
+```launch
+<launch>
+	<!-- you can load an exisiting tree with <node ... args="tree.bt"> !-->
+	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server" args="map.bt">
+		<param name="resolution" value="0.05" />
+		<param name="frame_id" type="string" value="map" />
+		<param name="sensor_model/max_range" value="3.0" />
+	</node>
+</launch>
+```
+
 参考：
-- [Read OctoMap file with Robotics System Toolbox](https://www.mathworks.com/matlabcentral/answers/415139-read-octomap-file-with-robotics-system-toolbox)
-- [在ROS中将点云（PointCloud2）生成Octomap，rviz可视化显示](https://blog.csdn.net/qq_41816368/article/details/133929136)
-- ⭐️ [octomap in rviz and occupancy grids in 3D maps](https://robotics.stackexchange.com/questions/41362/octomap-in-rviz-and-occupancy-grids-in-3d-maps)
+- ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
+- ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
+
+
 
 ## Cartographer
 
@@ -133,7 +153,7 @@ rosservice call /write_state "{filename: '~/map.pbstream'}"
 roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloads/b3-2016-04-05-14-14-00.bag
 ```
 
-![Screenshot from 2024-03-04 06-39-57](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/fb10c834-d753-452b-b0a5-3b5b0b7bae20)
+![image](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/fb10c834-d753-452b-b0a5-3b5b0b7bae20)
 
 参考：
 - ⭐[手把手教你编译cartographer](https://www.bilibili.com/video/BV19P4y1X7Hj)
@@ -141,8 +161,8 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 - [cartographer-project/cartographer_ros](https://github.com/cartographer-project/cartographer_ros)
 
 
-## ORB_SLAM3
 
+## ORB_SLAM3
 
 
 参考：
