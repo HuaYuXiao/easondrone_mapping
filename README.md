@@ -123,16 +123,21 @@ octovis map.bt
 
 ## 仿真实验
 
-仿真实验也采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
+仿真实验采用Prometheus 230，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
 
 ```bash
 '/home/hyx020222/Prometheus/Scripts/simulation/px4_gazebo_sitl_test/px4_sitl_indoor.sh'
 ```
 
+或者
 
+```bash
+roslaunch prometheus_gazebo sitl_indoor_1uav.launch
+```
 
-
-
+```bash
+roslaunch prometheus_uav_control uav_control_main_indoor.launch
+```
 
 
 ## Cartographer
