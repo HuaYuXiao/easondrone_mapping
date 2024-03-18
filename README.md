@@ -113,18 +113,7 @@ octovis map.bt
 
 ### 6. 加载地图
 
-最主要的就是首行的`args="map.bt"`，其他细节可以看我的另一个仓库里写的：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
-
-```launch
-<launch>
-	<!-- you can load an exisiting tree with <node ... args="tree.bt"> !-->
-	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server" args="map.bt">
-		<param name="resolution" value="0.05" />
-		<param name="frame_id" type="string" value="map" />
-		<param name="sensor_model/max_range" value="3.0" />
-	</node>
-</launch>
-```
+运用细节可以参考另一个仓库：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
 
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
@@ -137,11 +126,7 @@ octovis map.bt
 仿真实验也采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
 
 ```bash
-cd /home/hyx020222/Prometheus/Scripts/simulation/px4_gazebo_sitl_test
-```
-
-```bash
-./px4_sitl_indoor.sh
+'/home/hyx020222/Prometheus/Scripts/simulation/px4_gazebo_sitl_test/px4_sitl_indoor.sh'
 ```
 
 
