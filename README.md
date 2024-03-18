@@ -1,6 +1,6 @@
 # ![image](Img/logo_rt_200.png) uav_octomapping
 
-A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV.
+A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV. 分为实物和仿真两部分。
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -14,7 +14,7 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
 
-## OctoMap
+## 实物实验
 
 ### 1. 下载源码
 
@@ -23,26 +23,29 @@ cd ~/catkin_ws
 ```
 
 ```bash
-git clone https://github.com/HuaYuXiao/UAV_octomapping.git
+git clone https://github.com/HuaYuXiao/uav_octomapping.git
 ```
+
 
 ### 2. 编译安装
 
 ```bash
-catkin_make install --pkg=UAV_octomapping
+catkin_make install --pkg=uav_octomapping
 ```
 
 ```bash
 gedit ~/.bashrc
 ```
 
-在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`。
+在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`（已经添加过的跳过）。
+
 
 ### 3. 建立地图
 
 ```bash
-roslaunch UAV_octomapping octomapping.launch
+roslaunch uav_octomapping octomapping.launch
 ```
+
 
 ### 4. 保存地图
 
@@ -63,6 +66,7 @@ rosrun octomap_server octomap_saver -f map.bt
 - ⭐️ https://wiki.ros.org/octomap
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
+
 
 ### 5. 查看地图
 
@@ -106,6 +110,7 @@ octovis map.bt
 - 注意要将`map.bt`放到指定文件夹下，否则无法读取。
 - 地图文件较大，加载需要一些时间，请耐心等待。
 
+
 ### 6. 加载地图
 
 最主要的就是首行的`args="map.bt"`，其他细节可以看我的另一个仓库里写的：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
@@ -124,6 +129,24 @@ octovis map.bt
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
+
+
+
+## 仿真实验
+
+仿真实验也采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
+
+```bash
+cd /home/hyx020222/Prometheus/Scripts/simulation/px4_gazebo_sitl_test
+```
+
+```bash
+./px4_sitl_indoor.sh
+```
+
+
+
+
 
 
 
