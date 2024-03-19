@@ -18,6 +18,8 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also 
 
 ### 1. 下载源码
 
+进入指定的工作空间，
+
 ```bash
 cd ~/catkin_ws
 ```
@@ -30,14 +32,16 @@ git clone https://github.com/HuaYuXiao/uav_octomapping.git
 ### 2. 编译安装
 
 ```bash
-catkin_make install --pkg=uav_octomapping
+catkin_make -j2 -l2 install --pkg=uav_octomapping
 ```
+
+**NOTICE**：由于板载计算机性能表现不佳，此处仅使用2个线程进行编译和链接。
+
+编译安装完成后，在.bashrc末尾加上：`source ~/catkin_ws/devel/setup.bash`（已经添加过的跳过），
 
 ```bash
 gedit ~/.bashrc
 ```
-
-在文件末尾加上：`source ~/catkin_ws/devel/setup.bash`（已经添加过的跳过）。
 
 
 ### 3. 建立地图
@@ -52,7 +56,7 @@ roslaunch uav_octomapping octomapping.launch
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
 
-控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下。
+控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下，
 
 ```bash
 rosrun octomap_server octomap_saver -f map.bt
@@ -90,7 +94,7 @@ rosrun rviz rviz
 rosrun octomap_server octomap_server_node map.bt
 ```
 
-添加`OccupancyGrid`，话题选择`/octomap_binary`。
+添加`OccupancyGrid`，话题选择`/octomap_binary`，
 
 ![image](Log/2024-03-15/Snipaste_2024-03-15_14-38-27.png)
 
@@ -100,7 +104,7 @@ rosrun octomap_server octomap_server_node map.bt
 
 #### 方法2：octovis
 
-也可以借助`octovis`工具查看。
+也可以借助`octovis`工具查看，
 
 ```bash
 octovis map.bt
