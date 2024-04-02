@@ -1,6 +1,6 @@
-# ![image](Img/logo_rt_200.png) uav_octomapping
+# ![image](Img/logo_rt_200.png) UAV octomapping
 
-A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also suit for other kinds of UAV. 分为实物和仿真两部分。
+A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -42,7 +42,7 @@ catkin_make -j2 -l2 install --pkg=uav_octomapping
 ### 建立地图
 
 ```bash
-roslaunch uav_octomapping octomapping.launch
+roslaunch uav_octomapping uav_octomapping.launch
 ```
 
 
@@ -67,7 +67,7 @@ rosrun octomap_server octomap_saver -f map.bt
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
 
-### 5. 查看地图
+### 查看地图
 
 #### 方法1：rviz
 
@@ -110,7 +110,7 @@ octovis map.bt
 - 地图文件较大，加载需要一些时间，请耐心等待。
 
 
-### 6. 加载地图
+### 加载地图
 
 运用细节可以参考另一个仓库：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
 
@@ -207,7 +207,7 @@ roslaunch realsense2_camera rs_rtabmap.launch
 
 
 
-## 谢辞
+## 致谢
 - 感谢陈亮名副教授提供的技术指导😊！
 - 感谢哈工深MASLAB提供的场地支持😊！
 - 感谢刘嘉雯、崔宝艺、李奥淇、方尧等师兄师姐的支持😊！
