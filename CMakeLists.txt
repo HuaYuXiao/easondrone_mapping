@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(uav_octomapping)
 
 set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++14")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
 find_package(Eigen3 REQUIRED)
@@ -44,10 +44,10 @@ link_directories(${PCL_LIBRARY_DIRS})
 
 
 add_executable(uav_octomapping
-	src/octomapping_node.cpp
+		src/octomapping_node.cpp
         src/octomapping.cpp
-	src/occupy_map.cpp
-	src/tools.cpp
+		src/occupy_map.cpp
+		src/tools.cpp
 	)
 
 
