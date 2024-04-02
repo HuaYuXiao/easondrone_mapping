@@ -16,12 +16,10 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450 (Nano), also 
 
 ## 实物实验
 
-### 1. 下载源码
-
-进入指定的工作空间，
+### 下载源码
 
 ```bash
-cd ~/catkin_ws
+cd ~/catkin_ws/src
 ```
 
 ```bash
@@ -29,29 +27,25 @@ git clone https://github.com/HuaYuXiao/uav_octomapping.git
 ```
 
 
-### 2. 编译安装
+### 编译安装
+
+```bash
+cd ~/catkin_ws
+```
 
 ```bash
 catkin_make -j2 -l2 install --pkg=uav_octomapping
 ```
 
-**NOTICE**：由于板载计算机性能表现不佳，此处仅使用2个线程进行编译和链接。
 
-编译安装完成后，在.bashrc末尾加上：`source ~/catkin_ws/devel/setup.bash`（已经添加过的跳过），
-
-```bash
-gedit ~/.bashrc
-```
-
-
-### 3. 建立地图
+### 建立地图
 
 ```bash
 roslaunch uav_octomapping octomapping.launch
 ```
 
 
-### 4. 保存地图
+### 保存地图
 
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
