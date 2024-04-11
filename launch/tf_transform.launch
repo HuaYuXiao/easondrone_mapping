@@ -7,8 +7,8 @@
         <!-- 注意，当无人机起飞点不在 0,0,0时, gazebo中的坐标系并非与map系的原点重合 -->
 
 	<!-- TF for world and map-->
-	<node pkg="tf" type="static_transform_publisher" name="tf_world_map"
-          	args="0 0 0 0 0 0 world map 100"/>
+        <node pkg="tf2_ros" type="static_transform_publisher" name="tf_map"
+              args="0 0 0 0 0 0 world map"/>
 
 	<!-- TF for base_link-->
 	<node pkg="tf" type="static_transform_publisher" name="tf_t265"
