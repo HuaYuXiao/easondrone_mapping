@@ -35,7 +35,7 @@ cd ~/catkin_ws
 ```
 
 ```bash
-catkin_make -j2 -l2 install --pkg=uav_octomapping
+catkin_make install --pkg=uav_octomapping
 ```
 
 
