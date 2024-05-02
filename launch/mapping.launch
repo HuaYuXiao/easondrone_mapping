@@ -80,7 +80,7 @@
 <!--        <arg name="rviz"               value="false"/>-->
 <!--    </include>-->
 
-    <node pkg="uav_octomapping" type="merge_pcl" name="merge_pcl" output="screen" launch-prefix="gnome-terminal --">
+    <node pkg="uav_octomapping" type="pcl_merge" name="pcl_merge" output="screen" launch-prefix="gnome-terminal --">
 <!--        <param name="topic1" value="/prometheus/sensors/3Dlidar_scan"/>-->
 <!--        <param name="topic2" value="/camera/depth/points"/>-->
     </node>

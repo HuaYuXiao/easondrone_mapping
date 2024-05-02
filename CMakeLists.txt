@@ -54,6 +54,15 @@ target_link_libraries(uav_octomapping
 	)
 
 add_executable(merge_pcl
-		src/merge_pcl/merge_pcl.cpp)
+		src/merge_pcl/merge_pcl.cpp
+)
 target_link_libraries(merge_pcl
 		${catkin_LIBRARIES})
+
+add_executable(pcl_merge
+		src/merge_pcl/pcl_merge.cpp
+)
+target_link_libraries(pcl_merge
+		${catkin_LIBRARIES}
+		${PCL_LIBRARIES}
+)
