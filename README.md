@@ -1,6 +1,6 @@
-# ![image](Img/logo_rt_200.png) UAV octomapping
+# ![image](Img/logo_rt_200.png) prometheus_mapping
 
-A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
+A ROS package to build octomap with LiDAR and D435i, modified from [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning).
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -14,19 +14,28 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
-
-## 实物实验
-
 ### 编译安装
 
 ```bash
 catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 ```
 
+## octomap
+
 ### 建立地图
+
+In real world,
 
 ```bash
 roslaunch uav_octomapping uav_octomapping.launch
+```
+
+In simulator,
+
+**Release [v2.1.0](https://github.com/HuaYuXiao/uav_octomapping/releases/tag/v2.1.0) update**: Build map with both LiDAR and D435i. 
+
+```bash
+roslaunch uav_octomapping simulation.launch
 ```
 
 ### 保存地图
@@ -90,20 +99,6 @@ octovis map.bt
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
 
-
-
-## 仿真实验
-
-仿真实验采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
-
-
-```bash
-catkin_make install --source src/uav_octomapping --build build/uav_octomapping
-```
-
-```bash
-roslaunch uav_octomapping simulation.launch
-```
 
 
 ## Cartographer
