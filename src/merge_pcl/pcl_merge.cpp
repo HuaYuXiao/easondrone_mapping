@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/rate.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/point_types.h>
@@ -23,7 +24,7 @@ private:
     ros::NodeHandle nh_;
     ros::Subscriber LiDAR_sub, D435i_sub;
     ros::Publisher merged_pub_;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr LiDAR_pcl, D435i_pcl, merged_pcl;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr LiDAR_pcl, D435i_pcl;
 };
 
 PointCloudMerger::PointCloudMerger() : nh_("~") {
@@ -33,7 +34,6 @@ PointCloudMerger::PointCloudMerger() : nh_("~") {
 
     LiDAR_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
     D435i_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
-    merged_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
 
     // 设置cout的精度为小数点后两位
     std::cout << std::fixed << std::setprecision(2);
@@ -67,7 +67,10 @@ void PointCloudMerger::mergePointClouds() {
     try {
         cout << "Merging point clouds!" << endl;
 
-        merged_pcl->points.reserve(LiDAR_pcl->size() + D435i_pcl->size());
+        pcl::PointCloud<pcl::PointXYZ>::Ptr merged_pcl;
+        merged_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
+
+//        merged_pcl->points.reserve(LiDAR_pcl->size() + D435i_pcl->size());
         merged_pcl->header = LiDAR_pcl->header;
 
         cout << merged_pcl->header << endl;
@@ -75,12 +78,8 @@ void PointCloudMerger::mergePointClouds() {
         *merged_pcl += *LiDAR_pcl;
         *merged_pcl += *D435i_pcl;
 
-        cout << "add up" << endl;
-
         sensor_msgs::PointCloud2 merged_cloud_msg;
         pcl::toROSMsg(*merged_pcl, merged_cloud_msg);
-
-        cout << "to msg" << endl;
 
         merged_cloud_msg.header.frame_id = "map";
         merged_pub_.publish(merged_cloud_msg);
