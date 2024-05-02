@@ -17,27 +17,11 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
 
 ## 实物实验
 
-### 下载源码
-
-```bash
-cd ~/catkin_ws/src
-```
-
-```bash
-git clone https://github.com/HuaYuXiao/uav_octomapping.git
-```
-
-
 ### 编译安装
 
 ```bash
-cd ~/catkin_ws
+catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 ```
-
-```bash
-catkin_make install --pkg=uav_octomapping
-```
-
 
 ### 建立地图
 
@@ -45,11 +29,9 @@ catkin_make install --pkg=uav_octomapping
 roslaunch uav_octomapping uav_octomapping.launch
 ```
 
-
 ### 保存地图
 
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
-
 
 控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下，
 
@@ -74,16 +56,8 @@ rosrun octomap_server octomap_saver -f map.bt
 一种方法是在`rviz`中查看，
 
 ```bash
-roscore
-```
-
-新开一个标签，
-
-```bash
 rosrun rviz rviz
 ```
-
-新开一个标签，
 
 ```bash
 rosrun octomap_server octomap_server_node map.bt
@@ -112,8 +86,6 @@ octovis map.bt
 
 ### 加载地图
 
-运用细节可以参考另一个仓库：https://github.com/HuaYuXiao/uav_navigation/launch/navigation.launch
-
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
@@ -122,20 +94,15 @@ octovis map.bt
 
 ## 仿真实验
 
-仿真实验采用Prometheus 230，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
+仿真实验采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
+
 
 ```bash
-'/home/hyx020222/Prometheus/Scripts/simulation/px4_gazebo_sitl_test/px4_sitl_indoor.sh'
-```
-
-或者
-
-```bash
-roslaunch prometheus_gazebo sitl_indoor_1uav.launch
+catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 ```
 
 ```bash
-roslaunch prometheus_uav_control uav_control_main_indoor.launch
+roslaunch uav_octomapping simulation.launch
 ```
 
 

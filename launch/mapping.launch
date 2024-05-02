@@ -1,0 +1,87 @@
+<launch>
+    <!-- TF for world-->
+    <!-- 统一mavros发布的map系与world系 -->
+    <node pkg="tf" type="static_transform_publisher" name="tf_world_map"
+          args="0 0 0 0 0 0 world map 100"/>
+
+    <!-- ORB_SLAM的地图坐标系与map坐标系之间的转换关系 -->
+<!--    <node pkg="tf" type="static_transform_publisher" name="tf_slam2map"-->
+<!--          args="0 0 0 0 0 0 map map_slam 100"/>-->
+
+    <!-- Ros transformation -->
+    <node pkg="tf" type="static_transform_publisher" name="tf_local_origin"
+          args="0 0 0 0 0 0 map odom 10"/>
+
+    <!-- TF for 3D lidar-->
+    <!-- 3Dlidar_link是3D激光雷达坐标系 -->
+    <!-- 机体系与3Dlidar_link的坐标转换关系见 amov_solo_3Dlidar.sdf -->
+    <node pkg="tf" type="static_transform_publisher" name="tf_3Dlidar"
+          args="0 0 0.16 0 0 0 base_link 3Dlidar_link 100"/>
+
+    <!-- TF for realsense_camera-->
+    <!-- realsense_camera_link是D435i坐标系 -->
+    <!-- 机体系与realsense_camera_link的坐标转换关系见 P300_D435i.sdf -->
+    <node pkg="tf" type="static_transform_publisher" name="tf_depth"
+          args="0.2 0 -0.1 -1.57 0 -1.57 base_link camera_link 100"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_camera"
+          args="0 -0.095 0 0 0 -0.35 camera_link D435i::camera_depth_frame 100"/>
+
+    <!-- filter lidar -->
+<!--    <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">-->
+<!--        <rosparam command="load" file="$(find ego_planner)/config/filter_lidar.yaml"/>-->
+<!--    </node>-->
+
+	<!-- run the laser_to_pointcloud -->
+<!--    <node pkg="prometheus_plan_manage" type="laser_to_pointcloud.py" name="laser_to_pointcloud" >-->
+<!--    </node>-->
+
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+        <param name="resolution" value="0.05" />
+        <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+        <param name="frame_id" type="string" value="map"/>
+        <!-- maximum range to integrate (speedup!) -->
+        <param name="sensor_model/max_range" value="5.0" />
+        <!-- data source to integrate (PointCloud2) -->
+        <remap from="cloud_in" to="/prometheus/sensors/3Dlidar_scan"/>
+        <!-- 直通滤波的 Z 轴范围，保留 [-1.0, 10.0] 范围内的点 -->
+        <param name = "pointcloud_max_z" value = "3.0" />
+        <param name = "pointcloud_min_z" value = "0.0" />
+        <!-- 机器人坐标系 base_link，滤除地面需要该 frame -->
+        <!-- <param name = "base_frame_id" type = "string" value = "base_link" /> -->
+        <!-- filter ground plane, distance value should be big! 项目并不需要滤除地面 -->
+        <!-- <param name = "filter_ground" type = "bool" value = "true" /> -->
+        <!-- <param name = "ground_filter/distance" type = "double" value = "1.0" /> -->
+        <!-- 分割地面的 Z 轴阈值 value 值 -->
+        <!-- <param name = "ground_filter/plane_distance" type = "double" value = "0.3" /> -->
+        <!-- <param name = "filter_speckles" type = "bool" value = "true" /> -->
+        <!-- 增加了半径滤波器 -->
+        <param name = "outrem_radius" value = "0.35" />
+        <param name = "outrem_neighbors" value = "10" />
+        <!-- when building map, set to false to speed up!!! -->
+        <param name = "latch" value = "false" />
+    </node>
+
+    <!-- 启动rtabmap_ros建图 -->
+<!--    <include file="$(find rtabmap_ros)/launch/rtabmap.launch">-->
+<!--        <arg name="rtabmap_args"       value="&#45;&#45;delete_db_on_start"/>-->
+<!--        <arg name="frame_id"           value="base_link"/>-->
+<!--        <arg name="visual_odometry"    value="false"/>-->
+<!--        &lt;!&ndash; RGB-D related topics &ndash;&gt;-->
+<!--        <arg name="approx_sync"         value="true"/>-->
+<!--        <arg name="rgb_topic"          value="/camera/color/image_raw"/>-->
+<!--        <arg name="depth_topic"        value="/camera/depth/image_raw"/>-->
+<!--        <arg name="camera_info_topic"  value="/camera/color/camera_info"/>-->
+<!--        <arg name="odom_topic"         value="/prometheus/drone_odom"/>-->
+<!--        &lt;!&ndash; 发布地图的坐标系 &ndash;&gt;-->
+<!--        <arg name="map_frame_id"       value="map"/>-->
+<!--        &lt;!&ndash;visualization&ndash;&gt;-->
+<!--        <arg name="rtabmapviz"         value="false"/>-->
+<!--        <arg name="rviz"               value="false"/>-->
+<!--    </include>-->
+
+    <node pkg="uav_octomapping" type="merge_pcl" name="merge_pcl" output="screen" launch-prefix="gnome-terminal --">
+<!--        <param name="topic1" value="/prometheus/sensors/3Dlidar_scan"/>-->
+<!--        <param name="topic2" value="/camera/depth/points"/>-->
+    </node>
+</launch>
