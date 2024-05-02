@@ -1,0 +1,15 @@
+<launch>
+    <!-- world -->
+    <include file="$(find uav_octomapping)/launch/empty_world.launch"/>
+
+    <!-- 1号无人机 -->
+    <include file="$(find uav_octomapping)/launch/sitl.launch"/>
+
+    <include file="$(find uav_octomapping)/launch/uav_control_main_indoor.launch"/>
+
+    <!-- 启动octomap建图 -->
+    <include file="$(find uav_octomapping)/launch/mapping.launch"/>
+
+    <!-- 启动rviz -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find uav_octomapping)/config/merge_pcl.rviz"/>
+</launch>

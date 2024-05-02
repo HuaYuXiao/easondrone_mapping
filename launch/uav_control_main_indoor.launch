@@ -1,0 +1,38 @@
+<launch>
+    <!-- 启动Prometheus代码 -->
+    <!-- run the px4_pos_estimator.cpp -->
+    <arg name="input_source" default="2"/>
+    <arg name="rate_hz" default="100"/>
+    <arg name="launch_prefix" default="gnome-terminal --"/>
+
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+
+        <node pkg="uav_control" type="px4_pos_estimator" name="px4_pos_estimator" output="screen">
+            <!-- 定位数据输入源 0 for vicon， 1 for 激光SLAM, 2 for gazebo ground truth, 3 for T265 -->
+            <param name="input_source" value="$(arg input_source)" />
+            <param name="rate_hz" value="$(arg rate_hz)" />
+            <param name="offset_x" value="$(arg x)" />
+            <param name="offset_y" value="$(arg y)" />
+            <param name="offset_z" value="$(arg z)" />
+        </node>
+
+        <!-- 启动uav_control_main -->
+        <node pkg="uav_control" type="px4_pos_controller" name="px4_pos_controller" output="screen">
+            <rosparam command="load" file="$(find uav_simulation)/config/uav_control_indoor.yaml"/>
+        </node>
+
+        <!-- 启动虚拟摇杆驱动 -->
+        <node pkg="uav_control" type="joy_node" name="joy_node" output="screen">
+        </node>
+
+        <!-- run the terminal_control.cpp -->
+        <node pkg="uav_control" type="terminal_control" name="terminal_control" output="screen" launch-prefix="$(arg launch_prefix)">
+            <rosparam command="load" file="$(find uav_simulation)/config/uav_control_indoor.yaml"/>
+        </node>
+
+    <!-- STATION -->
+    <include file="$(find hybrid_astar_planner)/launch/prometheus_station.launch">
+    </include>
+</launch>
