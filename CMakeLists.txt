@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
        visualization_msgs
 	   prometheus_msgs
 		message_filters
+		tf
 	)
 
 catkin_package(
