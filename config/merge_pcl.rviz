@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /Mapping1/merged_pcl1
       Splitter Ratio: 0.43611112236976624
     Tree Height: 443
   - Class: rviz/Selection
@@ -163,8 +162,8 @@ Visualization Manager:
     - Alpha: 0.5
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.5672335624694824
-        Min Value: -0.16309937834739685
+        Max Value: 2.610640048980713
+        Min Value: -0.13460394740104675
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -172,7 +171,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -187,7 +186,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/Group
       Displays:
         - Class: rviz/Image
@@ -249,8 +248,8 @@ Visualization Manager:
         - Alpha: 0.5
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 2.2116715908050537
-            Min Value: -0.2827379107475281
+            Max Value: 2.2299046516418457
+            Min Value: -0.28734925389289856
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -258,7 +257,7 @@ Visualization Manager:
           Color: 255; 255; 255
           Color Transformer: AxisColor
           Decay Time: 0
-          Enabled: true
+          Enabled: false
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Min Color: 0; 0; 0
@@ -273,7 +272,7 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: true
+          Value: false
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -284,14 +283,14 @@ Visualization Manager:
           Channel Name: intensity
           Class: rviz/PointCloud2
           Color: 255; 255; 255
-          Color Transformer: ""
+          Color Transformer: Intensity
           Decay Time: 0
           Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Min Color: 0; 0; 0
           Name: merged_pcl
-          Position Transformer: ""
+          Position Transformer: XYZ
           Queue Size: 10
           Selectable: true
           Size (Pixels): 3
@@ -337,9 +336,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6950001120567322
+      Pitch: 0.9000001549720764
       Target Frame: world
-      Yaw: 1.5600003004074097
+      Yaw: 1.6349998712539673
     Saved: ~
 Window Geometry:
   Displays:
@@ -361,5 +360,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2074
-  X: 645
-  Y: 178
+  X: 806
+  Y: 509
