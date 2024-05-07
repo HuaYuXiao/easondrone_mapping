@@ -6,7 +6,7 @@
     <arg name="paused" default="false"/>
     <arg name="respawn_gazebo" default="false"/>
     <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
-    <arg name="world_name" default="$(find uav_octomapping)/world/GFKD.world"/>
+    <arg name="world_name" default="$(find prometheus_gazebo)/world/indoor/GFKD.world"/>
     <!-- these are the arguments you can pass this launch file, for example paused:=true -->
     <arg name="use_sim_time" default="true"/>
     <arg name="extra_gazebo_args" default=""/>

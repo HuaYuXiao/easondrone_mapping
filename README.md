@@ -1,6 +1,6 @@
 # ![image](Img/logo_rt_200.png) UAV octomapping
 
-A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
+A ROS package to build 3D octomap
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -9,6 +9,10 @@ A ROS package to build 3D octomap with 2D lidar on Premetheus P450.
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
 ![Static Badge](https://img.shields.io/badge/NVIDIA-Jetson_Nano-76B900?LOGO=nvidia)
 
+## Release Note
+
+- v2.1.0: Merge PointCloud2 from several sources
+- 
 
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
 
