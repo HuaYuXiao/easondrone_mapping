@@ -1,6 +1,6 @@
-# ![image](Img/logo_rt_200.png) UAV octomapping
+# ![image](Img/logo_rt_200.png) prometheus_mapping
 
-A ROS package to build 3D octomap
+A ROS package to build octomap with LiDAR and D435i, modified from [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning).
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -18,19 +18,28 @@ A ROS package to build 3D octomap
 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
-
-## 实物实验
-
 ### 编译安装
 
 ```bash
 catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 ```
 
+## octomap
+
 ### 建立地图
+
+In real world,
 
 ```bash
 roslaunch uav_octomapping uav_octomapping.launch
+```
+
+In simulator,
+
+**Release [v2.1.0](https://github.com/HuaYuXiao/uav_octomapping/releases/tag/v2.1.0) update**: Build map with both LiDAR and D435i. 
+
+```bash
+roslaunch uav_octomapping simulation.launch
 ```
 
 ### 保存地图
@@ -83,10 +92,6 @@ rosrun octomap_server octomap_server_node map.bt
 octovis map.bt
 ```
 
-**NOTICE**：
-- 注意要将`map.bt`放到指定文件夹下，否则无法读取。
-- 地图文件较大，加载需要一些时间，请耐心等待。
-
 
 ### 加载地图
 
@@ -94,20 +99,6 @@ octovis map.bt
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
 
-
-
-## 仿真实验
-
-仿真实验采用Prometheus 450，环境安装配置请参考https://www.bilibili.com/video/BV16S4y1E7br
-
-
-```bash
-catkin_make install --source src/uav_octomapping --build build/uav_octomapping
-```
-
-```bash
-roslaunch uav_octomapping simulation.launch
-```
 
 
 ## Cartographer
@@ -142,17 +133,6 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 - ⭐[手把手教你编译cartographer](https://www.bilibili.com/video/BV19P4y1X7Hj)
 - [Cartographer ROS Integration](https://google-cartographer-ros.readthedocs.io/en/latest/)
 - [cartographer-project/cartographer_ros](https://github.com/cartographer-project/cartographer_ros)
-
-
-
-## ORB_SLAM3
-
-
-参考：
-- ⭐[【无人机自主导航5 SLAM】Intel Realsense T265C双目相机实现ORB-SLAM3](https://dgzc.ganahe.top/ganahe/2021/wrjzzdhsjirtsmxj.html)
-- ⭐[ubuntu18.04 从0开始运行ORB_SLAM2](https://www.bilibili.com/video/BV1hQ4y127xJ)
-- Carlos Campos, Richard Elvira, Juan J. Gómez Rodríguez, José M. M. Montiel and Juan D. Tardós, ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM, IEEE Transactions on Robotics 37(6):1874-1890, Dec. 2021.
-
 
 
 ## rtabmap
