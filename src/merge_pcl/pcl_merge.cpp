@@ -1,15 +1,4 @@
-#include <ros/ros.h>
-#include <ros/rate.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <pcl_ros/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl_conversions/pcl_conversions.h>
-#include <exception>
-#include <tf/transform_listener.h>
-#include <pcl_ros/transforms.h>
-#include <pcl/point_types.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <geometry_msgs/TransformStamped.h>
+#include "merge_pcl/merge_pcl.h"
 
 using namespace std;
 
@@ -52,7 +41,7 @@ PointCloudMerger::PointCloudMerger() : nh_("~"){
 }
 
 void PointCloudMerger::LiDAR_cb(const sensor_msgs::PointCloud2ConstPtr& msg) {
-    cout << "LiDAR received!" << endl;
+    cout << "[merge_pcl] LiDAR received!" << endl;
 
             pcl::fromROSMsg(*msg, *LiDAR_pcl);
     // 转换LiDAR点云到base_link坐标系
@@ -62,7 +51,7 @@ void PointCloudMerger::LiDAR_cb(const sensor_msgs::PointCloud2ConstPtr& msg) {
 }
 
 void PointCloudMerger::D435i_cb(const sensor_msgs::PointCloud2ConstPtr& msg) {
-        cout << "D435i received!" << endl;
+        cout << "[merge_pcl] D435i received!" << endl;
 
             pcl::fromROSMsg(*msg, *D435i_pcl);
     // 转换D435i点云到base_link坐标系

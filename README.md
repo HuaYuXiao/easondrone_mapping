@@ -9,6 +9,10 @@ A ROS package to build octomap with LiDAR and D435i, modified from [global_plann
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
 ![Static Badge](https://img.shields.io/badge/NVIDIA-Jetson_Nano-76B900?LOGO=nvidia)
 
+## Release Note
+
+- v2.1.0: Merge PointCloud2 from several sources
+- 
 
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
 
@@ -88,10 +92,6 @@ rosrun octomap_server octomap_server_node map.bt
 octovis map.bt
 ```
 
-**NOTICE**：
-- 注意要将`map.bt`放到指定文件夹下，否则无法读取。
-- 地图文件较大，加载需要一些时间，请耐心等待。
-
 
 ### 加载地图
 
@@ -133,17 +133,6 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 - ⭐[手把手教你编译cartographer](https://www.bilibili.com/video/BV19P4y1X7Hj)
 - [Cartographer ROS Integration](https://google-cartographer-ros.readthedocs.io/en/latest/)
 - [cartographer-project/cartographer_ros](https://github.com/cartographer-project/cartographer_ros)
-
-
-
-## ORB_SLAM3
-
-
-参考：
-- ⭐[【无人机自主导航5 SLAM】Intel Realsense T265C双目相机实现ORB-SLAM3](https://dgzc.ganahe.top/ganahe/2021/wrjzzdhsjirtsmxj.html)
-- ⭐[ubuntu18.04 从0开始运行ORB_SLAM2](https://www.bilibili.com/video/BV1hQ4y127xJ)
-- Carlos Campos, Richard Elvira, Juan J. Gómez Rodríguez, José M. M. Montiel and Juan D. Tardós, ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM, IEEE Transactions on Robotics 37(6):1874-1890, Dec. 2021.
-
 
 
 ## rtabmap

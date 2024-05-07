@@ -33,6 +33,6 @@
         </node>
 
     <!-- STATION -->
-    <include file="$(find hybrid_astar_planner)/launch/prometheus_station.launch">
+    <include file="$(find ego_planner)/launch/prometheus_station.launch">
     </include>
 </launch>

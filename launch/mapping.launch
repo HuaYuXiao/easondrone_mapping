@@ -8,10 +8,6 @@
 <!--    <node pkg="tf" type="static_transform_publisher" name="tf_slam2map"-->
 <!--          args="0 0 0 0 0 0 map map_slam 100"/>-->
 
-    <!-- Ros transformation -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_local_origin"
-          args="0 0 0 0 0 0 map odom 10"/>
-
     <!-- TF for 3D lidar-->
     <!-- 3Dlidar_link是3D激光雷达坐标系 -->
     <!-- 机体系与3Dlidar_link的坐标转换关系见 amov_solo_3Dlidar.sdf -->
@@ -43,7 +39,7 @@
         <!-- maximum range to integrate (speedup!) -->
         <param name="sensor_model/max_range" value="5.0" />
         <!-- data source to integrate (PointCloud2) -->
-        <remap from="cloud_in" to="/prometheus/sensors/3Dlidar_scan"/>
+        <remap from="cloud_in" to="/prometheus/merged_pcl"/>
         <!-- 直通滤波的 Z 轴范围，保留 [-1.0, 10.0] 范围内的点 -->
         <param name = "pointcloud_max_z" value = "3.0" />
         <param name = "pointcloud_min_z" value = "0.0" />
