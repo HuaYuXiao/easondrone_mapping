@@ -1,13 +1,9 @@
 #ifndef _OCCUPY_MAP_H
 #define _OCCUPY_MAP_H
 
-
 #include "tools.h"
 
-
 namespace octomapping{
-    extern ros::Publisher message_pub;
-
     class Occupy_map{
         public:
             Occupy_map(){}
@@ -26,7 +22,6 @@ namespace octomapping{
 
             // 全局点云指针
             sensor_msgs::PointCloud2ConstPtr global_env_ptr;
-
 
             //初始化
             void init(ros::NodeHandle& nodehandle);

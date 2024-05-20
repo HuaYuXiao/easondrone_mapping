@@ -1,8 +1,6 @@
-#include "octomapping.h"
-
+#include "octomap/octomapping.h"
 
 using namespace octomapping;
-
 
 int main(int argc, char** argv){
   ros::init(argc, argv, NODE_NAME);
@@ -16,4 +14,3 @@ int main(int argc, char** argv){
 
   return 0;
 }
-

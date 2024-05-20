@@ -1,5 +1,4 @@
-#include "octomapping.h"
-
+#include "octomap/octomapping.h"
 
 namespace octomapping{
     // 初始化函数
@@ -19,16 +18,10 @@ namespace octomapping{
             laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &OctoMapping::laser_cb, this);
         }
 
-
-        // 发布提示消息
-        message_pub = nodehandle.advertise<prometheus_msgs::Message>("/prometheus/message/global_planner", 10);
-
-
         // 初始化占据地图
         Occupy_map_ptr.reset(new Occupy_map);
         Occupy_map_ptr->init(nodehandle);
     }
-
 
     void OctoMapping::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
         _DroneState = *msg;
@@ -50,7 +43,6 @@ namespace octomapping{
         }
     }
 
-
     // 根据全局点云更新地图：已知全局点云的场景、由SLAM实时获取的全局点云
     void OctoMapping::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
         // 如果为true，那就是使用虚拟的点云数据，所以就不用循环
@@ -70,7 +62,6 @@ namespace octomapping{
             }
         }
     }
-
 
     // 根据2维雷达数据更新地图：2维激光雷达
     void OctoMapping::laser_cb(const sensor_msgs::LaserScanConstPtr &msg){

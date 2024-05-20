@@ -31,8 +31,8 @@ PointCloudMerger::PointCloudMerger() : nh_("~"){
     LiDAR_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
     D435i_pcl.reset(new pcl::PointCloud<pcl::PointXYZ>());
 
-    listener_LiDAR.waitForTransform("base_link", "3Dlidar_link", ros::Time(0), ros::Duration(0.05));
-    listener_D435i.waitForTransform("base_link", "D435i::camera_depth_frame", ros::Time(0), ros::Duration(0.05));
+    listener_LiDAR.waitForTransform("map", "3Dlidar_link", ros::Time(0), ros::Duration(0.05));
+    listener_D435i.waitForTransform("map", "D435i::camera_depth_frame", ros::Time(0), ros::Duration(0.05));
 
     // 设置cout的精度为小数点后两位
     std::cout << std::fixed << std::setprecision(2);
@@ -44,8 +44,8 @@ void PointCloudMerger::LiDAR_cb(const sensor_msgs::PointCloud2ConstPtr& msg) {
     cout << "[merge_pcl] LiDAR received!" << endl;
 
             pcl::fromROSMsg(*msg, *LiDAR_pcl);
-    // 转换LiDAR点云到base_link坐标系
-    pcl_ros::transformPointCloud("base_link", *LiDAR_pcl, *LiDAR_pcl, listener_LiDAR);
+    // 转换LiDAR点云到map坐标系
+    pcl_ros::transformPointCloud("map", *LiDAR_pcl, *LiDAR_pcl, listener_LiDAR);
 
             mergePointClouds();
 }
@@ -54,8 +54,8 @@ void PointCloudMerger::D435i_cb(const sensor_msgs::PointCloud2ConstPtr& msg) {
         cout << "[merge_pcl] D435i received!" << endl;
 
             pcl::fromROSMsg(*msg, *D435i_pcl);
-    // 转换D435i点云到base_link坐标系
-    pcl_ros::transformPointCloud("base_link", *D435i_pcl, *D435i_pcl, listener_D435i);
+    // 转换D435i点云到map坐标系
+    pcl_ros::transformPointCloud("map", *D435i_pcl, *D435i_pcl, listener_D435i);
     
             mergePointClouds();
 }
@@ -66,7 +66,7 @@ void PointCloudMerger::mergePointClouds() {
 
         merged_pcl->header.seq = LiDAR_pcl->header.seq;
         merged_pcl->header.stamp = LiDAR_pcl->header.stamp;
-        merged_pcl->header.frame_id = "base_link";
+        merged_pcl->header.frame_id = "map";
 
         *merged_pcl += *LiDAR_pcl;
         *merged_pcl += *D435i_pcl;

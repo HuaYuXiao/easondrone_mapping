@@ -1,6 +1,6 @@
 # ![image](Img/logo_rt_200.png) prometheus_mapping
 
-A ROS package to build octomap with LiDAR and D435i, modified from [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning).
+A ROS package for mapping with LiDAR and D435i, modified from [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning).
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -11,18 +11,21 @@ A ROS package to build octomap with LiDAR and D435i, modified from [global_plann
 
 ## Release Note
 
-- v2.1.0: Merge PointCloud2 from several sources
-- 
+- v2.1.1: Publish pose
+- v2.1.0: Merge `PointCloud2` from several sources, with frame_id = "map"
+
 
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
-### 编译安装
+
+## Installation
 
 ```bash
 catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 ```
+
 
 ## octomap
 
@@ -155,10 +158,3 @@ roslaunch realsense2_camera rs_rtabmap.launch
 - [Introduction to Intel® RealSense™ Visual SLAM and the T265 Tracking Camera](https://dev.intelrealsense.com/docs/intel-realsensetm-visual-slam-and-the-t265-tracking-camera)
 - [Intel RealSense 3D Camera for Robotics & SLAM (with code)](https://www.robotsforroboticists.com/realsense-usage-robotics-slam/)
 - [SLAM模块(Prometheus/Modules/slam)](https://docs.amovlab.com/prometheuswiki/#/src/P450%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D?id=slam%e6%a8%a1%e5%9d%97prometheusmodulesslam-)
-
-
-
-## 致谢
-- 感谢陈亮名副教授提供的技术指导😊！
-- 感谢哈工深MASLAB提供的场地支持😊！
-- 感谢刘嘉雯、崔宝艺、李奥淇、方尧等师兄师姐的支持😊！

@@ -1,5 +1,4 @@
-#include <occupy_map.h>
-
+#include <octomap/occupy_map.h>
 
 namespace octomapping{
     // 初始化函数
@@ -19,7 +18,6 @@ namespace octomapping{
         global_pcl_pub = nodehandle.advertise<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2",  10);
     }
 
-
     // 地图更新函数 - 输入：全局点云
     void Occupy_map::map_update_gpcl(const sensor_msgs::PointCloud2ConstPtr & global_point){
         global_env_ptr = global_point;
@@ -27,7 +25,6 @@ namespace octomapping{
          // 发布未膨胀点云
         global_pcl_pub.publish(*global_env_ptr);
     }
-
 
     // 地图更新函数 - 输入：laser
     void Occupy_map::map_update_laser(const sensor_msgs::LaserScanConstPtr & local_point, const nav_msgs::Odometry & odom){
