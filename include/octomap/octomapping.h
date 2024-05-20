@@ -1,16 +1,11 @@
 #ifndef OCTOMAPPING
 #define OCTOMAPPING
 
-
 #include "occupy_map.h"
-
 
 using namespace std;
 
-
 namespace octomapping{
-    extern ros::Publisher message_pub;
-
     class OctoMapping{
     private:
         ros::NodeHandle nodehandle;
@@ -20,7 +15,6 @@ namespace octomapping{
         // map_groundtruth指的是真值的全局点云地图
         bool map_groundtruth;
 
-
         // 订阅无人机状态、目标点、传感器数据（生成地图）
         ros::Subscriber drone_state_sub;
         // 支持直接输入全局已知点云
@@ -28,13 +22,11 @@ namespace octomapping{
         // 支持2维激光雷达实体传感器
         ros::Subscriber laserscan_sub;
 
-
         // 占据图类
         Occupy_map::Ptr Occupy_map_ptr;
 
         nav_msgs::Odometry Drone_odom;
         prometheus_msgs::DroneState _DroneState;
-
 
         // 回调函数
         void drone_state_cb(const prometheus_msgs::DroneStateConstPtr &msg);

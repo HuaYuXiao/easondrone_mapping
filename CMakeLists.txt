@@ -43,10 +43,9 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 add_executable(uav_octomapping
-		src/octomapping_node.cpp
-        src/octomapping.cpp
-		src/occupy_map.cpp
-		src/tools.cpp
+		src/octomap/octomapping_node.cpp
+        src/octomap/octomapping.cpp
+		src/octomap/occupy_map.cpp
 )
 target_link_libraries(uav_octomapping
        ${catkin_LIBRARIES}
