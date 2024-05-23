@@ -4,33 +4,13 @@
     <node pkg="tf" type="static_transform_publisher" name="tf_world_map"
           args="0 0 0 0 0 0 world map 100"/>
 
-    <!-- ORB_SLAM的地图坐标系与map坐标系之间的转换关系 -->
-<!--    <node pkg="tf" type="static_transform_publisher" name="tf_slam2map"-->
-<!--          args="0 0 0 0 0 0 map map_slam 100"/>-->
-
-    <!-- TF for 3D lidar-->
-    <!-- 3Dlidar_link是3D激光雷达坐标系 -->
-    <!-- 机体系与3Dlidar_link的坐标转换关系见 amov_solo_3Dlidar.sdf -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_3Dlidar"
-          args="0 0 0.16 0 0 0 base_link 3Dlidar_link 100"/>
-
-    <!-- TF for realsense_camera-->
-    <!-- realsense_camera_link是D435i坐标系 -->
-    <!-- 机体系与realsense_camera_link的坐标转换关系见 P300_D435i.sdf -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_depth"
-          args="0.2 0 -0.1 -1.57 0 -1.57 base_link camera_link 100"/>
-
-    <node pkg="tf" type="static_transform_publisher" name="tf_camera"
-          args="0 -0.095 0 0 0 -0.35 camera_link D435i::camera_depth_frame 100"/>
-
     <!-- filter lidar -->
 <!--    <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">-->
 <!--        <rosparam command="load" file="$(find ego_planner)/config/filter_lidar.yaml"/>-->
 <!--    </node>-->
 
 	<!-- run the laser_to_pointcloud -->
-<!--    <node pkg="prometheus_plan_manage" type="laser_to_pointcloud.py" name="laser_to_pointcloud" >-->
-<!--    </node>-->
+    <node pkg="uav_octomapping" type="laser_to_pointcloud.py" name="laser_to_pointcloud"/>
 
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
         <param name="resolution" value="0.05" />
@@ -76,8 +56,5 @@
 <!--        <arg name="rviz"               value="false"/>-->
 <!--    </include>-->
 
-    <node pkg="uav_octomapping" type="pcl_merge" name="pcl_merge" output="screen" launch-prefix="gnome-terminal --">
-<!--        <param name="topic1" value="/prometheus/sensors/3Dlidar_scan"/>-->
-<!--        <param name="topic2" value="/camera/depth/points"/>-->
-    </node>
+    <node pkg="uav_octomapping" type="pcl_merge" name="pcl_merge" output="screen"/>
 </launch>

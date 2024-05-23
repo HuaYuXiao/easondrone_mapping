@@ -9,15 +9,17 @@ A ROS package for mapping with LiDAR and D435i, modified from [global_planning](
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
 ![Static Badge](https://img.shields.io/badge/NVIDIA-Jetson_Nano-76B900?LOGO=nvidia)
 
-## Release Note
-
-- v2.1.1: Publish pose
-- v2.1.0: Merge `PointCloud2` from several sources, with frame_id = "map"
-
 
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
+
+
+## Release Note
+
+- v2.1.2: import `message_filters::sync_policies::ApproximateTime` for merge
+- v2.1.1: publish pose
+- v2.1.0: merge `PointCloud2` from several sources, with `frame_id = "base_link"`
 
 
 ## Installation
@@ -34,7 +36,7 @@ catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 In real world,
 
 ```bash
-roslaunch uav_octomapping uav_octomapping.launch
+roslaunch uav_octomapping experiment.launch
 ```
 
 In simulator,
@@ -57,7 +59,6 @@ rosrun octomap_server octomap_saver -f map.bt
 
 ![image](Log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
 
-
 参考：
 - https://octomap.github.io/octomap/doc
 - ⭐️ https://wiki.ros.org/octomap
@@ -73,9 +74,6 @@ rosrun octomap_server octomap_saver -f map.bt
 
 ```bash
 rosrun rviz rviz
-```
-
-```bash
 rosrun octomap_server octomap_server_node map.bt
 ```
 
@@ -118,16 +116,7 @@ roslaunch cartographer_ros ~/cartographer_ws/src/cartographer_ros/cartographer_r
 
 ```bash
 rosservice call /finish_trajectory 0
-```
-
-```bash
 rosservice call /write_state "{filename: '~/map.pbstream'}"
-```
-
-由于板载计算机性能较差，因此只开展了仿真实验。
-
-```bash
-roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloads/b3-2016-04-05-14-14-00.bag
 ```
 
 ![image](https://github.com/HuaYuXiao/UAV-Dynamic-Obstacle-Avoidance/assets/117464811/fb10c834-d753-452b-b0a5-3b5b0b7bae20)
@@ -144,7 +133,7 @@ roslaunch cartographer_ros demo_backpack_3d.launch bag_filename:=${HOME}/Downloa
 
 <!--
 ```bash
-sudo apt-get install ros-melodic-rtabmap-ros
+sudo apt-get install ros-melodic-rtabmap*
 ```
 -->
 
@@ -152,7 +141,7 @@ sudo apt-get install ros-melodic-rtabmap-ros
 roslaunch realsense2_camera rs_rtabmap.launch
 ```
 
-**2024年2月28日更新**：`rtabmap`涉及到RGB-D，该机器不具备直接获取深度数据的能力，因此该方案废弃。
+`rtabmap`涉及到RGB-D
 
 参考：
 - [Introduction to Intel® RealSense™ Visual SLAM and the T265 Tracking Camera](https://dev.intelrealsense.com/docs/intel-realsensetm-visual-slam-and-the-t265-tracking-camera)

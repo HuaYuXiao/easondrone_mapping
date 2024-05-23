@@ -17,5 +17,9 @@
 #include <pcl/point_types.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <message_filters/subscriber.h>
+#include <message_filters/sync_policies/approximate_time.h>
+#include <message_filters/sync_policies/exact_time.h>
+#include <message_filters/time_synchronizer.h>
 
 #endif //UAV_OCTOMAPPING_ADD_PCL_H
