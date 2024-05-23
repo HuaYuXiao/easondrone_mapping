@@ -10,15 +10,16 @@ A ROS package for mapping with LiDAR and D435i, modified from [global_planning](
 ![Static Badge](https://img.shields.io/badge/NVIDIA-Jetson_Nano-76B900?LOGO=nvidia)
 
 
-## Release Note
-
-- v2.1.1: Publish pose
-- v2.1.0: Merge `PointCloud2` from several sources, with `frame_id = "base_link"`
-
-
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
 
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
+
+
+## Release Note
+
+- v2.1.2: import `message_filters::sync_policies::ApproximateTime` for merge
+- v2.1.1: publish pose
+- v2.1.0: merge `PointCloud2` from several sources, with `frame_id = "base_link"`
 
 
 ## Installation
@@ -35,7 +36,7 @@ catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 In real world,
 
 ```bash
-roslaunch uav_octomapping uav_octomapping.launch
+roslaunch uav_octomapping experiment.launch
 ```
 
 In simulator,
