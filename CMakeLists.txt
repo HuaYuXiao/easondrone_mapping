@@ -37,7 +37,7 @@ include_directories(
        ${PCL_INCLUDE_DIRS}
 		${OCTOMAP_INCLUDE_DIRS}
 	   $ENV{HOME}/EasonDrone/Modules/common/include
-     )
+)
 
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
@@ -51,7 +51,7 @@ target_link_libraries(uav_octomapping
        ${catkin_LIBRARIES}
 	   ${PCL_LIBRARIES}
 		${OCTOMAP_LIBRARIES}
-	)
+)
 
 add_executable(pcl_merge src/merge_pcl/pcl_merge.cpp)
 target_link_libraries(pcl_merge
@@ -61,4 +61,13 @@ target_link_libraries(pcl_merge
 
 catkin_install_python(PROGRAMS scripts/laser_to_pointcloud.py
 		DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## Mark other files for installation (e.g. launch and bag files, etc.)
+install(DIRECTORY launch
+		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(DIRECTORY config
+		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

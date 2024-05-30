@@ -150,4 +150,4 @@ roslaunch realsense2_camera rs_rtabmap.launch
 
 Thanks to following packages:
 
-- [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning)
+- [global_planning](https://github.com/amov-lab/Prometheus/Modules/planning/global_planning)

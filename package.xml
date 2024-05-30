@@ -6,8 +6,8 @@
         A ROS package for mapping with LiDAR and D435i
     </description>
 
-    <author email="eason473867143@gmail.com">Eason Yi</author>
     <maintainer email="12010508@mail.sustech.edu.cn">Eason Hua</maintainer>
+    <author email="eason473867143@gmail.com">Eason Yi</author>
 
     <license>Apache</license>
 
@@ -19,7 +19,7 @@
     <depend>sensor_msgs</depend>
     <depend>geometry_msgs</depend>
     <depend>nav_msgs</depend>
-    <depend>prometheus_msgs</depend>
+    <depend>easondrone_msgs</depend>
     <depend>pcl_ros</depend>
     <depend>octomap</depend>
     <depend>message_filters</depend>

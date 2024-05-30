@@ -34,23 +34,5 @@
         <param name = "latch" value = "false" />
     </node>
 
-    <!-- 启动rtabmap_ros建图 -->
-<!--    <include file="$(find rtabmap_ros)/launch/rtabmap.launch">-->
-<!--        <arg name="rtabmap_args"       value="&#45;&#45;delete_db_on_start"/>-->
-<!--        <arg name="frame_id"           value="base_link"/>-->
-<!--        <arg name="visual_odometry"    value="false"/>-->
-<!--        &lt;!&ndash; RGB-D related topics &ndash;&gt;-->
-<!--        <arg name="approx_sync"         value="true"/>-->
-<!--        <arg name="rgb_topic"          value="/camera/color/image_raw"/>-->
-<!--        <arg name="depth_topic"        value="/camera/depth/image_raw"/>-->
-<!--        <arg name="camera_info_topic"  value="/camera/color/camera_info"/>-->
-<!--        <arg name="odom_topic"         value="/prometheus/drone_odom"/>-->
-<!--        &lt;!&ndash; 发布地图的坐标系 &ndash;&gt;-->
-<!--        <arg name="map_frame_id"       value="map"/>-->
-<!--        &lt;!&ndash;visualization&ndash;&gt;-->
-<!--        <arg name="rtabmapviz"         value="false"/>-->
-<!--        <arg name="rviz"               value="false"/>-->
-<!--    </include>-->
-
 <!--    <node pkg="easondrone_mapping" type="pcl_merge" name="pcl_merge"/>-->
 </launch>
