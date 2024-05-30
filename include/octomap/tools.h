@@ -21,11 +21,11 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/Bool.h>
-#include "prometheus_msgs/PositionReference.h"
-#include "prometheus_msgs/Message.h"
-#include "prometheus_msgs/DroneState.h"
-#include "prometheus_msgs/ControlCommand.h"
-#include "prometheus_msgs/Message.h"
+#include "easondrone_msgs/PositionReference.h"
+#include "easondrone_msgs/Message.h"
+#include "easondrone_msgs/DroneState.h"
+#include "easondrone_msgs/ControlCommand.h"
+#include "easondrone_msgs/Message.h"
 #include "message_utils.h"
 
 #define NODE_NAME "octomapping"

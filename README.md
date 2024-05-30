@@ -1,13 +1,12 @@
-# ![image](Img/logo_rt_200.png) prometheus_mapping
+# EasonDrone_Mapping
 
-A ROS package for mapping with LiDAR and D435i, modified from [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning).
+A ROS package for mapping with LiDAR and D435i.
 
-![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FUAV_octomapping.json%3Fcolor%3Dpink)
+![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FEasonDrone_Mapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
 ![Static Badge](https://img.shields.io/badge/C%2B%2B-14-00599C?logo=cplusplus)
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
-![Static Badge](https://img.shields.io/badge/NVIDIA-Jetson_Nano-76B900?LOGO=nvidia)
 
 
 > RealSense T265 is a tracking camera that is designed to be more optimal for Visual Odometry and SLAM (wider field of view and not using infrared light). It can do SLAM onboard as well as loop closure. However, this camera is not able to return RGB images (since it does not have a RGB camera onboard) and the depth returned is not as good as the D400 series (and can be a little trickier to get).
@@ -15,17 +14,10 @@ A ROS package for mapping with LiDAR and D435i, modified from [global_planning](
 > Using both a RealSense D435i sensor and a RealSense T265 sensor can provide both the maps and the better quality visual odometry for developing a full SLAM system. The D435i used for the mapping, and the T265 for the tracking.
 
 
-## Release Note
-
-- v2.1.2: import `message_filters::sync_policies::ApproximateTime` for merge
-- v2.1.1: publish pose
-- v2.1.0: merge `PointCloud2` from several sources, with `frame_id = "base_link"`
-
-
-## Installation
+## Compilation
 
 ```bash
-catkin_make install --source src/uav_octomapping --build build/uav_octomapping
+catkin_make install --source src/EasonDrone_Mapping --build src/EasonDrone_Mapping/build
 ```
 
 
@@ -36,15 +28,13 @@ catkin_make install --source src/uav_octomapping --build build/uav_octomapping
 In real world,
 
 ```bash
-roslaunch uav_octomapping experiment.launch
+roslaunch easondrone_mapping experiment.launch
 ```
 
 In simulator,
 
-**Release [v2.1.0](https://github.com/HuaYuXiao/uav_octomapping/releases/tag/v2.1.0) update**: Build map with both LiDAR and D435i. 
-
 ```bash
-roslaunch uav_octomapping simulation.launch
+roslaunch easondrone_mapping simulation.launch
 ```
 
 ### 保存地图
@@ -147,3 +137,17 @@ roslaunch realsense2_camera rs_rtabmap.launch
 - [Introduction to Intel® RealSense™ Visual SLAM and the T265 Tracking Camera](https://dev.intelrealsense.com/docs/intel-realsensetm-visual-slam-and-the-t265-tracking-camera)
 - [Intel RealSense 3D Camera for Robotics & SLAM (with code)](https://www.robotsforroboticists.com/realsense-usage-robotics-slam/)
 - [SLAM模块(Prometheus/Modules/slam)](https://docs.amovlab.com/prometheuswiki/#/src/P450%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D?id=slam%e6%a8%a1%e5%9d%97prometheusmodulesslam-)
+
+
+## Release Note
+
+- v2.1.2: import `message_filters::sync_policies::ApproximateTime` for merge
+- v2.1.1: publish pose
+- v2.1.0: merge `PointCloud2` from several sources, with `frame_id = "base_link"`
+
+
+## Acknowledgement
+
+Thanks to following packages:
+
+- [global_planning](https://github.com/amov-lab/Prometheus/tree/v1.1/Modules/planning/global_planning)

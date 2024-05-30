@@ -5,17 +5,15 @@ namespace octomapping{
     void OctoMapping::init(ros::NodeHandle& nodehandle){
         // 选择地图更新方式：　true代表全局点云，false代表激光雷达scan数据
         nodehandle.param("global_planner/map_input", map_input, true);
-        nodehandle.param("global_planner/map_groundtruth", map_groundtruth, false); 
-
 
         // 订阅 无人机状态
-        drone_state_sub = nodehandle.subscribe<prometheus_msgs::DroneState>("/prometheus/drone_state", 10, &OctoMapping::drone_state_cb, this);
+        drone_state_sub = nodehandle.subscribe<easondrone_msgs::DroneState>("/easondrone/drone_state", 10, &OctoMapping::drone_state_cb, this);
 
         // 根据map_input选择地图更新方式
         if(map_input){
             Gpointcloud_sub = nodehandle.subscribe<sensor_msgs::PointCloud2>("/sensor_msgs/PointCloud2", 1, &OctoMapping::Gpointcloud_cb, this);
         }else{
-            laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/prometheus/global_planning/laser_scan", 1, &OctoMapping::laser_cb, this);
+            laserscan_sub = nodehandle.subscribe<sensor_msgs::LaserScan>("/easondrone/global_planning/laser_scan", 1, &OctoMapping::laser_cb, this);
         }
 
         // 初始化占据地图
@@ -23,7 +21,7 @@ namespace octomapping{
         Occupy_map_ptr->init(nodehandle);
     }
 
-    void OctoMapping::drone_state_cb(const prometheus_msgs::DroneStateConstPtr& msg){
+    void OctoMapping::drone_state_cb(const easondrone_msgs::DroneStateConstPtr& msg){
         _DroneState = *msg;
 
         // odem is needed only when using laser scan
@@ -45,21 +43,15 @@ namespace octomapping{
 
     // 根据全局点云更新地图：已知全局点云的场景、由SLAM实时获取的全局点云
     void OctoMapping::Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg){
-        // 如果为true，那就是使用虚拟的点云数据，所以就不用循环
-        if(!map_groundtruth){
+        // 此时的点云要么是仿真下的点云插件生成的点云或者是实机中传感器通过octomap生成的点云，这种就需要循环10次进行膨胀层
+        static int update_num=0;
+        update_num++;
+
+        // TODO 此处改为根据循环时间计算的数值
+        if(update_num == 10){
             // 对地图进行更新
             Occupy_map_ptr->map_update_gpcl(msg);
-        }else{
-            // 默认情况下为false，此时的点云要么是仿真下的点云插件生成的点云或者是实机中传感器通过octomap生成的点云，这种就需要循环10次进行膨胀层
-            static int update_num=0;
-            update_num++;
-
-            // TODO 此处改为根据循环时间计算的数值
-            if(update_num == 10){
-                // 对地图进行更新
-                Occupy_map_ptr->map_update_gpcl(msg);
-                update_num = 0;
-            }
+            update_num = 0;
         }
     }
 

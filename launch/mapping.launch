@@ -1,9 +1,4 @@
 <launch>
-    <!-- TF for world-->
-    <!-- 统一mavros发布的map系与world系 -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_world_map"
-          args="0 0 0 0 0 0 world map 100"/>
-
     <!-- filter lidar -->
 <!--    <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">-->
 <!--        <rosparam command="load" file="$(find ego_planner)/config/filter_lidar.yaml"/>-->
@@ -19,7 +14,8 @@
         <!-- maximum range to integrate (speedup!) -->
         <param name="sensor_model/max_range" value="5.0" />
         <!-- data source to integrate (PointCloud2) -->
-        <remap from="cloud_in" to="/prometheus/merged_pcl"/>
+        <remap from="cloud_in" to="/sensors/merged_pcl"/>
+
         <!-- 直通滤波的 Z 轴范围，保留 [-1.0, 10.0] 范围内的点 -->
         <param name = "pointcloud_max_z" value = "3.0" />
         <param name = "pointcloud_min_z" value = "0.0" />
