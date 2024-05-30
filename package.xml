@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>uav_octomapping</name>
+    <name>easondrone_mapping</name>
     <version>2.1.2</version>
     <description>
         A ROS package for mapping with LiDAR and D435i
     </description>
+
     <author email="eason473867143@gmail.com">Eason Yi</author>
     <maintainer email="12010508@mail.sustech.edu.cn">Eason Hua</maintainer>
+
     <license>Apache</license>
-    <url type="website">https://amovlab.com</url>
 
     <buildtool_depend>catkin</buildtool_depend>
 

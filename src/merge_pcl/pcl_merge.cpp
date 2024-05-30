@@ -15,7 +15,8 @@ private:
             SyncPolicy;
     typedef shared_ptr<message_filters::Synchronizer<SyncPolicy>> Synchronizer;
 
-    ros::NodeHandle nh_;
+    ros::NodeHandle nh;
+
     shared_ptr<message_filters::Subscriber<sensor_msgs::PointCloud2>> LiDAR_sub_, D435i_sub_;
     Synchronizer synchronizer_;
     tf::TransformListener listener_LiDAR, listener_D435i;
@@ -23,14 +24,14 @@ private:
     tf::StampedTransform transform_LiDAR, transform_D435i;
 };
 
-PointCloudMerger::PointCloudMerger() : nh_("~"){
-    LiDAR_sub_.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/prometheus/sensors/3Dlidar_scan", 50));
-    D435i_sub_.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/camera/depth/color/points", 50));
+PointCloudMerger::PointCloudMerger() : nh("~"){
+    LiDAR_sub_.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "/sensors/3Dlidar_scan", 50));
+    D435i_sub_.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "/camera/depth/color/points", 50));
 
     synchronizer_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(100), *LiDAR_sub_, *D435i_sub_));
     synchronizer_->registerCallback(boost::bind(&PointCloudMerger::mergeCallback, this, _1, _2));
 
-    merged_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/prometheus/merged_pcl", 10);
+    merged_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/sensors/merged_pcl", 10);
 
     listener_LiDAR.waitForTransform("base_link", "3Dlidar_link", ros::Time(0), ros::Duration(0.05));
     listener_D435i.waitForTransform("base_link", "D435i::camera_depth_frame", ros::Time(0), ros::Duration(0.05));
