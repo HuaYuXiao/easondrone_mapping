@@ -5,16 +5,16 @@
 <!--    </node>-->
 
 	<!-- run the laser_to_pointcloud -->
-    <node pkg="uav_octomapping" type="laser_to_pointcloud.py" name="laser_to_pointcloud"/>
+<!--    <node pkg="easondrone_mapping" type="laser_to_pointcloud.py" name="laser_to_pointcloud"/>-->
 
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
-        <param name="resolution" value="0.05" />
+        <param name="resolution" value="0.05"/>
         <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
         <param name="frame_id" type="string" value="map"/>
         <!-- maximum range to integrate (speedup!) -->
         <param name="sensor_model/max_range" value="5.0" />
         <!-- data source to integrate (PointCloud2) -->
-        <remap from="cloud_in" to="/sensors/merged_pcl"/>
+        <remap from="cloud_in" to="/sensors/3Dlidar_scan"/>
 
         <!-- 直通滤波的 Z 轴范围，保留 [-1.0, 10.0] 范围内的点 -->
         <param name = "pointcloud_max_z" value = "3.0" />
@@ -52,5 +52,5 @@
 <!--        <arg name="rviz"               value="false"/>-->
 <!--    </include>-->
 
-    <node pkg="uav_octomapping" type="pcl_merge" name="pcl_merge" output="screen"/>
+<!--    <node pkg="easondrone_mapping" type="pcl_merge" name="pcl_merge"/>-->
 </launch>

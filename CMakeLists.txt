@@ -4,6 +4,7 @@ project(easondrone_mapping)
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
+set(PYTHON_EXECUTABLE "/usr/bin/python3.8")
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
@@ -56,4 +57,8 @@ add_executable(pcl_merge src/merge_pcl/pcl_merge.cpp)
 target_link_libraries(pcl_merge
 		${catkin_LIBRARIES}
 		${PCL_LIBRARIES}
+)
+
+catkin_install_python(PROGRAMS scripts/laser_to_pointcloud.py
+		DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
