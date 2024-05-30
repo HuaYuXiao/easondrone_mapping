@@ -17,7 +17,7 @@ A ROS package for mapping with LiDAR and D435i.
 ## Compilation
 
 ```bash
-catkin_make install --source src/EasonDrone_Mapping --build src/EasonDrone_Mapping/build
+catkin_make install --source Reconstruction/EasonDrone_Mapping --build Reconstruction/EasonDrone_Mapping/build
 ```
 
 
@@ -115,28 +115,6 @@ rosservice call /write_state "{filename: '~/map.pbstream'}"
 - ⭐[手把手教你编译cartographer](https://www.bilibili.com/video/BV19P4y1X7Hj)
 - [Cartographer ROS Integration](https://google-cartographer-ros.readthedocs.io/en/latest/)
 - [cartographer-project/cartographer_ros](https://github.com/cartographer-project/cartographer_ros)
-
-
-## rtabmap
-
-**NOTICE**: Installation of `rtabmap` is required for using this launch file
-
-<!--
-```bash
-sudo apt-get install ros-melodic-rtabmap*
-```
--->
-
-```bash
-roslaunch realsense2_camera rs_rtabmap.launch
-```
-
-`rtabmap`涉及到RGB-D
-
-参考：
-- [Introduction to Intel® RealSense™ Visual SLAM and the T265 Tracking Camera](https://dev.intelrealsense.com/docs/intel-realsensetm-visual-slam-and-the-t265-tracking-camera)
-- [Intel RealSense 3D Camera for Robotics & SLAM (with code)](https://www.robotsforroboticists.com/realsense-usage-robotics-slam/)
-- [SLAM模块(Prometheus/Modules/slam)](https://docs.amovlab.com/prometheuswiki/#/src/P450%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D?id=slam%e6%a8%a1%e5%9d%97prometheusmodulesslam-)
 
 
 ## Release Note
