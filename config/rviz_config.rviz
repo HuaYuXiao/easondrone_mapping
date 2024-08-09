@@ -8,7 +8,6 @@ Panels:
         - /Sensor1
         - /Sensor1/RGBD1
         - /Mapping1
-        - /Mapping1/octomap1
       Splitter Ratio: 0.43611112236976624
     Tree Height: 786
   - Class: rviz/Selection
@@ -86,20 +85,20 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
+        base_link:
+          VLP16_link:
+            {}
+          base_link_frd:
+            {}
+          monocular_link:
+            {}
+          realsense_camera_frame:
+            {}
         odom:
           odom_ned:
             {}
         world:
           map:
-            base_link:
-              VLP16_link:
-                {}
-              base_link_frd:
-                {}
-              monocular_link:
-                {}
-              realsense_camera_frame:
-                {}
             map_ned:
               {}
       Update Interval: 0
@@ -306,7 +305,7 @@ Visualization Manager:
     - Class: rviz/Interact
       Hide Inactive Objects: true
     - Class: rviz/SetGoal
-      Topic: goal
+      Topic: /move_base_simple/goal
   Value: true
   Views:
     Current:

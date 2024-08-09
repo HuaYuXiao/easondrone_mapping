@@ -25,10 +25,10 @@ roslaunch easondrone_mapping simulation.launch
 
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
-控制无人机完成建图后，用以下指令保存.bt（相较于.ot体积更小）格式的地图文件，默认保存到~/下，
+控制无人机完成建图后，用以下指令保存.ot（或者.bt，相较于.ot体积更小）格式的地图文件
 
 ```bash
-rosrun octomap_server octomap_saver -f ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
+rosrun octomap_server octomap_saver -f ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.ot
 ```
 
 ![image](doc/log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
@@ -39,12 +39,11 @@ rosrun octomap_server octomap_saver -f ~/EasonDrone/Reconstruction/EasonDrone_Ma
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
-
 ## 查看地图
 
 ### 方法1：octovis
 
-也可以借助`octovis`工具查看，
+也可以借助`octovis`工具查看
 
 ```bash
 octovis ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
@@ -52,7 +51,7 @@ octovis ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
 
 ### 方法2：rviz
 
-一种方法是在`rviz`中查看，
+一种方法是在`rviz`中查看
 
 ```bash
 rosrun rviz rviz
@@ -75,6 +74,6 @@ rosrun octomap_server octomap_server_node ~/EasonDrone/Reconstruction/EasonDrone
 
 ## Acknowledgement
 
-Thanks to following packages:
+Thanks for following packages:
 
 - [global_planning](https://github.com/amov-lab/Prometheus/Modules/planning/global_planning)
