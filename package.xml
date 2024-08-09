@@ -3,7 +3,7 @@
     <name>easondrone_mapping</name>
     <version>2.1.2</version>
     <description>
-        A ROS package for mapping with LiDAR and D435i
+        A ROS package for mapping via octomap
     </description>
 
     <maintainer email="12010508@mail.sustech.edu.cn">Eason Hua</maintainer>
@@ -19,11 +19,11 @@
     <depend>sensor_msgs</depend>
     <depend>geometry_msgs</depend>
     <depend>nav_msgs</depend>
-    <depend>easondrone_msgs</depend>
     <depend>pcl_ros</depend>
     <depend>octomap</depend>
     <depend>message_filters</depend>
     <depend>tf</depend>
+    <depend>easondrone_msgs</depend>
 
     <export>
         <build_type>catkin</build_type>

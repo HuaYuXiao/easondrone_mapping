@@ -24,10 +24,8 @@ namespace octomapping{
         Occupy_map::Ptr Occupy_map_ptr;
 
         nav_msgs::Odometry Drone_odom;
-        easondrone_msgs::DroneState _DroneState;
 
         // 回调函数
-        void drone_state_cb(const easondrone_msgs::DroneStateConstPtr &msg);
         void Gpointcloud_cb(const sensor_msgs::PointCloud2ConstPtr &msg);
         void laser_cb(const sensor_msgs::LaserScanConstPtr &msg);
 

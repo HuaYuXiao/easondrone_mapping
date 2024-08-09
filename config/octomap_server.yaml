@@ -1,0 +1,33 @@
+resolution: 0.05
+
+# fixed map frame (set to 'map' if SLAM or localization running!)
+frame_id: "map"
+
+# maximum range to integrate (speedup!)
+sensor_model:
+  max_range: 10.0
+
+# 直通滤波的 Z 轴范围，保留 [-1.0, 10.0] 范围内的点
+pointcloud_max_z: 5.0
+pointcloud_min_z: 0.0
+
+# 机器人坐标系 base_link，滤除地面需要该 frame
+# base_frame_id: "base_link"
+
+# filter ground plane, distance value should be big! 项目并不需要滤除地面
+# filter_ground: true
+# ground_filter:
+#   distance: 1.0
+
+# 分割地面的 Z 轴阈值 value 值
+# ground_filter:
+#   plane_distance: 0.3
+
+# filter_speckles: true
+
+# 增加了半径滤波器
+outrem_radius: 0.35
+outrem_neighbors: 10
+
+# when building map, set to false to speed up!!!
+latch: false

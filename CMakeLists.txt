@@ -12,15 +12,15 @@ find_package(octomap REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
        roscpp
        rospy
+		message_filters
+		tf
+		pcl_ros
        std_msgs
 	   sensor_msgs
 	   geometry_msgs
 	   nav_msgs
-	   pcl_ros
        visualization_msgs
 	   easondrone_msgs
-		message_filters
-		tf
 	)
 
 catkin_package(
@@ -36,7 +36,6 @@ include_directories(
        ${Eigen3_INCLUDE_DIRS}
        ${PCL_INCLUDE_DIRS}
 		${OCTOMAP_INCLUDE_DIRS}
-	   $ENV{HOME}/EasonDrone/Modules/common/include
 )
 
 link_directories(${PCL_LIBRARY_DIRS})

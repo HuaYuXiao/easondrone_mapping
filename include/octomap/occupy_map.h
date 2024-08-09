@@ -11,7 +11,6 @@ namespace octomapping{
             // 定义该类的指针
             typedef std::shared_ptr<Occupy_map> Ptr;
 
-
             // 地图原点,地图尺寸
             Eigen::Vector3d origin_, map_size_3d_;
             // 地图分辨率

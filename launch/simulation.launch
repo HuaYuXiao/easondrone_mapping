@@ -1,19 +1,16 @@
 <launch>
     <!-- world -->
-    <include file="$(find easondrone_gazebo)/launch/empty_world.launch"/>
+    <include file="$(find easondrone_gazebo)/launch/Eason_indoor.launch"/>
 
     <!-- 1号无人机 -->
     <include file="$(find easondrone_gazebo)/launch/sitl_p450.launch"/>
 
     <include file="$(find easondrone_gazebo)/launch/transform.launch"/>
 
-    <include file="$(find easondrone_control)/launch/control_p450_indoor.launch"/>
-
-    <!--     STATION-->
-    <include file="$(find easondrone_station)/launch/easondrone_station.launch"/>
+    <include file="$(find px4ctrl)/launch/px4ctrl.launch"/>
 
     <!-- 启动octomap建图 -->
-    <include file="$(find easondrone_mapping)/launch/mapping.launch"/>
+    <include file="$(find easondrone_mapping)/launch/octomap_server.launch"/>
 
     <!-- 启动rviz -->
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find easondrone_mapping)/config/rviz_config.rviz"/>
