@@ -12,8 +12,17 @@ A ROS package for mapping via octomap.
 
 ```bash
 cd ~/EasonDrone
-catkin_make install --source Reconstruction/EasonDrone_Mapping --build Reconstruction/EasonDrone_Mapping/build
+catkin_make --source Reconstruction/EasonDrone_Mapping --build Reconstruction/EasonDrone_Mapping/build
 ```
+
+## 转发点云
+
+EGO-Planner等规划器要求点云发布在world坐标系下，因此需要将原本发布在lidar_frame的点云转发到world下
+
+```bash
+rosrun easondrone_mapping pub_pcl_world.py
+```
+
 
 ## 建立地图
 

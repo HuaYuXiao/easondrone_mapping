@@ -9,6 +9,8 @@
 
     <include file="$(find px4ctrl)/launch/px4ctrl.launch"/>
 
+    <node name="pub_pcl_world" pkg="easondrone_mapping" type="pub_pcl_world"/>
+
     <!-- 启动octomap建图 -->
     <include file="$(find easondrone_mapping)/launch/octomap_server.launch"/>
 
