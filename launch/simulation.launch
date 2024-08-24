@@ -1,9 +1,5 @@
 <launch>
-    <!-- world -->
-    <include file="$(find easondrone_gazebo)/launch/Eason_indoor.launch"/>
-
-    <!-- 1号无人机 -->
-    <include file="$(find easondrone_gazebo)/launch/sitl_p450.launch"/>
+    <include file="$(find easondrone_gazebo)/launch/mavros_posix_sitl.launch"/>
 
     <include file="$(find easondrone_gazebo)/launch/transform.launch"/>
 
