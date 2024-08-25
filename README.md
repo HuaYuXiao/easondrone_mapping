@@ -1,4 +1,4 @@
-# EasonDrone_Mapping
+# easondrone_mapping
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FEasonDrone_Mapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
@@ -12,7 +12,7 @@ A ROS package for mapping via octomap.
 
 ```bash
 cd ~/EasonDrone
-catkin_make --source Reconstruction/EasonDrone_Mapping --build Reconstruction/EasonDrone_Mapping/build
+catkin_make --source Reconstruction/easondrone_mapping --build Reconstruction/easondrone_mapping/build
 ```
 
 ## 转发点云
