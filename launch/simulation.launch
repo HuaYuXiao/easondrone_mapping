@@ -5,6 +5,8 @@
 
     <include file="$(find px4ctrl)/launch/px4ctrl.launch"/>
 
+    <node type="odom_visualization" pkg="odom_visualization" name="odom_visualization"/>
+
     <node name="pub_pcl_world" pkg="easondrone_mapping" type="pub_pcl_world"/>
 
     <!-- 启动octomap建图 -->
