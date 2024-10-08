@@ -126,7 +126,7 @@ Visualization Manager:
           Radius: 0.029999999329447746
           Shaft Diameter: 0.10000000149011612
           Shaft Length: 0.10000000149011612
-          Topic: /easondrone/drone_trajectory
+          Topic: /odom_visualization/path
           Unreliable: false
           Value: true
         - Angle Tolerance: 0.10000000149011612
@@ -305,7 +305,7 @@ Visualization Manager:
     - Class: rviz/Interact
       Hide Inactive Objects: true
     - Class: rviz/SetGoal
-      Topic: /move_base_simple/goal
+      Topic: /planning/direct_goal
   Value: true
   Views:
     Current:
