@@ -46,44 +46,8 @@
         <mxCell id="34" value="可视化结果" style="shape=mxgraph.flowchart.data;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
           <mxGeometry x="241.5" y="840" width="159" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="37" value="project&#xa;complete?" style="shape=mxgraph.flowchart.decision;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="271" y="1621.5" width="98" height="57" as="geometry" />
-        </mxCell>
-        <mxCell id="38" value="create&#xa;final&#xa;report" style="shape=mxgraph.flowchart.data;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="240.5" y="1730" width="159" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="39" value="issue&#xa;bill of works" style="shape=mxgraph.flowchart.predefined_process;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="560" y="1725" width="190" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="40" value="end" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="260" y="1910" width="120" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="42" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;fontStyle=1;strokeColor=#003366;strokeWidth=1;html=1;" parent="1" source="37" target="38" edge="1">
-          <mxGeometry width="100" height="100" as="geometry">
-            <mxPoint y="100" as="sourcePoint" />
-            <mxPoint x="100" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="43" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;fontStyle=1;strokeColor=#003366;strokeWidth=1;html=1;" parent="1" source="38" target="40" edge="1">
-          <mxGeometry width="100" height="100" as="geometry">
-            <mxPoint y="100" as="sourcePoint" />
-            <mxPoint x="100" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="44" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;exitX=0.905;exitY=0.5;exitPerimeter=0;entryX=0;entryY=0.5;entryPerimeter=0;fontStyle=1;strokeColor=#003366;strokeWidth=1;html=1;" parent="1" source="38" target="39" edge="1">
-          <mxGeometry width="100" height="100" as="geometry">
-            <mxPoint y="100" as="sourcePoint" />
-            <mxPoint x="100" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="46" value="否" style="text;fontStyle=0;html=1;strokeColor=none;gradientColor=none;fillColor=none;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="399.5" y="730" width="40" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="53" value="yes" style="text;fontStyle=0;html=1;strokeColor=none;gradientColor=none;fillColor=none;strokeWidth=2;align=center;" parent="1" vertex="1">
-          <mxGeometry x="321" y="1680" width="40" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="55" value="no" style="text;fontStyle=0;html=1;strokeColor=none;gradientColor=none;fillColor=none;strokeWidth=2;" parent="1" vertex="1">
-          <mxGeometry x="235" y="1624" width="40" height="26" as="geometry" />
         </mxCell>
         <mxCell id="oljr4GYHlcfW-H4m6MY4-55" value="计算点云" style="shape=mxgraph.flowchart.data;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" vertex="1" parent="1">
           <mxGeometry x="241.5" y="600" width="159" height="80" as="geometry" />
