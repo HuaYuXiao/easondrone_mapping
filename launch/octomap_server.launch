@@ -10,6 +10,6 @@
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
         <rosparam command="load" file="$(find easondrone_mapping)/config/octomap_server.yaml"/>
 
-        <remap from="/cloud_in" to="/velodyne_points"/>
+        <remap from="/cloud_in" to="/sensor/pcl2_out"/>
     </node>
 </launch>

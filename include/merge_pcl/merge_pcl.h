@@ -1,9 +1,9 @@
 //
-// Created by hyx020222 on 5/2/24.
+// Created by Eason Hua on 5/2/24.
 //
 
-#ifndef UAV_OCTOMAPPING_ADD_PCL_H
-#define UAV_OCTOMAPPING_ADD_PCL_H
+#ifndef MERGE_PCL_H
+#define MERGE_PCL_H
 
 #include <ros/ros.h>
 #include <ros/rate.h>
@@ -19,8 +19,34 @@
 #include <message_filters/sync_policies/approximate_time.h>
 #include <message_filters/sync_policies/exact_time.h>
 #include <message_filters/time_synchronizer.h>
-
-#include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/PointCloud2.h>
 
-#endif //UAV_OCTOMAPPING_ADD_PCL_H
+using namespace std;
+
+class PointCloudMerger {
+public:
+    PointCloudMerger();
+    ~PointCloudMerger() = default;
+
+    void mergeCallback(const sensor_msgs::PointCloud2ConstPtr& pcl2_0,
+                       const sensor_msgs::PointCloud2ConstPtr& pcl2_1);
+
+private:
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::PointCloud2, sensor_msgs::PointCloud2>
+            SyncPolicy;
+    typedef shared_ptr<message_filters::Synchronizer<SyncPolicy>> Synchronizer;
+
+    ros::NodeHandle nh;
+
+    int pcl2_source_num;
+    std::string pcl2_topic_0, pcl2_topic_1, pcl2_topic_out;
+    std::string pcl2_frame_0, pcl2_frame_1;
+    
+
+    shared_ptr<message_filters::Subscriber<sensor_msgs::PointCloud2>> pcl2_sub_0, pcl2_sub_1;
+    Synchronizer synchronizer_;
+    tf::TransformListener listener0, listener1;
+    ros::Publisher pcl2_pub;
+};
+
+#endif //MERGE_PCL_H

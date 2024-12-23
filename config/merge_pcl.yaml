@@ -1,0 +1,6 @@
+pcl2_source_num: 2
+pcl2_topic_0: /livox/lidar
+pcl2_frame_0: laser_livox
+pcl2_topic_1: /realsense/depth_camera/depth/points
+pcl2_frame_0: realsense_camera_frame
+pcl2_topic_out: /sensor/pcl2_out

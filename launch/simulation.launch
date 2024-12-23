@@ -1,17 +1,24 @@
 <launch>
     <include file="$(find easondrone_gazebo)/launch/mavros_posix_sitl.launch"/>
 
+    <node name="point_cloud_converter" type="point_cloud_converter_node" pkg="point_cloud_converter">
+        <remap from="points_in" to="/livox/lidar_raw" />
+        <remap from="points2_out" to="/livox/lidar" />
+    </node>
+
     <include file="$(find easondrone_gazebo)/launch/transform.launch"/>
 
     <include file="$(find px4ctrl)/launch/px4ctrl.launch"/>
 
     <node type="odom_visualization" pkg="odom_visualization" name="odom_visualization"/>
 
-    <node name="pub_pcl_world" pkg="easondrone_mapping" type="pub_pcl_world"/>
+    <!-- <node name="pub_pcl_world" pkg="easondrone_mapping" type="pub_pcl_world.py"/> -->
 
-    <!-- 启动octomap建图 -->
     <include file="$(find easondrone_mapping)/launch/octomap_server.launch"/>
 
-    <!-- 启动rviz -->
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find easondrone_mapping)/config/rviz_config.rviz"/>
+    <node pkg="easondrone_mapping" type="merge_pcl" name="merge_pcl">
+        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pcl.yaml" />
+    </node>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find easondrone_mapping)/config/easondrone.rviz"/>
 </launch>

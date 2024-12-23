@@ -2,7 +2,7 @@
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FEasonDrone_Mapping.json%3Fcolor%3Dpink)
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
-![Static Badge](https://img.shields.io/badge/C%2B%2B-14-00599C?logo=cplusplus)
+![Static Badge](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus)
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
 
@@ -11,8 +11,8 @@ A ROS package for mapping via octomap.
 ## Installation
 
 ```bash
-cd ~/EasonDrone
-catkin_make --source Reconstruction/easondrone_mapping --build Reconstruction/easondrone_mapping/build
+git clone https://github.com/HuaYuXiao/easondrone_mapping.git ~/easondrone_ws/reconstruct/easondrone_mapping
+cd ~/easondrone_ws && catkin_make install --source reconstruct/easondrone_mapping --build reconstruct/easondrone_mapping/build
 ```
 
 ## 转发点云
@@ -37,7 +37,7 @@ roslaunch easondrone_mapping simulation.launch
 控制无人机完成建图后，用以下指令保存.ot（或者.bt，相较于.ot体积更小）格式的地图文件
 
 ```bash
-rosrun octomap_server octomap_saver -f ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.ot
+rosrun octomap_server octomap_saver -f ~/easondrone_ws/reconstruct/easondrone_mapping/map.ot
 ```
 
 ![image](doc/log/2024-03-11/%E6%97%A0%E6%A0%87%E9%A2%98.png)
@@ -55,7 +55,7 @@ rosrun octomap_server octomap_saver -f ~/EasonDrone/Reconstruction/EasonDrone_Ma
 也可以借助`octovis`工具查看
 
 ```bash
-octovis ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
+octovis ~/easondrone_ws/reconstruct/easondrone_mapping/map.bt
 ```
 
 ### 方法2：rviz
@@ -63,8 +63,8 @@ octovis ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
 一种方法是在`rviz`中查看
 
 ```bash
-rosrun rviz rviz
-rosrun octomap_server octomap_server_node ~/EasonDrone/Reconstruction/EasonDrone_Mapping/map.bt
+rviz
+rosrun octomap_server octomap_server_node ~/easondrone_ws/reconstruct/easondrone_mapping/map.bt
 ```
 
 添加`OccupancyGrid`，话题选择`/octomap_binary`，
@@ -80,9 +80,3 @@ rosrun octomap_server octomap_server_node ~/EasonDrone/Reconstruction/EasonDrone
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
-
-## Acknowledgement
-
-Thanks for following packages:
-
-- [global_planning](https://github.com/amov-lab/Prometheus/Modules/planning/global_planning)

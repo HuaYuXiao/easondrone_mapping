@@ -22,7 +22,8 @@
     <depend>octomap</depend>
     <depend>message_filters</depend>
     <depend>tf</depend>
-    <depend>easondrone_msgs</depend>
+    <depend>tf2_ros</depend>
+    <depend>tf2_sensor_msgs</depend>
 
     <export>
         <build_type>catkin</build_type>
