@@ -8,6 +8,7 @@
 #include <thread>
 #include <deque>
 #include <mutex>
+#include <vector>
 #include <ros/ros.h>
 #include <ros/rate.h>
 #include <pcl_ros/point_cloud.h>
@@ -34,29 +35,27 @@ public:
 private:
     ros::NodeHandle nh;
 
-    int pcl2_source_num;
+    // Parameters
+    std::vector<std::string> pcl2_topics_in;
     size_t queue_size;
+    std::vector<ros::Subscriber> pcl2_subs;
     double timeout;
 
-    std::string pcl2_topic_0, pcl2_frame_0;
-    ros::Subscriber pcl2_sub_0;
-    void pcl2Callback0(const sensor_msgs::PointCloud2ConstPtr& pcl2);
-
-    std::string pcl2_topic_1, pcl2_frame_1;
-    ros::Subscriber pcl2_sub_1;
-    void pcl2Callback1(const sensor_msgs::PointCloud2ConstPtr& pcl2);
-
-    // Buffers to store point clouds
-    std::deque<pcl::PointCloud<pcl::PointXYZ>::Ptr> buffer_0;
-    std::deque<pcl::PointCloud<pcl::PointXYZ>::Ptr> buffer_1;
-    std::mutex buffer_mutex;
-
     // Transform listeners
-    tf::TransformListener listener0, listener1;
+    std::vector<std::shared_ptr<tf::TransformListener>> tf_listeners;
     double tf_duration;
 
-    std::string pcl2_topic_out, pcl2_frame_out;
+    // Buffers to store point clouds
+    std::deque<pcl::PointCloud<pcl::PointXYZ>::Ptr> pclxyz_buffer;
+    std::mutex buffer_mutex;
+
+    // Output topic and frame
+    std::string pcl2_topic_out;
+    std::string pcl2_frame_out;
     ros::Publisher pcl2_pub;
+
+    // Unified callback for point cloud subscribers
+    void pcl2Callback(const sensor_msgs::PointCloud2ConstPtr& pcl2, size_t index);
 };
 
 #endif //MERGE_PCL_H

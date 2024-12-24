@@ -3,104 +3,74 @@
 using namespace std;
 
 PointCloudMerger::PointCloudMerger() : nh("~") {
-    nh.param<int>("pcl2_source_num", pcl2_source_num, 2);
-    queue_size = boost::thread::hardware_concurrency();
+    nh.getParam("pcl2_topics_in", pcl2_topics_in);
     nh.param<double>("timeout", timeout, 0.5);
 
-    nh.param<string>("pcl2_topic_0", pcl2_topic_0, "");
-    nh.param<string>("pcl2_frame_0", pcl2_frame_0, "");
-    pcl2_sub_0 = nh.subscribe<sensor_msgs::PointCloud2>
-    (pcl2_topic_0, queue_size, &PointCloudMerger::pcl2Callback0, this);
+    queue_size = boost::thread::hardware_concurrency();
 
-    nh.param<string>("pcl2_topic_1", pcl2_topic_1, "");
-    nh.param<string>("pcl2_frame_1", pcl2_frame_1, "");
-    pcl2_sub_1 = nh.subscribe<sensor_msgs::PointCloud2>
-    (pcl2_topic_1, queue_size, &PointCloudMerger::pcl2Callback1, this);
+    for (size_t i = 0; i < pcl2_topics_in.size(); ++i) {
+        string pcl2_topic_in = pcl2_topics_in[i];
+        pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz(new pcl::PointCloud<pcl::PointXYZ>());
+        pclxyz_buffer.push_back(pclxyz);
+        tf_listeners.emplace_back(new tf::TransformListener());
 
-    nh.param<double>("tf_duration", tf_duration, 0.1);
-    listener0.waitForTransform(pcl2_frame_out, pcl2_frame_0, ros::Time(0), ros::Duration(tf_duration));
-    listener1.waitForTransform(pcl2_frame_out, pcl2_frame_1, ros::Time(0), ros::Duration(tf_duration));
+        pcl2_subs.emplace_back(
+            nh.subscribe<sensor_msgs::PointCloud2>(
+                pcl2_topic_in, queue_size, 
+                boost::bind(&PointCloudMerger::pcl2Callback, this, _1, i)
+            )
+        );
+    }
+
+    nh.param<double>("tf_duration", tf_duration, 0.05);
 
     nh.param<string>("pcl2_topic_out", pcl2_topic_out, "");
     nh.param<string>("pcl2_frame_out", pcl2_frame_out, "");
-    pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>
-    (pcl2_topic_out, queue_size);
+    pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>(pcl2_topic_out, queue_size);
 
-    ROS_INFO("[merge_pcl] Initialized!");
+    ROS_INFO("[merge_pcl] Initialized success!");
 }
 
-void PointCloudMerger::pcl2Callback0(const sensor_msgs::PointCloud2ConstPtr& pcl2) {
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz_0(new pcl::PointCloud<pcl::PointXYZ>());
-    pcl::fromROSMsg(*pcl2, *pclxyz_0);
+void PointCloudMerger::pcl2Callback(const sensor_msgs::PointCloud2ConstPtr& pcl2_msg, size_t index) {
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz(new pcl::PointCloud<pcl::PointXYZ>());
+    pcl::fromROSMsg(*pcl2_msg, *pclxyz);
 
-    if (pcl2->header.frame_id != pcl2_frame_out) {
+    if (pcl2_msg->header.frame_id != pcl2_frame_out) {
         try {
-            pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener0);
+            pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz, *pclxyz, *tf_listeners[index]);
         } 
         catch (...) {
-            ROS_ERROR("Transform failed for pcl2_0!");
+            ROS_ERROR("Transform failed for pcl2_topic_in index %zu!", index);
             return;
         }
     }
 
     std::lock_guard<std::mutex> lock(buffer_mutex);
-    buffer_0.push_back(pclxyz_0);
-    if (buffer_0.size() > queue_size) {
-        buffer_0.pop_front();
-    }
-}
-
-void PointCloudMerger::pcl2Callback1(const sensor_msgs::PointCloud2ConstPtr& pcl2) {
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz_1(new pcl::PointCloud<pcl::PointXYZ>());
-    pcl::fromROSMsg(*pcl2, *pclxyz_1);
-
-    if (pcl2->header.frame_id != pcl2_frame_out) {
-        try {
-            pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener1);
-        } 
-        catch (...) {
-            ROS_ERROR("Transform failed for pcl2_1!");
-            return;
-        }
-    }
-
-    std::lock_guard<std::mutex> lock(buffer_mutex);
-    buffer_1.push_back(pclxyz_1);
-    if (buffer_1.size() > queue_size) {
-        buffer_1.pop_front();
-    }
+    *pclxyz_buffer[index] = *pclxyz;
 }
 
 void PointCloudMerger::processBuffers() {
     while (ros::ok()) {
-        pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz_0, pclxyz_1, pclxyz_output;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz_out(new pcl::PointCloud<pcl::PointXYZ>());
 
         {
             std::lock_guard<std::mutex> lock(buffer_mutex);
-            if (!buffer_0.empty()) {
-                pclxyz_0 = buffer_0.front();
-                buffer_0.pop_front();
-            }
-            if (!buffer_1.empty()) {
-                pclxyz_1 = buffer_1.front();
-                buffer_1.pop_front();
+            for (const auto& pclxyz : pclxyz_buffer) {
+                if (!pclxyz->empty()) {
+                    *pclxyz_out += *pclxyz;
+                }
             }
         }
 
-        if (pclxyz_0 || pclxyz_1) {
-            pclxyz_output.reset(new pcl::PointCloud<pcl::PointXYZ>());
-            if(pclxyz_0){
-                *pclxyz_output += *pclxyz_0;
-            }
-            if(pclxyz_1){
-                *pclxyz_output += *pclxyz_1;
-            }
+        if (!pclxyz_out->empty()) {
+            sensor_msgs::PointCloud2 pcl2_out;
+            pcl::toROSMsg(*pclxyz_out, pcl2_out);
+            pcl2_out.header.frame_id = pcl2_frame_out;
 
-            sensor_msgs::PointCloud2 pcl2_output;
-            pcl2_output.header.frame_id = pcl2_frame_out;
-            pcl::toROSMsg(*pclxyz_output, pcl2_output);
-
-            pcl2_pub.publish(pcl2_output);
+            pcl2_pub.publish(pcl2_out);
+        }
+        else{
+            ROS_WARN("empty pointcloud!");
         }
 
         ros::Duration(tf_duration).sleep();  // Small delay to avoid excessive CPU usage
@@ -109,12 +79,12 @@ void PointCloudMerger::processBuffers() {
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "merge_pcl");
-    PointCloudMerger pc_merger;
+    PointCloudMerger merge_pcl;
 
-    boost::thread processing_thread(&PointCloudMerger::processBuffers, &pc_merger);
+    boost::thread process_thread(&PointCloudMerger::processBuffers, &merge_pcl);
 
     ros::spin();
-    processing_thread.join();
+    process_thread.join();
 
     return 0;
 }
