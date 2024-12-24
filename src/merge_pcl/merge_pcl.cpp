@@ -22,7 +22,7 @@ PointCloudMerger::PointCloudMerger() : nh("~"){
     synchronizer_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(100), *pcl2_sub_0, *pcl2_sub_1));
     synchronizer_->registerCallback(boost::bind(&PointCloudMerger::mergeCallback, this, _1, _2));
 
-    pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>(pcl2_topic_out, 10);
+    pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>(pcl2_topic_out, queue_size);
 
     listener0.waitForTransform(pcl2_frame_out, pcl2_frame_0, ros::Time(0), ros::Duration(tf_duration));
     listener1.waitForTransform(pcl2_frame_out, pcl2_frame_1, ros::Time(0), ros::Duration(tf_duration));
@@ -37,14 +37,24 @@ void PointCloudMerger::mergeCallback(const sensor_msgs::PointCloud2ConstPtr& pcl
     pcl::fromROSMsg(*pcl2_0, *pclxyz_0);
     // check if both frames are the same
     if(pcl2_0->header.frame_id != pcl2_frame_out){
-        pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener1);      
+        try{
+            pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener0);  
+        }
+        catch(...){
+            ROS_ERROR("pcl_ros::transformPointCloud failed!");
+        }
     }
 
     pclxyz_1.reset(new pcl::PointCloud<pcl::PointXYZ>());
     pcl::fromROSMsg(*pcl2_1, *pclxyz_1);
     // check if both frames are the same
     if(pcl2_1->header.frame_id != pcl2_frame_out){
-        pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener0);
+        try{
+            pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener1);  
+        }
+        catch(...){
+            ROS_ERROR("pcl_ros::transformPointCloud failed!");
+        }
     }
 
     pclxyz_output.reset(new pcl::PointCloud<pcl::PointXYZ>());
