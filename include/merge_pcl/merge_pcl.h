@@ -39,13 +39,16 @@ private:
     ros::NodeHandle nh;
 
     int pcl2_source_num;
-    std::string pcl2_topic_0, pcl2_topic_1, pcl2_topic_out;
-    std::string pcl2_frame_0, pcl2_frame_1, pcl2_frame_out;
-
+    std::string pcl2_topic_0, pcl2_frame_0;
+    std::string pcl2_topic_1, pcl2_frame_1;
     shared_ptr<message_filters::Subscriber<sensor_msgs::PointCloud2>> pcl2_sub_0, pcl2_sub_1;
     int queue_size;
     Synchronizer synchronizer_;
+
     tf::TransformListener listener0, listener1;
+    double tf_duration;
+
+    std::string pcl2_topic_out, pcl2_frame_out;
     ros::Publisher pcl2_pub;
 };
 

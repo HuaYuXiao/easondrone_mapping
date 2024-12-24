@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v2.1.4 - 2024-12-24
 - [upgrade] set `queue_size` of `Subscriber` to `boost::thread::hardware_concurrency()`
+- [upgrade] check if both `frame_id`s are the same
+- [upgrade] configurable `tf_duration`
 
 ## v2.1.3: 2024-08-23
 - [new feature] 转发lidar_frame坐标系下的点云到world坐标系下
