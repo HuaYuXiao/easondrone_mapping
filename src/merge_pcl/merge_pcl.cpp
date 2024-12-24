@@ -8,6 +8,7 @@ PointCloudMerger::PointCloudMerger() : nh("~"){
     nh.param<string>("pcl2_frame_0", pcl2_frame_0, "");
     nh.param<string>("pcl2_topic_1", pcl2_topic_1, "");
     nh.param<string>("pcl2_frame_1", pcl2_frame_1, "");
+    nh.param<double>("tf_duration", tf_duration, 0.1);
     nh.param<string>("pcl2_topic_out", pcl2_topic_out, "");
     nh.param<string>("pcl2_frame_out", pcl2_frame_out, "");
 
@@ -23,9 +24,8 @@ PointCloudMerger::PointCloudMerger() : nh("~"){
 
     pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>(pcl2_topic_out, 10);
 
-    // TODO: configurable dura
-    listener0.waitForTransform(pcl2_frame_out, pcl2_frame_0, ros::Time(0), ros::Duration(0.05));
-    listener1.waitForTransform(pcl2_frame_out, pcl2_frame_1, ros::Time(0), ros::Duration(0.05));
+    listener0.waitForTransform(pcl2_frame_out, pcl2_frame_0, ros::Time(0), ros::Duration(tf_duration));
+    listener1.waitForTransform(pcl2_frame_out, pcl2_frame_1, ros::Time(0), ros::Duration(tf_duration));
 
     ROS_INFO("[easondrone_mapping] merge_pcl initialized!");
 }
@@ -35,13 +35,17 @@ void PointCloudMerger::mergeCallback(const sensor_msgs::PointCloud2ConstPtr& pcl
 
     pclxyz_0.reset(new pcl::PointCloud<pcl::PointXYZ>());
     pcl::fromROSMsg(*pcl2_0, *pclxyz_0);
-    // TODO: check if both frames are the same
-    pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener1);
+    // check if both frames are the same
+    if(pcl2_0->header.frame_id != pcl2_frame_out){
+        pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener1);      
+    }
 
     pclxyz_1.reset(new pcl::PointCloud<pcl::PointXYZ>());
     pcl::fromROSMsg(*pcl2_1, *pclxyz_1);
-    // TODO: check if both frames are the same
-    pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener0);
+    // check if both frames are the same
+    if(pcl2_1->header.frame_id != pcl2_frame_out){
+        pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener0);
+    }
 
     pclxyz_output.reset(new pcl::PointCloud<pcl::PointXYZ>());
 
