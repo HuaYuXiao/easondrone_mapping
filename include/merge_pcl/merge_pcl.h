@@ -36,6 +36,7 @@ private:
 
     int pcl2_source_num;
     size_t queue_size;
+    double timeout;
 
     std::string pcl2_topic_0, pcl2_frame_0;
     ros::Subscriber pcl2_sub_0;
@@ -46,8 +47,8 @@ private:
     void pcl2Callback1(const sensor_msgs::PointCloud2ConstPtr& pcl2);
 
     // Buffers to store point clouds
-    std::deque<sensor_msgs::PointCloud2ConstPtr> buffer_0;
-    std::deque<sensor_msgs::PointCloud2ConstPtr> buffer_1;
+    std::deque<pcl::PointCloud<pcl::PointXYZ>::Ptr> buffer_0;
+    std::deque<pcl::PointCloud<pcl::PointXYZ>::Ptr> buffer_1;
     std::mutex buffer_mutex;
 
     // Transform listeners
