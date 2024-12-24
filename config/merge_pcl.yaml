@@ -4,3 +4,5 @@ pcl2_frame_0: laser_livox
 pcl2_topic_1: /realsense/depth_camera/depth/points
 pcl2_frame_0: realsense_camera_frame
 pcl2_topic_out: /sensor/pcl2_out
+pcl2_frame_out: base_link
+timeout: 0.1

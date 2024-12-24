@@ -4,15 +4,17 @@
 ![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
 ![Static Badge](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus)
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
-![Static Badge](https://img.shields.io/badge/Ubuntu-18.04.6-E95420?logo=ubuntu)
+![Static Badge](https://img.shields.io/badge/Ubuntu-20.04.6-E95420?logo=ubuntu)
 
 A ROS package for mapping via octomap.
 
 ## Installation
 
 ```bash
-git clone https://github.com/HuaYuXiao/easondrone_mapping.git ~/easondrone_ws/reconstruct/easondrone_mapping
-cd ~/easondrone_ws && catkin_make install --source reconstruct/easondrone_mapping --build reconstruct/easondrone_mapping/build
+cd ~/easondrone_ws/reconstruct
+git clone https://github.com/HuaYuXiao/easondrone_mapping.git
+cd ~/easondrone_ws
+catkin_make --source reconstruct/easondrone_mapping --build reconstruct/easondrone_mapping/build
 ```
 
 ## 转发点云
@@ -23,11 +25,20 @@ EGO-Planner等规划器要求点云发布在world坐标系下，因此需要将�
 rosrun easondrone_mapping pub_pcl_world.py
 ```
 
+## merge pointcloud
+
+```xml
+<launch>
+    <node pkg="easondrone_mapping" type="merge_pcl" name="merge_pcl">
+        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pcl.yaml" />
+    </node>
+</launch>
+```
 
 ## 建立地图
 
 ```bash
-roslaunch easondrone_mapping simulation.launch
+roslaunch easondrone_mapping octomap_server.launch
 ```
 
 ## 保存地图

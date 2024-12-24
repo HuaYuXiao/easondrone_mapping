@@ -9,45 +9,51 @@ PointCloudMerger::PointCloudMerger() : nh("~"){
     nh.param<string>("pcl2_topic_1", pcl2_topic_1, "");
     nh.param<string>("pcl2_frame_1", pcl2_frame_1, "");
     nh.param<string>("pcl2_topic_out", pcl2_topic_out, "");
+    nh.param<string>("pcl2_frame_out", pcl2_frame_out, "");
 
-    pcl2_sub_0.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, pcl2_topic_0, 50));
-    pcl2_sub_1.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, pcl2_topic_1, 50));
+    queue_size = boost::thread::hardware_concurrency();
+
+    pcl2_sub_0.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>
+    (nh, pcl2_topic_0, queue_size));
+    pcl2_sub_1.reset(new message_filters::Subscriber<sensor_msgs::PointCloud2>
+    (nh, pcl2_topic_1, queue_size));
 
     synchronizer_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(100), *pcl2_sub_0, *pcl2_sub_1));
     synchronizer_->registerCallback(boost::bind(&PointCloudMerger::mergeCallback, this, _1, _2));
 
     pcl2_pub = nh.advertise<sensor_msgs::PointCloud2>(pcl2_topic_out, 10);
 
-    listener0.waitForTransform("base_link", pcl2_frame_0, ros::Time(0), ros::Duration(0.05));
-    listener1.waitForTransform("base_link", pcl2_frame_1, ros::Time(0), ros::Duration(0.05));
+    // TODO: configurable dura
+    listener0.waitForTransform(pcl2_frame_out, pcl2_frame_0, ros::Time(0), ros::Duration(0.05));
+    listener1.waitForTransform(pcl2_frame_out, pcl2_frame_1, ros::Time(0), ros::Duration(0.05));
 
-    std::cout << "[easondrone_mapping] merge_pcl initialized!" << std::endl;
+    ROS_INFO("[easondrone_mapping] merge_pcl initialized!");
 }
 
 void PointCloudMerger::mergeCallback(const sensor_msgs::PointCloud2ConstPtr& pcl2_0, const sensor_msgs::PointCloud2ConstPtr& pcl2_1) {
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_xyz_0, pcl_xyz_1, pcl_xyz_output;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclxyz_0, pclxyz_1, pclxyz_output;
 
-    pcl_xyz_0.reset(new pcl::PointCloud<pcl::PointXYZ>());
-    pcl::fromROSMsg(*pcl2_0, *pcl_xyz_0);
-    // 转换D435i点云到map坐标系
-    pcl_ros::transformPointCloud("base_link", *pcl_xyz_0, *pcl_xyz_0, listener1);
+    pclxyz_0.reset(new pcl::PointCloud<pcl::PointXYZ>());
+    pcl::fromROSMsg(*pcl2_0, *pclxyz_0);
+    // TODO: check if both frames are the same
+    pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_0, *pclxyz_0, listener1);
 
-    pcl_xyz_1.reset(new pcl::PointCloud<pcl::PointXYZ>());
-    pcl::fromROSMsg(*pcl2_1, *pcl_xyz_1);
-    // 转换LiDAR点云到map坐标系
-    pcl_ros::transformPointCloud("base_link", *pcl_xyz_1, *pcl_xyz_1, listener0);
+    pclxyz_1.reset(new pcl::PointCloud<pcl::PointXYZ>());
+    pcl::fromROSMsg(*pcl2_1, *pclxyz_1);
+    // TODO: check if both frames are the same
+    pcl_ros::transformPointCloud(pcl2_frame_out, *pclxyz_1, *pclxyz_1, listener0);
 
-    pcl_xyz_output.reset(new pcl::PointCloud<pcl::PointXYZ>());
+    pclxyz_output.reset(new pcl::PointCloud<pcl::PointXYZ>());
 
-    pcl_xyz_output->header.seq = pcl_xyz_1->header.seq;
-    pcl_xyz_output->header.stamp = pcl_xyz_1->header.stamp;
-    pcl_xyz_output->header.frame_id = "base_link";
+    pclxyz_output->header.seq = pclxyz_1->header.seq;
+    pclxyz_output->header.stamp = pclxyz_1->header.stamp;
+    pclxyz_output->header.frame_id = pcl2_frame_out;
 
-    *pcl_xyz_output += *pcl_xyz_1;
-    *pcl_xyz_output += *pcl_xyz_0;
+    *pclxyz_output += *pclxyz_1;
+    *pclxyz_output += *pclxyz_0;
 
     sensor_msgs::PointCloud2 pcl2_output;
-    pcl::toROSMsg(*pcl_xyz_output, pcl2_output);
+    pcl::toROSMsg(*pclxyz_output, pcl2_output);
 
     if(pcl2_pub){
         pcl2_pub.publish(pcl2_output);

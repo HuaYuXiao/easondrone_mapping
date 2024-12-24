@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 2.8.3)
 project(easondrone_mapping)
 
 set(CMAKE_BUILD_TYPE "Release")
@@ -9,6 +9,7 @@ set(PYTHON_EXECUTABLE "/usr/bin/python3.8")
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
 find_package(octomap REQUIRED)
+find_package(Boost REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
        roscpp
        rospy
@@ -36,6 +37,7 @@ include_directories(
        ${Eigen3_INCLUDE_DIRS}
        ${PCL_INCLUDE_DIRS}
 		${OCTOMAP_INCLUDE_DIRS}
+		${Boost_INCLUDE_DIRS}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
@@ -45,6 +47,7 @@ add_executable(merge_pcl src/merge_pcl/merge_pcl.cpp)
 target_link_libraries(merge_pcl
 		${catkin_LIBRARIES}
 		${PCL_LIBRARIES}
+		${Boost_LIBRARIES}
 )
 
 catkin_install_python(PROGRAMS
