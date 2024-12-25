@@ -6,7 +6,7 @@
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-20.04.6-E95420?logo=ubuntu)
 
-A ROS package for mapping via octomap.
+A ROS package to process PointCloud and build OctoMap
 
 ## Installation
 
@@ -25,7 +25,30 @@ EGO-Planner等规划器要求点云发布在world坐标系下，因此需要将�
 rosrun easondrone_mapping pub_pcl_world.py
 ```
 
-## merge pointcloud
+## Merge Multiple sensor_msgs::PointCloud2
+
+### Config Parameters
+
+```yaml
+pc2_topics_in: 
+    - /livox/lidar
+    - /realsense/depth_camera/depth/points
+timeout: 0.5
+
+tf_duration: 0.05
+
+# The Iterative Closest Point algorithm
+icp_enable: true
+icp_max_iter: 1
+icp_tf_epsilon: 1e-8
+icp_euclidean_fitness_epsilon: 1e-5
+icp_max_corr_d: 0.05
+
+pc2_topic_out: /sensor/pc2_out
+pc2_frame_out: base_link
+```
+
+### Launch ROS Node
 
 ```xml
 <launch>
@@ -35,13 +58,15 @@ rosrun easondrone_mapping pub_pcl_world.py
 </launch>
 ```
 
-## 建立地图
+## Build OctoMap
+
+### Launch ROS Node
 
 ```bash
 roslaunch easondrone_mapping octomap_server.launch
 ```
 
-## 保存地图
+### Save Map
 
 > You are trying to invoke `octomap_saver` as an argument to the `octomap_server` node. However, `octomap_saver` is a node of its own, so you only have to start it from a separate terminal while `octomap_server` is running. Check the documentation at http://wiki.ros.org/octomap_server#octomap_saver
 
@@ -59,9 +84,9 @@ rosrun octomap_server octomap_saver -f ~/easondrone_ws/reconstruct/easondrone_ma
 - ⭐️ https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/src/OctomapServer.cpp
 - ⭐️ https://groups.google.com/g/octomap/c/ZyfNzcuGlY0?pli=1
 
-## 查看地图
+### 查看地图
 
-### 方法1：octovis
+方法1：octovis
 
 也可以借助`octovis`工具查看
 
@@ -69,7 +94,7 @@ rosrun octomap_server octomap_saver -f ~/easondrone_ws/reconstruct/easondrone_ma
 octovis ~/easondrone_ws/reconstruct/easondrone_mapping/map.bt
 ```
 
-### 方法2：rviz
+方法2：rviz
 
 一种方法是在`rviz`中查看
 
@@ -86,7 +111,7 @@ rosrun octomap_server octomap_server_node ~/easondrone_ws/reconstruct/easondrone
 - [在ROS中将点云（PointCloud2）生成Octomap，rviz可视化显示](https://blog.csdn.net/qq_41816368/article/details/133929136)
 - ⭐️ [octomap in rviz and occupancy grids in 3D maps](https://robotics.stackexchange.com/questions/41362/octomap-in-rviz-and-occupancy-grids-in-3d-maps)
 
-## 加载地图
+### 加载地图
 
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)

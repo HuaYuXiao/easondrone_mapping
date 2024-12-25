@@ -1,9 +1,9 @@
-pcl2_source_num: 2
-pcl2_topic_0: /livox/lidar
-pcl2_frame_0: laser_livox
-pcl2_topic_1: /realsense/depth_camera/depth/points
-pcl2_frame_0: realsense_camera_frame
-tf_duration: 0.1
-pcl2_topic_out: /sensor/pcl2_out
-pcl2_frame_out: base_link
-timeout: 0.1
+pc2_topics_in: 
+    - /livox/lidar
+    - /realsense/depth_camera/depth/points
+timeout: 0.5
+
+tf_duration: 0.05
+
+pc2_topic_out: /sensor/pc2_out
+pc2_frame_out: base_link

@@ -6,14 +6,12 @@ set(CMAKE_CXX_FLAGS "-std=c++17")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 set(PYTHON_EXECUTABLE "/usr/bin/python3.8")
 
-find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
 find_package(octomap REQUIRED)
 find_package(Boost REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
        roscpp
        rospy
-		message_filters
 		tf
 		pcl_ros
        std_msgs
@@ -34,7 +32,6 @@ include_directories(
        SYSTEM
        include
        ${catkin_INCLUDE_DIRS}
-       ${Eigen3_INCLUDE_DIRS}
        ${PCL_INCLUDE_DIRS}
 		${OCTOMAP_INCLUDE_DIRS}
 		${Boost_INCLUDE_DIRS}
