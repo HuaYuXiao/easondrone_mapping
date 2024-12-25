@@ -6,7 +6,7 @@ PointCloudMerger::PointCloudMerger() : nh("~") {
     nh.getParam("pc2_topics_in", pc2_topics_in);
     nh.param<double>("timeout", timeout, 0.5);
 
-    queue_size = boost::thread::hardware_concurrency();
+    queue_size = std::thread::hardware_concurrency();
 
     for (size_t i = 0; i < pc2_topics_in.size(); ++i) {
         string pc2_topic_in = pc2_topics_in[i];
@@ -28,7 +28,7 @@ PointCloudMerger::PointCloudMerger() : nh("~") {
     nh.param<string>("pc2_frame_out", pc2_frame_out, "");
     pc2_pub = nh.advertise<sensor_msgs::PointCloud2>(pc2_topic_out, queue_size);
 
-    ROS_INFO("[merge_pcl] Initialized success!");
+    ROS_INFO("merge_pcl node initialized success!");
 }
 
 void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, size_t index) {
@@ -38,9 +38,9 @@ void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_m
     if (pc2_msg->header.frame_id != pc2_frame_out) {
         try {
             pcl_ros::transformPointCloud(pc2_frame_out, *pcT, *pcT, *tf_listeners[index]);
-        } 
+        }
         catch (...) {
-            ROS_ERROR("Transform failed for pc2_topic_in index %zu!", index);
+            ROS_ERROR("Transform failed for pc2 %zu!", index);
             return;
         }
     }
@@ -56,7 +56,15 @@ void PointCloudMerger::processBuffers() {
         {
             std::lock_guard<std::mutex> lock(buffer_mutex);
             for (const auto& pcT : pcT_buffer) {
-                if (!pcT->empty()) {
+                if (pcT->empty()) {
+                    PCL_ERROR("Empty pointcloud received! If this continues, be careful!\n");
+                    continue;
+                }
+                else if(pcT_out->empty()){
+                    *pcT_out += *pcT;
+                }
+                else{
+                    // TODO: Optional ICP
                     *pcT_out += *pcT;
                 }
             }
@@ -70,10 +78,11 @@ void PointCloudMerger::processBuffers() {
             pc2_pub.publish(pc2_out);
         }
         else{
-            ROS_WARN("empty pointcloud!");
+            PCL_ERROR("All pointclouds are empty! If this continues, be careful!\n");
         }
 
-        ros::Duration(tf_duration).sleep();  // Small delay to avoid excessive CPU usage
+        // Small delay to avoid excessive CPU usage
+        ros::Duration(tf_duration).sleep();  
     }
 }
 
@@ -81,10 +90,10 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "merge_pcl");
     PointCloudMerger merge_pcl;
 
-    boost::thread process_thread(&PointCloudMerger::processBuffers, &merge_pcl);
+    std::thread process_thread(&PointCloudMerger::processBuffers, &merge_pcl);
 
     ros::spin();
-    process_thread.join();
+    // process_thread.join();
 
     return 0;
 }
