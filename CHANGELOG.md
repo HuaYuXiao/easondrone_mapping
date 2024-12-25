@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v2.1.6 - 2024-12-25
 - [new feature] support for random num of pointcloud input sources
 - [bug fix] a single `tf::TransformListener` is sufficient
+- improve safety and efficiency for buffer process
 - replace `boost::thread` with `std::thread`
 
 ## v2.1.5 - 2024-12-24

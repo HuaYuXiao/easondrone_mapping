@@ -34,10 +34,11 @@ public:
     void processBuffers();
 
 private:
-    // Parameters
+    // Subscribers
     std::vector<std::string> pc2_topics_in;
     size_t queue_size;
     std::vector<ros::Subscriber> pc2_subs;
+
     double timeout;
 
     // Transform listener
@@ -48,13 +49,13 @@ private:
     std::deque<PointCloudT::Ptr> pcT_buffer;
     std::mutex buffer_mutex;
 
-    // Output topic and frame
+    // Publisher
     std::string pc2_topic_out;
     std::string pc2_frame_out;
     ros::Publisher pc2_pub;
 
     // Unified callback for point cloud subscribers
-    void pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2, size_t index);
+    void pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2, const size_t index);
 };
 
 #endif //MERGE_PCL_H
