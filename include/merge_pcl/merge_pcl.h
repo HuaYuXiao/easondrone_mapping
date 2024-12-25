@@ -27,24 +27,22 @@ using namespace std;
 
 class PointCloudMerger {
 public:
-    PointCloudMerger();
+    PointCloudMerger(ros::NodeHandle nh);
     ~PointCloudMerger() = default;
 
     // Method to process buffers
     void processBuffers();
 
 private:
-    ros::NodeHandle nh;
-
     // Parameters
     std::vector<std::string> pc2_topics_in;
     size_t queue_size;
     std::vector<ros::Subscriber> pc2_subs;
     double timeout;
 
-    // Transform listeners
-    std::vector<std::shared_ptr<tf::TransformListener>> tf_listeners;
+    // Transform listener
     double tf_duration;
+    tf::TransformListener tf_listener;
 
     // Buffers to store point clouds
     std::deque<PointCloudT::Ptr> pcT_buffer;
