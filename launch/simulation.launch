@@ -16,8 +16,8 @@
 
     <include file="$(find easondrone_mapping)/launch/octomap_server.launch"/>
 
-    <node pkg="easondrone_mapping" type="merge_pcl" name="merge_pcl">
-        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pcl.yaml" />
+    <node pkg="easondrone_mapping" type="merge_pc2" name="merge_pc2">
+        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pc2.yaml" />
     </node>
 
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find easondrone_mapping)/config/easondrone.rviz"/>

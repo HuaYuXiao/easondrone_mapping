@@ -6,7 +6,7 @@
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-20.04.6-E95420?logo=ubuntu)
 
-A ROS package to process `PointCloud` and build `OctoMap`
+A ROS package to process `PointCloud2` and build `OctoMap`
 
 - merge or concatinate multiple `PointCloud2`s, with optional ICP algorithm, and publish `PointCloud2` in another frame
 - build `OctoMap` from `PointCloud2`
@@ -22,14 +22,6 @@ cd ~/easondrone_ws/reconstruct
 git clone https://github.com/HuaYuXiao/easondrone_mapping.git
 cd ~/easondrone_ws
 catkin_make --source reconstruct/easondrone_mapping --build reconstruct/easondrone_mapping/build
-```
-
-## 转发点云
-
-EGO-Planner等规划器要求点云发布在world坐标系下，因此需要将原本发布在lidar_frame的点云转发到world下
-
-```bash
-rosrun easondrone_mapping pub_pcl_world.py
 ```
 
 ## Merge Multiple sensor_msgs::PointCloud2
@@ -59,8 +51,8 @@ pc2_frame_out: base_link
 
 ```xml
 <launch>
-    <node pkg="easondrone_mapping" type="merge_pcl" name="merge_pcl">
-        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pcl.yaml" />
+    <node pkg="easondrone_mapping" type="merge_pc2" name="merge_pc2">
+        <rosparam command="load" file="$(find easondrone_mapping)/config/merge_pc2.yaml" />
     </node>
 </launch>
 ```
@@ -123,3 +115,17 @@ rosrun octomap_server octomap_server_node ~/easondrone_ws/reconstruct/easondrone
 参考：
 - ⭐ [how to use octomap_server?](https://answers.ros.org/question/361841/how-to-use-octomap_server/)
 - ⭐ [OctoMap/octomap_mapping](https://github.com/OctoMap/octomap_mapping/blob/kinetic-devel/octomap_server/launch/octomap_tracking_server.launch)
+
+## LaserScan to PointCloud2
+
+```bash
+rosrun easondrone_mapping laser_to_pointcloud.py
+```
+
+## (deprecated) 转发点云
+
+EGO-Planner等规划器要求点云发布在world坐标系下，因此需要将原本发布在lidar_frame的点云转发到world下
+
+```bash
+rosrun easondrone_mapping pub_pcl_world.py
+```

@@ -40,8 +40,11 @@ include_directories(
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable(merge_pcl src/merge_pcl/merge_pcl.cpp)
-target_link_libraries(merge_pcl
+add_executable(merge_pc2 
+	src/merge_pc2/merge_pc2_node.cpp
+	src/merge_pc2/merge_pc2.cpp
+	)
+target_link_libraries(merge_pc2
 		${catkin_LIBRARIES}
 		${PCL_LIBRARIES}
 		${Boost_LIBRARIES}
@@ -49,6 +52,5 @@ target_link_libraries(merge_pcl
 
 catkin_install_python(PROGRAMS
 		scripts/laser_to_pointcloud.py
-		scripts/pub_pcl_world.py
 		DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
