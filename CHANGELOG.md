@@ -6,14 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TODO
-- real multithread
+- real multi-thread
 - const cast
 - timeout
-- ICP as a Class
-- ICP multithread
+- ICP multi-thread
 
 ## v2.1.7 - 2024-12-26
 - [new feature] optional ICP algorithm for concatinate pointclouds
+- improve safety and efficiency for initialization
 
 ## v2.1.6 - 2024-12-25
 - [new feature] support for random num of pointcloud input sources
@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - replace `boost::thread` with `std::thread`
 
 ## v2.1.5 - 2024-12-24
-- [upgrade] apply multithread to process several pointclouds parallely
+- [upgrade] apply multi-thread to process several pointclouds parallely
 - [upgrade] store pointclouds with `std::deque`
 
 ## v2.1.4 - 2024-12-24

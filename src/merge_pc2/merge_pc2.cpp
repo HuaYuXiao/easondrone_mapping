@@ -3,9 +3,10 @@
 using namespace std;
 
 mergePC2::mergePC2(ros::NodeHandle nh)
-    : icp_utils(nh)  // Initialize icpUtils using the NodeHandle
+    : icp_utils(nh)
 {
     nh.getParam("pc2_topics_in", pc2_topics_in);
+
     nh.param<double>("timeout", timeout, 0.5);
 
     hardware_concurrency = std::thread::hardware_concurrency();
@@ -85,7 +86,6 @@ void mergePC2::mainLoop() {
                     }
                 }
 
-                sensor_msgs::PointCloud2 pc2_out;
                 pcl::toROSMsg(*pcT_out, pc2_out);
                 pc2_out.header.frame_id = pc2_frame_out;
 

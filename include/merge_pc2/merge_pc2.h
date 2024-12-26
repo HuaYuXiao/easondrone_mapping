@@ -5,17 +5,14 @@
 #ifndef MERGE_PC2_H
 #define MERGE_PC2_H
 
-#include <thread>
 #include <deque>
 #include <mutex>
 #include <vector>
 #include <exception>
-#include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/point_types.h>
-#include <pcl/kdtree/kdtree_flann.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <tf/transform_listener.h>
 
@@ -23,8 +20,6 @@
 
 typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
-
-using namespace std;
 
 class mergePC2 {
 public:
@@ -55,6 +50,7 @@ private:
     // Publisher
     std::string pc2_topic_out;
     std::string pc2_frame_out;
+    sensor_msgs::PointCloud2 pc2_out;
     ros::Publisher pc2_pub;
 
     // Unified callback for point cloud subscribers
