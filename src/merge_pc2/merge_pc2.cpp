@@ -1,8 +1,10 @@
-#include "merge_pcl/merge_pcl.h"
+#include "merge_pc2/merge_pc2.h"
 
 using namespace std;
 
-PointCloudMerger::PointCloudMerger(ros::NodeHandle nh){
+mergePC2::mergePC2(ros::NodeHandle nh)
+    : icp_utils(nh)  // Initialize icpUtils using the NodeHandle
+{
     nh.getParam("pc2_topics_in", pc2_topics_in);
     nh.param<double>("timeout", timeout, 0.5);
 
@@ -17,28 +19,21 @@ PointCloudMerger::PointCloudMerger(ros::NodeHandle nh){
         pc2_subs.emplace_back(
             nh.subscribe<sensor_msgs::PointCloud2>(
                 pc2_topic_in, hardware_concurrency, 
-                boost::bind(&PointCloudMerger::pc2Callback, this, _1, i)
+                boost::bind(&mergePC2::pc2Callback, this, _1, i)
             )
         );
     }
 
     nh.param<double>("duration", duration, 0.05);
 
-    // The Iterative Closest Point algorithm
-    nh.param<bool>("icp_enable", icp_enable, false);
-    nh.param<int>("icp_max_iter", icp_max_iter, 1);
-    nh.param<double>("icp_tf_epsilon", icp_tf_epsilon, 1e-8);
-    nh.param<double>("icp_euclidean_fit_epsilon", icp_euclidean_fit_epsilo, 1e-5);
-    nh.param<double>("icp_max_corr_d", icp_max_coor_d, 0.05);
-
     nh.param<string>("pc2_topic_out", pc2_topic_out, "");
     nh.param<string>("pc2_frame_out", pc2_frame_out, "");
     pc2_pub = nh.advertise<sensor_msgs::PointCloud2>(pc2_topic_out, hardware_concurrency);
 
-    ROS_INFO("merge_pcl node initialized success!");
+    ROS_INFO("merge_pc2 node initialized success!");
 }
 
-void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, const size_t index) {
+void mergePC2::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, const size_t index) {
     PointCloudT::Ptr pcT(new PointCloudT());
     pcl::fromROSMsg(*pc2_msg, *pcT);
 
@@ -64,30 +59,7 @@ void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_m
     }
 }
 
-void PointCloudMerger::icpAlgorithm(PointCloudT::Ptr& pcT_out, const PointCloudT::Ptr& pcT) {
-    pcl::IterativeClosestPoint<PointT, PointT> icp;
-
-    icp.setInputSource(pcT);
-    icp.setInputTarget(pcT_out);
-    icp.setMaximumIterations(icp_max_iter);
-    icp.setTransformationEpsilon(icp_tf_epsilon);
-    icp.setEuclideanFitnessEpsilon(icp_euclidean_fit_epsilo);
-    icp.setMaxCorrespondenceDistance(icp_max_coor_d);
-    // icp.setNumberOfThreads(hardware_concurrency);
-
-    PointCloudT::Ptr pcT_align(new PointCloudT());
-    icp.align(*pcT_align);
-
-    if (icp.hasConverged()) {
-        PCL_INFO("ICP converged with score: %f\n", icp.getFitnessScore());
-        *pcT_out += *pcT_align;
-    }
-    else {
-        PCL_ERROR("ICP failed to converge within MaximumIterations!\n");
-    }
-}
-
-void PointCloudMerger::processBuffers() {
+void mergePC2::mainLoop() {
     while (ros::ok()) {
         {
             std::lock_guard<std::mutex> lock(buffer_mutex);
@@ -103,9 +75,9 @@ void PointCloudMerger::processBuffers() {
                         ROS_WARN("Empty pointcloud detected! Skipping");
                         continue;
                     }
-                    else if(icp_enable && !pcT_out->empty()){
+                    else if(icp_utils.icp_enable && !pcT_out->empty()){
                         ROS_INFO("Applying ICP algorithm to pointclouds");
-                        icpAlgorithm(pcT_out, pcT);
+                        icp_utils.icpAlign(pcT_out, pcT);
                     }
                     else{
                         ROS_INFO("Simply merge pointclouds");
@@ -124,17 +96,4 @@ void PointCloudMerger::processBuffers() {
         // Small delay to avoid excessive CPU usage
         ros::Duration(duration).sleep();
     }
-}
-
-int main(int argc, char** argv) {
-    ros::init(argc, argv, "merge_pcl");
-    ros::NodeHandle nh("~");
-    
-    PointCloudMerger merge_pcl(nh);
-
-    std::thread process_thread(&PointCloudMerger::processBuffers, &merge_pcl);
-
-    ros::spin();
-
-    return 0;
 }
