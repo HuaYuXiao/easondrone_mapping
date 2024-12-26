@@ -3,7 +3,14 @@ pc2_topics_in:
     - /realsense/depth_camera/depth/points
 timeout: 0.5
 
-tf_duration: 0.05
+duration: 0.05
+
+# The Iterative Closest Point algorithm
+icp_enable: false
+icp_max_iter: 1
+icp_tf_epsilon: 1e-8
+icp_euclidean_fit_epsilon: 1e-5
+icp_max_corr_d: 0.05
 
 pc2_topic_out: /sensor/pc2_out
 pc2_frame_out: base_link

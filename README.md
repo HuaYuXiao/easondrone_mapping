@@ -1,14 +1,21 @@
 # easondrone_mapping
 
 ![HitCount](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FHuaYuXiao%2FEasonDrone_Mapping.json%3Fcolor%3Dpink)
-![Static Badge](https://img.shields.io/badge/ROS-melodic-22314E?logo=ros)
+![Static Badge](https://img.shields.io/badge/ROS-noetic-22314E?logo=ros)
 ![Static Badge](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus)
 ![Static Badge](https://img.shields.io/badge/Python-3.8.10-3776AB?logo=python)
 ![Static Badge](https://img.shields.io/badge/Ubuntu-20.04.6-E95420?logo=ubuntu)
 
-A ROS package to process PointCloud and build OctoMap
+A ROS package to process `PointCloud` and build `OctoMap`
+
+- merge or concatinate multiple `PointCloud2`s, with optional ICP algorithm, and publish `PointCloud2` in another frame
+- build `OctoMap` from `PointCloud2`
 
 ## Installation
+
+```bash
+sudo apt install libpcl-dev
+```
 
 ```bash
 cd ~/easondrone_ws/reconstruct
