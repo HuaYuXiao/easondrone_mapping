@@ -27,9 +27,12 @@ public:
     ~mergePC2() = default;
 
     // Method to process buffers
-    void mainLoop();
+    void sync_process();
 
 private:
+    int dura_d;
+    std::chrono::milliseconds dura;
+
     // Subscribers
     std::vector<std::string> pc2_topics_in;
     size_t hardware_concurrency;
@@ -38,7 +41,6 @@ private:
     double timeout;
 
     // Transform listener
-    double duration;
     tf::TransformListener tf_listener;
 
     icpUtils icp_utils;

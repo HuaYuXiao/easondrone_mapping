@@ -1,16 +1,17 @@
+# process loop duration
+dura: 500 # unit: ms
+
 pc2_topics_in: 
     - /livox/lidar
     - /realsense/depth_camera/depth/points
-timeout: 0.5
+timeout: 0.5 # unit: s
 
-duration: 0.05
-
-# The Iterative Closest Point algorithm
+# Iterative Closest Point algorithm
 icp_enable: false
 icp_max_iter: 1
 icp_tf_epsilon: 1e-8
 icp_euclidean_fit_epsilon: 1e-5
-icp_max_corr_d: 0.05
+icp_max_corr_d: 0.05 # unit: m
 
 pc2_topic_out: /sensor/pc2_out
 pc2_frame_out: base_link

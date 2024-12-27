@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v2.1.7 - 2024-12-26
 - [new feature] optional ICP algorithm for concatinate pointclouds
 - improve safety and efficiency for initialization
+- replace `ros::Duration.sleep` with `std::this_thread::sleep_for`
 
 ## v2.1.6 - 2024-12-25
 - [new feature] support for random num of pointcloud input sources

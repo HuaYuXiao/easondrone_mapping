@@ -5,6 +5,9 @@ using namespace std;
 mergePC2::mergePC2(ros::NodeHandle nh)
     : icp_utils(nh)
 {
+    nh.param<int>("dura", dura_d, 500);
+    dura = std::chrono::milliseconds(uint64_t(dura_d));
+
     nh.getParam("pc2_topics_in", pc2_topics_in);
 
     nh.param<double>("timeout", timeout, 0.5);
@@ -24,8 +27,6 @@ mergePC2::mergePC2(ros::NodeHandle nh)
             )
         );
     }
-
-    nh.param<double>("duration", duration, 0.05);
 
     nh.param<string>("pc2_topic_out", pc2_topic_out, "");
     nh.param<string>("pc2_frame_out", pc2_frame_out, "");
@@ -60,7 +61,7 @@ void mergePC2::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, cons
     }
 }
 
-void mergePC2::mainLoop() {
+void mergePC2::sync_process() {
     while (ros::ok()) {
         {
             std::lock_guard<std::mutex> lock(buffer_mutex);
@@ -94,6 +95,6 @@ void mergePC2::mainLoop() {
         }
 
         // Small delay to avoid excessive CPU usage
-        ros::Duration(duration).sleep();
+        std::this_thread::sleep_for(dura);
     }
 }

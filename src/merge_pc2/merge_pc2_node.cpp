@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
     
     mergePC2 merge_pc2(nh);
 
-    std::thread process_thread(&mergePC2::mainLoop, &merge_pc2);
+    std::thread process_thread(&mergePC2::sync_process, &merge_pc2);
 
     ros::spin();
 
