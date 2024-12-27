@@ -340,7 +340,7 @@ Visualization Manager:
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Min Color: 0; 0; 0
-          Name: merge_pcl
+          Name: merge_pc2
           Position Transformer: XYZ
           Queue Size: 10
           Selectable: true

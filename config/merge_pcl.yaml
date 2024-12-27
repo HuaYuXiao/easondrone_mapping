@@ -1,9 +1,0 @@
-pc2_topics_in: 
-    - /livox/lidar
-    - /realsense/depth_camera/depth/points
-timeout: 0.5
-
-tf_duration: 0.05
-
-pc2_topic_out: /sensor/pc2_out
-pc2_frame_out: base_link

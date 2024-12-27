@@ -1,12 +1,19 @@
-#include "merge_pcl/merge_pcl.h"
+#include "merge_pc2/merge_pc2.h"
 
 using namespace std;
 
-PointCloudMerger::PointCloudMerger(ros::NodeHandle nh){
+mergePC2::mergePC2(ros::NodeHandle nh)
+    : icp_utils(nh)
+{
+    nh.param<int>("dura", dura_d, 500);
+    dura = std::chrono::milliseconds(uint64_t(dura_d));
+
     nh.getParam("pc2_topics_in", pc2_topics_in);
+
     nh.param<double>("timeout", timeout, 0.5);
 
-    queue_size = std::thread::hardware_concurrency();
+    hardware_concurrency = std::thread::hardware_concurrency();
+    ROS_INFO("Hardware concurrency: %zu", hardware_concurrency);
 
     for (size_t i = 0; i < pc2_topics_in.size(); ++i) {
         string pc2_topic_in = pc2_topics_in[i];
@@ -15,22 +22,20 @@ PointCloudMerger::PointCloudMerger(ros::NodeHandle nh){
 
         pc2_subs.emplace_back(
             nh.subscribe<sensor_msgs::PointCloud2>(
-                pc2_topic_in, queue_size, 
-                boost::bind(&PointCloudMerger::pc2Callback, this, _1, i)
+                pc2_topic_in, hardware_concurrency, 
+                boost::bind(&mergePC2::pc2Callback, this, _1, i)
             )
         );
     }
 
-    nh.param<double>("tf_duration", tf_duration, 0.05);
-
     nh.param<string>("pc2_topic_out", pc2_topic_out, "");
     nh.param<string>("pc2_frame_out", pc2_frame_out, "");
-    pc2_pub = nh.advertise<sensor_msgs::PointCloud2>(pc2_topic_out, queue_size);
+    pc2_pub = nh.advertise<sensor_msgs::PointCloud2>(pc2_topic_out, hardware_concurrency);
 
-    ROS_INFO("merge_pcl node initialized success!");
+    ROS_INFO("merge_pc2 node initialized success!");
 }
 
-void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, const size_t index) {
+void mergePC2::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_msg, const size_t index) {
     PointCloudT::Ptr pcT(new PointCloudT());
     pcl::fromROSMsg(*pc2_msg, *pcT);
 
@@ -53,10 +58,10 @@ void PointCloudMerger::pc2Callback(const sensor_msgs::PointCloud2ConstPtr& pc2_m
             std::lock_guard<std::mutex> lock(buffer_mutex);
             *pcT_buffer[index] = *pcT;
         }
-    } 
+    }
 }
 
-void PointCloudMerger::processBuffers() {
+void mergePC2::sync_process() {
     while (ros::ok()) {
         {
             std::lock_guard<std::mutex> lock(buffer_mutex);
@@ -69,18 +74,19 @@ void PointCloudMerger::processBuffers() {
 
                 for (const auto& pcT : pcT_buffer) {
                     if (pcT->empty()) {
+                        ROS_WARN("Empty pointcloud detected! Skipping");
                         continue;
                     }
-                    else if(pcT_out->empty()){
-                        *pcT_out += *pcT;
+                    else if(icp_utils.icp_enable && !pcT_out->empty()){
+                        ROS_INFO("Applying ICP algorithm to pointclouds");
+                        icp_utils.icpAlign(pcT_out, pcT);
                     }
                     else{
-                        // TODO: Optional ICP
+                        ROS_INFO("Simply merge pointclouds");
                         *pcT_out += *pcT;
                     }
                 }
 
-                sensor_msgs::PointCloud2 pc2_out;
                 pcl::toROSMsg(*pcT_out, pc2_out);
                 pc2_out.header.frame_id = pc2_frame_out;
 
@@ -89,19 +95,6 @@ void PointCloudMerger::processBuffers() {
         }
 
         // Small delay to avoid excessive CPU usage
-        ros::Duration(tf_duration).sleep();
+        std::this_thread::sleep_for(dura);
     }
-}
-
-int main(int argc, char** argv) {
-    ros::init(argc, argv, "merge_pcl");
-    ros::NodeHandle nh("~");
-    
-    PointCloudMerger merge_pcl(nh);
-
-    std::thread process_thread(&PointCloudMerger::processBuffers, &merge_pcl);
-
-    ros::spin();
-
-    return 0;
 }
