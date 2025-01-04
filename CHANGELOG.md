@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - timeout
 - ICP multi-thread
 
-## v2.1.7 - 2024-12-26
-- [new feature] optional ICP algorithm for concatinate pointclouds
+## v2.1.8 - 2025-01-04
+- remove `PointCloud` data around center within radius 0.4m
+
+## v2.1.7 - 2024-12-27
+- [new feature] optional ICP algorithm to concatinate `PointCloudT`s
 - improve safety and efficiency for initialization
 - replace `ros::Duration.sleep` with `std::this_thread::sleep_for`
 

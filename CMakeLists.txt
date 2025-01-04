@@ -50,6 +50,14 @@ target_link_libraries(merge_pc2
 		${Boost_LIBRARIES}
 )
 
+add_executable(filter_pc 
+	src/filter_pc.cpp
+	)
+target_link_libraries(filter_pc
+		${catkin_LIBRARIES}
+		${PCL_LIBRARIES}
+)
+
 catkin_install_python(PROGRAMS
 		scripts/laser_to_pointcloud.py
 		DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
